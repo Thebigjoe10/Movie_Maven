@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function korean_movies() {
+export default function Korean_movies() {
   return (
     <div>korean_movies</div>
   )
