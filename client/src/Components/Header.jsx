@@ -1,454 +1,657 @@
 import { FaSearch } from "react-icons/fa";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import FilmX from "../assets/img/FilmX logo.jpeg";
 
 export default function Header() {
-  const [isMenuOpen, setMenuOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [isDoubleDropdownOpen, setDoubleDropdownOpen] = useState(false);
-  const [isAfricanMoviesDropdownOpen, setAfricanMoviesDropdownOpen] =
-    useState(false);
+  const [isAsianOpen, setAsianOpen] = useState(false);
+  const [isAfricanOpen, setAfricanOpen] = useState(false);
   const [isGenreDropdownOpen, setGenreDropdownOpen] = useState(false);
+  const [isNavMenuOpen, setNavMenuOpen] = useState(false);
 
-  const toggleAfricanMoviesDropdown = () => {
-    setAfricanMoviesDropdownOpen(!isAfricanMoviesDropdownOpen);
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen(!isMenuOpen);
+  const toggleNavMenu = () => {
+    setNavMenuOpen(!isNavMenuOpen);
   };
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const toggleDoubleDropdown = () => {
-    setDoubleDropdownOpen(!isDoubleDropdownOpen);
+  const toggleAsianMovie = () => {
+    setAsianOpen(!isAsianOpen);
   };
 
-  const toggleGenreDrodown = () => {
+  const toggleAfricanMovie = () => {
+    setAfricanOpen(!isAfricanOpen);
+  };
+
+  const toggleGenreDropdown = () => {
     setGenreDropdownOpen(!isGenreDropdownOpen);
   };
+
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-sm">
-      <div className="max-w-6xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link to={"/"}>
-          <a className="flex items-center">
-            <img
-              src="https://www.codewithfaraz.com/InstaPic.png"
-              className="h-8 mr-3"
-              alt="Film X Logo"
-            />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Film X
-            </span>
-          </a>
-        </Link>
+    <header className="bg-white shadow-md">
+      <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <button
-          id="navbar-toggle"
-          data-collapse-toggle="navbar-dropdown"
-          type="button"
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg sm:hidden hover-bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover-bg-gray-700 dark:focus-ring-gray-600"
-          aria-controls="navbar-dropdown"
-          aria-expanded={isMenuOpen}
-          onClick={toggleMenu}
+          onClick={toggleNavMenu}
+          className="text-gray-600 lg:hidden block focus:outline-none"
         >
-          <span className="sr-only">Open main menu</span>
           <svg
-            className="w-5 h-5"
-            aria-hidden="true"
+            className="fill-current h-6 w-6 transition duration-150 ease-in-out"
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
+            viewBox="0 0 24 24"
           >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
+            {isNavMenuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            )}
           </svg>
         </button>
+
+        <Link to="/">
+          <div className="flex items-center">
+            <img
+              className="rounded-full border border-white w-10"
+              src={FilmX}
+              alt="FilmX logo"
+            />
+            <h1 className="font-bold text-xl sm:text-2xl">
+              <span className="text-gray-700">Film</span>
+              <span className="text-gray-900 uppercase text-2xl">X</span>
+            </h1>
+          </div>
+        </Link>
+
+        <form className="bg-white p-3 rounded-lg flex items-center relative w-32 sm:w-48">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="bg-transparent outline-none w-full pr-10 rounded-lg"
+          />
+          <FaSearch className="text-gray-600 absolute right-4 top-1/2 transform -translate-y-1/2" />
+        </form>
+
         <div
-          className={`w-full sm:block sm:w-auto ${isMenuOpen ? "" : "hidden"}`}
-          id="navbar-dropdown"
+          className={`fixed top-0 left-0 h-full w-80 bg-white transform transition-transform ease-in-out duration-300  ${
+            isNavMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+          style={{
+            overflowY: "auto",
+            maxHeight: "100vh",
+          }}
         >
-          <ul className="flex flex-col font-medium p-4 sm:p-0 mt-4 border border-gray-100 rounded-lg sm:flex-row sm-space-x-8 sm:mt-0 sm:border-0 sm-bg-white dark-bg-gray-800 sm-dark-bg-gray-900 dark-border-gray-700">
-            <Link to={"/"}>
-              <li>
-                <a
-                  className="block py-2 pl-3 pr-4 text-white bg-blue-500 rounded sm-bg-transparent sm-text-blue-700 sm-p-0 sm-dark-text-blue-500 dark-bg-blue-600 sm-dark-bg-transparent"
-                  aria-current="page"
+          <button
+            onClick={toggleNavMenu}
+            className="text-gray-600 lg:hidden block focus:outline-none"
+          >
+            <svg
+              className="fill-current h-6 w-6 transition duration-150 ease-in-out"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              {isNavMenuOpen ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  Home
-                </a>
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+              )}
+            </svg>
+          </button>
+          <ul className="gap-8 block lg:hidden text-center">
+            <Link to={"/"}>
+              <li className="mb-6">
+                <span className="font-semibold">Home</span>
               </li>
             </Link>
+            <ul className="transform group min-w-32">
+              <li className="group inline-block mb-6">
+                <button
+                  onClick={toggleDropdown}
+                  className="outline-none focus:outline-none flex items-center min-w-32"
+                >
+                  <span className="pr-1 font-semibold flex-1">Movies</span>
+                  <span>
+                    <svg
+                      className={`fill-current h-4 w-4 transform ${
+                        isDropdownOpen ? "rotate-180" : ""
+                      } transition duration-150 ease-in-out`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                  </span>
+                </button>
+                <ul
+                  className={`bg-white border rounded-sm transform ${
+                    isDropdownOpen ? "scale-100" : "scale-0"
+                  } absolute transition duration-150 ease-in-out origin-top min-w-32`}
+                >
+                  <Link to={"/international"}>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      International
+                    </li>
+                  </Link>
 
+                  <li className="rounded-sm relative px-3 py-1 hover:bg-gray-100">
+                    <button
+                      onClick={toggleAsianMovie}
+                      className="w-full text-left flex items-center outline-none focus:outline-none"
+                    >
+                      <span className="pr-1 flex-1">Asian</span>
+                      <span className="mr-auto">
+                        <svg
+                          className={`fill-current h-4 w-4 transition duration-150 ease-in-out ${
+                            isAsianOpen ? "rotate-180" : ""
+                          }`}
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg>
+                      </span>
+                    </button>
+                    <ul
+                      className={`bg-white border rounded-sm transform ${
+                        isAsianOpen ? "scale-100" : "scale-0"
+                      } absolute transition duration-150 ease-in-out origin-top left-0 -ml-32 w-32`}
+                    >
+                      <Link to={"/bollywood"}>
+                        <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                          Bollywood
+                        </li>
+                      </Link>
+                      <Link to={"/korean"}>
+                        <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                          Korean
+                        </li>
+                      </Link>
+                      <Link to={"/philipines"}>
+                        <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                          Phillippines
+                        </li>
+                      </Link>
+                    </ul>
+                  </li>
+                  <li className="rounded-sm relative px-3 py-1 hover:bg-gray-100">
+                    <button
+                      onClick={toggleAfricanMovie}
+                      className="w-full text-left flex items-center outline-none focus:outline-none"
+                    >
+                      <span className="pr-1 flex-1">African</span>
+                      <span className="mr-auto">
+                        <svg
+                          className={`fill-current h-4 w-4 transition duration-150 ease-in-out ${
+                            isAfricanOpen ? "rotate-180" : ""
+                          }`}
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg>
+                      </span>
+                    </button>
+                    <ul
+                      className={`bg-white border rounded-sm transform ${
+                        isAfricanOpen ? "scale-100" : "scale-0"
+                      } absolute transition duration-150 ease-in-out origin-top w-40`}
+                    >
+                      <Link to={"/nollywood"}>
+                        <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                          Nollywood
+                        </li>
+                      </Link>
+                      <Link to={"/south-african"}>
+                        <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                          South African
+                        </li>
+                      </Link>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
             <Link to={"/chinese-drama"}>
-              <li>
-                <a className="block py-2 pl-3 pr-4 text-gray-900 rounded hover-bg-gray-100 sm-hover-bg-transparent sm-border-0 sm-hover-text-blue-700 sm-p-0 dark-text-white sm-dark-hover-text-blue-500 dark-hover-bg-gray-700 dark-hover-text-white sm-dark-hover-bg-transparent">
-                  Chinese Drama
-                </a>
+              <li className="mb-6">
+                <span className="font-semibold">Chinese Drama</span>
               </li>
             </Link>
             <Link to={"/k-drama"}>
-              <li>
-                <a className="block py-2 pl-3 pr-4 text-gray-900 rounded hover-bg-gray-100 sm-hover-bg-transparent sm-border-0 sm-hover-text-blue-700 sm-p-0 dark-text-white sm-dark-hover-text-blue-500 dark-hover-bg-gray-700 dark-hover-text-white sm-dark-hover-bg-transparent">
-                  K-Drama
-                </a>
+              <li className="mb-6">
+                <span className="font-semibold">K-Drama</span>
               </li>
             </Link>
             <Link to={"/tv-series"}>
-              <li>
-                <a className="block py-2 pl-3 pr-4 text-gray-900 rounded hover-bg-gray-100 sm-hover-bg-transparent sm-border-0 sm-hover-text-blue-700 sm-p-0 dark-text-white sm-dark-hover-text-blue-500 dark-hover-bg-gray-700 dark-hover-text-white sm-dark-hover-bg-transparent">
-                  TV Series
-                </a>
+              <li className="mb-6">
+                <span className="font-semibold">TV Series</span>
               </li>
             </Link>
-            <li>
-              <button
-                id="dropdownNavbarLink"
-                data-dropdown-toggle="dropdownNavbar"
-                className="flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover-bg-gray-50 sm-hover-bg-transparent sm-border-0 sm-hover-text-blue-700 sm-p-0 sm-w-auto dark-text-white sm-dark-hover-text-blue-500 dark-focus-text-white dark-border-gray-700 dark-hover-bg-gray-700 sm-dark-hover-bg-transparent"
-                onClick={toggleDropdown}
-              >
-                Movies
-                <svg
-                  className={`w-2.5 h-2.5 ml-2.5 transition-transform duration-300 transform ${
-                    isDropdownOpen ? "rotate-0" : "rotate-180"
-                  }`}
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
+
+            <ul className="transform group min-w-32">
+              <li className="group inline-block mb-6">
+                <button
+                  onClick={toggleGenreDropdown}
+                  className="outline-none focus:outline-none flex items-center min-w-32"
                 >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              {/* Dropdown menu */}
-              <div
-                id="dropdownNavbar"
-                className={`absolute z-10 ${
-                  isDropdownOpen ? "" : "hidden"
-                } font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark-bg-gray-700 dark-divide-gray-600`}
-              >
+                  <span className="pr-1 font-semibold flex-1">Genres</span>
+                  <span>
+                    <svg
+                      className={`fill-current h-4 w-4 transform ${
+                        isGenreDropdownOpen ? "rotate-180" : ""
+                      } transition duration-150 ease-in-out`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                  </span>
+                </button>
                 <ul
-                  className="py-2 text-sm text-gray-700 dark-text-gray-400"
-                  aria-labelledby="dropdownLargeButton"
-                >
-                  <Link to={"/international"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        International
-                      </a>
-                    </li>
-                  </Link>
-                  <li aria-labelledby="dropdownNavbarLink">
-                    <button
-                      id="doubleDropdownButton"
-                      data-dropdown-toggle="doubleDropdown"
-                      data-dropdown-placement="right-start"
-                      type="button"
-                      className="flex items-center justify-between w-full px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white"
-                      onClick={toggleDoubleDropdown}
-                    >
-                      Asian Movies
-                      <svg
-                        className={`w-2.5 h-2.5 ml-2.5 transition-transform duration-300 transform ${
-                          isDoubleDropdownOpen ? "rotate-0" : "rotate-180"
-                        }`}
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 10 6"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m1 1 4 4 4-4"
-                        />
-                      </svg>
-                    </button>
-                    <div
-                      id="doubleDropdown"
-                      className={`z-10 absolute ${
-                        isDoubleDropdownOpen ? "" : "hidden"
-                      } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark-bg-gray-700 transform translate-x-44`}
-                    >
-                      <ul
-                        className="py-2 text-sm text-gray-700 dark-text-gray-200"
-                        aria-labelledby="doubleDropdownButton"
-                      >
-                        <Link to={"/bollywood"}>
-                          <li>
-                            <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-text-gray-400 dark-hover-text-white">
-                              Bollywood Movies
-                            </a>
-                          </li>
-                        </Link>
-                        <Link to={"/korean"}>
-                          <li>
-                            <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-text-gray-400 dark-hover-text-white">
-                              Korean Movies
-                            </a>
-                          </li>
-                        </Link>
-                        <Link to={"/phillipines"}>
-                          <li>
-                            <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-text-gray-400 dark-hover-text-white">
-                              Phillipines Movies
-                            </a>
-                          </li>
-                        </Link>
-                      </ul>
-                    </div>
-                  </li>
-                  <li aria-labelledby="dropdownNavbarLink">
-                    <button
-                      id="doubleDropdownButton"
-                      data-dropdown-toggle="doubleDropdown"
-                      data-dropdown-placement="right-start"
-                      type="button"
-                      className="flex items-center justify-between w-full px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white"
-                      onClick={toggleAfricanMoviesDropdown}
-                    >
-                      African Movies
-                      <svg
-                        className={`w-2.5 h-2.5 ml-2.5 transition-transform duration-300 transform ${
-                          isAfricanMoviesDropdownOpen
-                            ? "rotate-0"
-                            : "rotate-180"
-                        }`}
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 10 6"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m1 1 4 4 4-4"
-                        />
-                      </svg>
-                    </button>
-                    <div
-                      id="doubleDropdown"
-                      className={`z-10 absolute ${
-                        isAfricanMoviesDropdownOpen ? "" : "hidden"
-                      } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark-bg-gray-700 transform translate-x-44`}
-                    >
-                      <ul
-                        className="py-2 text-sm text-gray-700 dark-text-gray-200"
-                        aria-labelledby="doubleDropdownButton"
-                      >
-                        <Link to={"/nollywood"}>
-                          <li>
-                            <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-text-gray-400 dark-hover-text-white">
-                              Nollywood Movies
-                            </a>
-                          </li>
-                        </Link>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              <button
-                id="dropdownNavbarLink"
-                data-dropdown-toggle="dropdownNavbar"
-                className="flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover-bg-gray-50 sm-hover-bg-transparent sm-border-0 sm-hover-text-blue-700 sm-p-0 sm-w-auto dark-text-white sm-dark-hover-text-blue-500 dark-focus-text-white dark-border-gray-700 dark-hover-bg-gray-700 sm-dark-hover-bg-transparent"
-                onClick={toggleGenreDrodown}
-              >
-                Genres
-                <svg
-                  className={`w-2.5 h-2.5 ml-2.5 transition-transform duration-300 transform ${
-                    isGenreDropdownOpen ? "rotate-0" : "rotate-180"
-                  }`}
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              <div
-                id="dropdownNavbar"
-                className={`absolute z-10 ${
-                  isGenreDropdownOpen ? "" : "hidden"
-                } font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark-bg-gray-700 dark-divide-gray-600`}
-              >
-                <ul
-                  className="py-2 text-sm text-gray-700 dark-text-gray-400"
-                  aria-labelledby="dropdownLargeButton"
+                  className={`bg-white border rounded-sm transform ${
+                    isGenreDropdownOpen ? "scale-100" : "scale-0"
+                  } absolute transition duration-150 ease-in-out origin-top min-w-32`}
                 >
                   <Link to={"/actions"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Actions
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Action
                     </li>
                   </Link>
                   <Link to={"/adventure"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Adventure
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Adventure
                     </li>
                   </Link>
                   <Link to={"/animations"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Animation
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Animation
                     </li>
                   </Link>
                   <Link to={"/biography"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Biography
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Biography
                     </li>
                   </Link>
                   <Link to={"/comedy"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Comedy
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Comedy
                     </li>
                   </Link>
                   <Link to={"/crime"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Crime
-                      </a>
-                    </li>
-                  </Link>
-                  <Link to={"/documentary"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Documentary
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Crime
                     </li>
                   </Link>
                   <Link to={"/drama"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Drama
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Drama
                     </li>
                   </Link>
-                  <Link to={"/family"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Family
-                      </a>
+                  <Link to={"/documentary"}>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Documentary
                     </li>
                   </Link>
                   <Link to={"/fantasy"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Fantasy
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Fantasy
+                    </li>
+                  </Link>
+                  <Link to={"/family"}>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Family
                     </li>
                   </Link>
                   <Link to={"/horror"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Horror
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Horror
                     </li>
                   </Link>
                   <Link to={"/music"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Music
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Music
                     </li>
                   </Link>
+
                   <Link to={"/mystery"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Mystery
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Mystery
                     </li>
                   </Link>
                   <Link to={"/romance"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Romance
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Romance
                     </li>
                   </Link>
                   <Link to={"/sci-fi"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Sci-Fi
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Sci-Fi
                     </li>
                   </Link>
                   <Link to={"/sport"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Sport
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Sport
                     </li>
                   </Link>
                   <Link to={"/thriller"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        Thriller
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      Thriller
                     </li>
                   </Link>
                   <Link to={"/war"}>
-                    <li>
-                      <a className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-white">
-                        War
-                      </a>
+                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                      War
                     </li>
                   </Link>
                 </ul>
-              </div>
-            </li>
-            <Link to={"/how-to-download"}>
-              <li>
-                <a className="block py-2 pl-3 pr-4 text-gray-900 rounded hover-bg-gray-100 sm-hover-bg-transparent sm-border-0 sm-hover-text-blue-700 sm-p-0 dark-text-white sm-dark-hover-text-blue-500 dark-hover-bg-gray-700 dark-hover-text-white sm-dark-hover-bg-transparent">
-                  How to download
-                </a>
+              </li>
+            </ul>
+            <Link to={"how-to-download"}>
+              <li className="mb-6">
+                <span className="font-semibold">How to download</span>
               </li>
             </Link>
           </ul>
         </div>
-        {/* <form className="bg-white p-3 rounded-lg flex items-center ">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="bg-transparent focus:outline-none w-24 sm:w-64"
-          />
-           <FaSearch className="text-blue-500" />
-        </form> */}
+        <ul className="gap-4 hidden lg:flex">
+          <Link to={"/"}>
+            <li>
+              <span className="font-semibold">Home</span>
+            </li>
+          </Link>
+          <Link to={"/chinese-drama"}>
+            <li>
+              <span className="font-semibold">Chinese Drama</span>
+            </li>
+          </Link>
+          <Link to={"/k-drama"}>
+            <li>
+              <span className="font-semibold">K-Drama</span>
+            </li>
+          </Link>
+          <Link to={"/tv-series"}>
+            <li>
+              <span className="font-semibold">TV Series</span>
+            </li>
+          </Link>
+
+          <ul className="transform group min-w-32">
+            <li className="group inline-block">
+              <button
+                onClick={toggleDropdown}
+                className="outline-none focus:outline-none flex items-center min-w-32"
+              >
+                <span className="pr-1 font-semibold flex-1">Movies</span>
+                <span>
+                  <svg
+                    className={`fill-current h-4 w-4 transform ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    } transition duration-150 ease-in-out`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                className={`bg-white border rounded-sm transform ${
+                  isDropdownOpen ? "scale-100" : "scale-0"
+                } absolute transition duration-150 ease-in-out origin-top min-w-32`}
+              >
+                <Link to={"/international"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    International
+                  </li>
+                </Link>
+                <li className="rounded-sm relative px-3 py-1 hover:bg-gray-100">
+                  <button
+                    onClick={toggleAsianMovie}
+                    className="w-full text-left flex items-center outline-none focus:outline-none"
+                  >
+                    <span className="pr-1 flex-1">Asian</span>
+                    <span className="mr-auto">
+                      <svg
+                        className={`fill-current h-4 w-4 transition duration-150 ease-in-out ${
+                          isAsianOpen ? "rotate-180" : ""
+                        }`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </span>
+                  </button>
+                  <ul
+                    className={`bg-white border rounded-sm transform ${
+                      isAsianOpen ? "scale-100" : "scale-0"
+                    } absolute transition duration-150 ease-in-out origin-top left-0 -ml-32 w-32`}
+                  >
+                    <Link to={"/bollywood"}>
+                      <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                        Bollywood
+                      </li>
+                    </Link>
+                    <Link to={"/korean"}>
+                      <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                        Korean
+                      </li>
+                    </Link>
+                    <Link to={"/phillipines"}>
+                      <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                        Phillippines
+                      </li>
+                    </Link>
+                  </ul>
+                </li>
+                <li className="rounded-sm relative px-3 py-1 hover:bg-gray-100">
+                  <button
+                    onClick={toggleAfricanMovie}
+                    className="w-full text-left flex items-center outline-none focus:outline-none"
+                  >
+                    <span className="pr-1 flex-1">African</span>
+                    <span className="mr-auto">
+                      <svg
+                        className={`fill-current h-4 w-4 transition duration-150 ease-in-out ${
+                          isAfricanOpen ? "rotate-180" : ""
+                        }`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </span>
+                  </button>
+                  <ul
+                    className={`bg-white border rounded-sm transform ${
+                      isAfricanOpen ? "scale-100" : "scale-0"
+                    } absolute transition duration-150 ease-in-out origin-top w-40`}
+                  >
+                    <Link to={"/nollywood"}>
+                      <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                        Nollywood
+                      </li>
+                    </Link>
+                    <Link to={"/south-african"}>
+                      <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                        South African
+                      </li>
+                    </Link>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul className="transform group min-w-32">
+            <li className="group inline-block">
+              <button
+                onClick={toggleGenreDropdown}
+                className="outline-none focus:outline-none flex items-center min-w-32"
+              >
+                <span className="pr-1 font-semibold flex-1">Genres</span>
+                <span>
+                  <svg
+                    className={`fill-current h-4 w-4 transform ${
+                      isGenreDropdownOpen ? "rotate-180" : ""
+                    } transition duration-150 ease-in-out`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                className={`bg-white border rounded-sm transform ${
+                  isGenreDropdownOpen ? "scale-100" : "scale-0"
+                } absolute transition duration-150 ease-in-out origin-top min-w-32`}
+              >
+                <Link to={"/actions"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Action
+                  </li>
+                </Link>
+                <Link to={"/adventure"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Adventure
+                  </li>
+                </Link>
+                <Link to={"/animations"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Animation
+                  </li>
+                </Link>
+                <Link to={"/biography"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Biography
+                  </li>
+                </Link>
+                <Link to={"/comedy"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Comedy
+                  </li>
+                </Link>
+                <Link to={"/crime"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Crime
+                  </li>
+                </Link>
+                <Link to={"/drama"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Drama
+                  </li>
+                </Link>
+                <Link to={"/documentary"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Documentary
+                  </li>
+                </Link>
+                <Link to={"/fantasy"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Fantasy
+                  </li>
+                </Link>
+                <Link to={"/family"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Family
+                  </li>
+                </Link>
+                <Link to={"/horror"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Horror
+                  </li>
+                </Link>
+                <Link to={"/music"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Music
+                  </li>
+                </Link>
+                <Link to={"/mystery"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Mystery
+                  </li>
+                </Link>
+                <Link to={"/romance"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Romance
+                  </li>
+                </Link>
+                <Link to={"/sci-fi"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Sci-Fi
+                  </li>
+                </Link>
+                <Link to={"/sport"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Sport
+                  </li>
+                </Link>
+                <Link to={"/thriller"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    Thriller
+                  </li>
+                </Link>
+                <Link to={"/war"}>
+                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
+                    War
+                  </li>
+                </Link>
+              </ul>
+            </li>
+          </ul>
+          <Link to={"/how-to-download"}>
+            <li>
+              <span className="font-semibold">How to download</span>
+            </li>
+          </Link>
+        </ul>
       </div>
-    </nav>
+    </header>
   );
 }
