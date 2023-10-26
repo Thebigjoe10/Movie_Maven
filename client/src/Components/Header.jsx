@@ -31,11 +31,11 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-less-blue shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <button
           onClick={toggleNavMenu}
-          className="text-gray-600 lg:hidden block focus:outline-none"
+          className="text-gray-400 lg:hidden block focus:outline-none"
         >
           <svg
             className="fill-current h-6 w-6 transition duration-150 ease-in-out"
@@ -81,17 +81,17 @@ export default function Header() {
               alt="FilmX logo"
             />
             <h1 className="font-bold text-xl sm:text-2xl">
-              <span className="text-gray-700">Film</span>
-              <span className="text-gray-900 uppercase text-2xl">X</span>
+              <span className="text-slate-100">Film</span>
+              <span className="text-slate-50 uppercase text-2xl">X</span>
             </h1>
           </div>
         </Link>
 
-        <form className="bg-white p-3 rounded-lg flex items-center relative w-32 sm:w-48">
+        <form className="bg-transparent p-3 rounded-lg flex items-center relative w-32 sm:w-48">
           <input
             type="text"
             placeholder="Search..."
-            className="bg-transparent outline-none w-full pr-10 rounded-lg"
+            className="bg-white outline-none w-full pr-10 rounded-lg"
           />
           <FaSearch className="text-gray-600 absolute right-4 top-1/2 transform -translate-y-1/2" />
         </form>
@@ -402,22 +402,22 @@ export default function Header() {
         <ul className="gap-4 hidden lg:flex">
           <Link to={"/"}>
             <li>
-              <span className="font-semibold">Home</span>
+              <span className="font-semibold text-slate-100">Home</span>
             </li>
           </Link>
           <Link to={"/chinese-drama"}>
             <li>
-              <span className="font-semibold">Chinese Drama</span>
+              <span className="font-semibold text-slate-100">Chinese Drama</span>
             </li>
           </Link>
           <Link to={"/k-drama"}>
             <li>
-              <span className="font-semibold">K-Drama</span>
+              <span className="font-semibold text-slate-100">K-Drama</span>
             </li>
           </Link>
           <Link to={"/tv-series"}>
             <li>
-              <span className="font-semibold">TV Series</span>
+              <span className="font-semibold text-slate-100">TV Series</span>
             </li>
           </Link>
 
@@ -427,10 +427,10 @@ export default function Header() {
                 onClick={toggleDropdown}
                 className="outline-none focus:outline-none flex items-center min-w-32"
               >
-                <span className="pr-1 font-semibold flex-1">Movies</span>
+                <span className="pr-1 font-semibold text-slate-100 flex-1">Movies</span>
                 <span>
                   <svg
-                    className={`fill-current h-4 w-4 transform ${
+                    className={`fill-current h-4 w-4 text-gray-50 transform ${
                       isDropdownOpen ? "rotate-180" : ""
                     } transition duration-150 ease-in-out`}
                     xmlns="http://www.w3.org/2000/svg"
@@ -534,10 +534,10 @@ export default function Header() {
                 onClick={toggleGenreDropdown}
                 className="outline-none focus:outline-none flex items-center min-w-32"
               >
-                <span className="pr-1 font-semibold flex-1">Genres</span>
+                <span className="pr-1 font-semibold text-slate-100 flex-1">Genres</span>
                 <span>
                   <svg
-                    className={`fill-current h-4 w-4 transform ${
+                    className={`fill-current h-4 w-4 text-gray-50 transform ${
                       isGenreDropdownOpen ? "rotate-180" : ""
                     } transition duration-150 ease-in-out`}
                     xmlns="http://www.w3.org/2000/svg"
@@ -647,7 +647,7 @@ export default function Header() {
           </ul>
           <Link to={"/how-to-download"}>
             <li>
-              <span className="font-semibold">How to download</span>
+              <span className="font-semibold text-slate-100">How to download</span>
             </li>
           </Link>
         </ul>

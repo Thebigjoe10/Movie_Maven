@@ -25,11 +25,15 @@ import War from "./Pages/Genres/War";
 import International from "./Pages/Movies/international";
 import Bollywood from "./Pages/Movies/asian_movies/Bollywood";
 import Nollywood from "./Pages/Movies/african_movies/Nollywood";
-import SouthAfrica from "./Pages/Movies/african_movies/SouthAfrica"
+import SouthAfrica from "./Pages/Movies/african_movies/SouthAfrica";
 import Korean_movies from "./Pages/Movies/asian_movies/Korean_movies";
 import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
+
+
 export default function App() {
+ 
+
   return (
     <BrowserRouter>
       <Header />
