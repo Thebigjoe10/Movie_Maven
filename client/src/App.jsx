@@ -29,6 +29,7 @@ import SouthAfrica from "./Pages/Movies/african_movies/SouthAfrica";
 import Korean_movies from "./Pages/Movies/asian_movies/Korean_movies";
 import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
+import Slider from "./Components/Slider";
 
 
 export default function App() {
@@ -68,6 +69,7 @@ export default function App() {
         <Route path="/nollywood" element={<Nollywood />} />
         <Route path="/south-african" element={<SouthAfrica />} />
       </Routes>
+      <Slider/>
     </BrowserRouter>
   );
 }
