@@ -91,7 +91,7 @@ export default function Header() {
           <input
             type="text"
             placeholder="Search..."
-            className="bg-white outline-none w-full pr-10 rounded-lg"
+            className="bg-white outline-none w-full pr-10 rounded-lg p-2"
           />
           <FaSearch className="text-gray-600 absolute right-4 top-1/2 transform -translate-y-1/2" />
         </form>
@@ -402,22 +402,30 @@ export default function Header() {
         <ul className="gap-4 hidden lg:flex">
           <Link to={"/"}>
             <li>
-              <span className="font-semibold text-slate-100 hover:underline underline-offset-8">Home</span>
+              <span className="font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in">
+                Home
+              </span>
             </li>
           </Link>
           <Link to={"/chinese-drama"}>
             <li>
-              <span className="font-semibold text-slate-100 hover:underline underline-offset-8">Chinese Drama</span>
+              <span className="font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in">
+                Chinese Drama
+              </span>
             </li>
           </Link>
           <Link to={"/k-drama"}>
             <li>
-              <span className="font-semibold text-slate-100 hover:underline underline-offset-8">K-Drama</span>
+              <span className="font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in">
+                K-Drama
+              </span>
             </li>
           </Link>
           <Link to={"/tv-series"}>
             <li>
-              <span className="font-semibold text-slate-100 hover:underline underline-offset-8">TV Series</span>
+              <span className="font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in">
+                TV Series
+              </span>
             </li>
           </Link>
 
@@ -427,7 +435,9 @@ export default function Header() {
                 onClick={toggleDropdown}
                 className="outline-none focus:outline-none flex items-center min-w-32"
               >
-                <span className="pr-1 font-semibold text-slate-100 hover:underline underline-offset-8  flex-1">Movies</span>
+                <span className="pr-1 font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in  flex-1">
+                  Movies
+                </span>
                 <span>
                   <svg
                     className={`fill-current h-4 w-4 text-gray-50 transform ${
@@ -534,7 +544,9 @@ export default function Header() {
                 onClick={toggleGenreDropdown}
                 className="outline-none focus:outline-none flex items-center min-w-32"
               >
-                <span className="pr-1 font-semibold text-slate-100 hover:underline underline-offset-8 flex-1">Genres</span>
+                <span className="pr-1 font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in flex-1">
+                  Genres
+                </span>
                 <span>
                   <svg
                     className={`fill-current h-4 w-4 text-gray-50 transform ${
@@ -647,7 +659,9 @@ export default function Header() {
           </ul>
           <Link to={"/how-to-download"}>
             <li>
-              <span className="font-semibold text-slate-100 hover:underline underline-offset-8">How to download</span>
+              <span className="font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in">
+                How to download
+              </span>
             </li>
           </Link>
         </ul>
