@@ -30,11 +30,11 @@ export default function Slider() {
   return (
     <div>
       <FaChevronLeft
-        className=" hidden md:block text-[30px] absolute mx-8 mt-[150px] cursor-pointer"
+        className=" hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer"
         onClick={() => sliderLeft(elementRef.current)}
       />
       <FaChevronRight
-        className=" hidden md:block text-[30px] absolute mx-8 mt-[150px] cursor-pointer right-0"
+        className=" hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer right-0"
         onClick={() => sliderRight(elementRef.current)}
       />
       <div

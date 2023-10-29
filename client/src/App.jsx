@@ -38,6 +38,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Header />
+      <Slider/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/chinese-drama" element={<Chinese_drama />} />
@@ -69,7 +70,6 @@ export default function App() {
         <Route path="/nollywood" element={<Nollywood />} />
         <Route path="/south-african" element={<SouthAfrica />} />
       </Routes>
-      <Slider/>
     </BrowserRouter>
   );
 }
