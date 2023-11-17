@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
-import Home from "./Pages/Home";
+// import Home from "./Pages/Home";
 import Chinese_drama from "./Pages/Chinese_drama";
 import Tv_Series from "./Pages/Tv_Series";
 import Kdrama from "./Pages/Kdrama";
@@ -40,7 +40,7 @@ export default function App() {
       <Header />
       <Slider/>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
         <Route path="/chinese-drama" element={<Chinese_drama />} />
         <Route path="/tv-series" element={<Tv_Series />} />
         <Route path="/k-drama" element={<Kdrama />} />
