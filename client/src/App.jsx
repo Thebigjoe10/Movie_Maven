@@ -29,7 +29,7 @@ import SouthAfrica from "./Pages/Movies/african_movies/SouthAfrica";
 import Korean_movies from "./Pages/Movies/asian_movies/Korean_movies";
 import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
-import Slider from "./Pages/Slider";
+import Slider from "./Components/Slider";
 
 
 export default function App() {
@@ -38,8 +38,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Header />
+      <Slider/>
       <Routes>
-     <Route path="/" element={<Slider/>}/>
         <Route path="/" element={<Home />} />
         <Route path="/chinese-drama" element={<Chinese_drama />} />
         <Route path="/tv-series" element={<Tv_Series />} />
