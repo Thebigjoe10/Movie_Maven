@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
-// import Home from "./Pages/Home";
+import Home from "./Pages/Home";
 import Chinese_drama from "./Pages/Chinese_drama";
 import Tv_Series from "./Pages/Tv_Series";
 import Kdrama from "./Pages/Kdrama";
@@ -29,7 +29,7 @@ import SouthAfrica from "./Pages/Movies/african_movies/SouthAfrica";
 import Korean_movies from "./Pages/Movies/asian_movies/Korean_movies";
 import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
-import Slider from "./Components/Slider";
+import Slider from "./Pages/Slider";
 
 
 export default function App() {
@@ -38,9 +38,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Slider/>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+     <Route path="/" element={<Slider/>}/>
+        <Route path="/" element={<Home />} />
         <Route path="/chinese-drama" element={<Chinese_drama />} />
         <Route path="/tv-series" element={<Tv_Series />} />
         <Route path="/k-drama" element={<Kdrama />} />

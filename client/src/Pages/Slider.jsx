@@ -43,10 +43,10 @@ export default function Slider() {
       >
         {movies.map((item, index) => (
           <img
-            src={import.meta.env.VITE_MOVIE_BASE_IMG + item.backdrop_path}
+            src={ import.meta.env.VITE_MOVIE_BASE_IMG + item.poster_path}
             key={index}
             alt="Movies"
-            className="min-w-full md:h-[310px] object-center mr-5 rounded-md hover:border-[4px] border-less-blue transition-all duration-100 ease-in"
+            className="min-w-full md:h-[350px] object-center mr-5 rounded-md hover:border-[4px] border-less-blue transition-all duration-100 ease-in"
           />
         ))}
       </div>
