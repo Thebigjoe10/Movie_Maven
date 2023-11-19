@@ -97,9 +97,9 @@ export default function Header() {
         </form>
 
         <div
-          className={`fixed top-0 left-0 h-full w-80 bg-white transform transition-transform ease-in-out duration-300  ${
-            isNavMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+         className={`fixed top-0 left-0 h-full w-80 bg-white transform transition-transform ease-in-out duration-300 z-50 ${
+  isNavMenuOpen ? "translate-x-0" : "-translate-x-full"
+}`}
           style={{
             overflowY: "auto",
             maxHeight: "100vh",
@@ -538,32 +538,32 @@ export default function Header() {
               </ul>
             </li>
           </ul>
-          <ul className="transform group min-w-32">
-            <li className="group inline-block">
-              <button
-                onClick={toggleGenreDropdown}
-                className="outline-none focus:outline-none flex items-center min-w-32"
-              >
-                <span className="pr-1 font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in flex-1">
-                  Genres
-                </span>
-                <span>
-                  <svg
-                    className={`fill-current h-4 w-4 text-gray-50 transform ${
-                      isGenreDropdownOpen ? "rotate-180" : ""
-                    } transition duration-150 ease-in-out`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                  </svg>
-                </span>
-              </button>
-              <ul
-                className={`bg-white border rounded-sm transform ${
-                  isGenreDropdownOpen ? "scale-100" : "scale-0"
-                } absolute transition duration-150 ease-in-out origin-top min-w-32`}
-              >
+          <ul className="transform group min-w-32 relative z-50">
+  <li className="group inline-block">
+    <button
+      onClick={toggleGenreDropdown}
+      className="outline-none focus:outline-none flex items-center min-w-32"
+    >
+      <span className="pr-1 font-semibold text-slate-100 hover:underline underline-offset-8 transition-all duration-100 ease-in flex-1">
+        Genres
+      </span>
+      <span>
+        <svg
+          className={`fill-current h-4 w-4 text-gray-50 transform ${
+            isGenreDropdownOpen ? "rotate-180" : ""
+          } transition duration-150 ease-in-out`}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+        </svg>
+      </span>
+    </button>
+    <ul
+      className={`bg-white border rounded-sm transform ${
+        isGenreDropdownOpen ? "scale-100" : "scale-0"
+      } absolute transition duration-150 ease-in-out origin-top min-w-32`}
+    >
                 <Link to={"/actions"}>
                   <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
                     Action
