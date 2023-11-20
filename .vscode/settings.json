@@ -1,9 +1,12 @@
 {
     "cSpell.words": [
         "Kdrama",
+        "MOVIEBY",
         "Nollywood",
+        "philipines",
         "Phillipines",
         "tailwindcss"
     ],
-    "files.autoSave": "afterDelay"
+    "files.autoSave": "afterDelay",
+    "editor.formatOnSave": true
 }
