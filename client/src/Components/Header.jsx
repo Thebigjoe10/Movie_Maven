@@ -215,7 +215,7 @@ export default function Header() {
                       </Link>
                       <Link to={"/philipines"}>
                         <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                          Phillippines
+                          Philippines
                         </li>
                       </Link>
                     </ul>
@@ -313,11 +313,6 @@ export default function Header() {
                       Animation
                     </li>
                   </Link>
-                  <Link to={"/biography"}>
-                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                      Biography
-                    </li>
-                  </Link>
                   <Link to={"/comedy"}>
                     <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
                       Comedy
@@ -372,11 +367,6 @@ export default function Header() {
                   <Link to={"/sci-fi"}>
                     <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
                       Sci-Fi
-                    </li>
-                  </Link>
-                  <Link to={"/sport"}>
-                    <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                      Sport
                     </li>
                   </Link>
                   <Link to={"/thriller"}>
@@ -495,7 +485,7 @@ export default function Header() {
                     </Link>
                     <Link to={"/phillipines"}>
                       <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                        Phillippines
+                        Philippines
                       </li>
                     </Link>
                   </ul>
@@ -579,11 +569,6 @@ export default function Header() {
                     Animation
                   </li>
                 </Link>
-                <Link to={"/biography"}>
-                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                    Biography
-                  </li>
-                </Link>
                 <Link to={"/comedy"}>
                   <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
                     Comedy
@@ -637,11 +622,6 @@ export default function Header() {
                 <Link to={"/sci-fi"}>
                   <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
                     Sci-Fi
-                  </li>
-                </Link>
-                <Link to={"/sport"}>
-                  <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                    Sport
                   </li>
                 </Link>
                 <Link to={"/thriller"}>

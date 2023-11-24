@@ -8,7 +8,7 @@ import How_to_download from "./Pages/How_to_download";
 import Action from "./Pages/Genres/Action";
 import Adventure from "./Pages/Genres/Adventure";
 import Animations from "./Pages/Genres/Animations";
-import Biography from "./Pages/Genres/Biography";
+import History from "./Pages/Genres/History";
 import Comedy from "./Pages/Genres/Comedy";
 import Crime from "./Pages/Genres/Crime";
 import Documentary from "./Pages/Genres/Documentary";
@@ -19,7 +19,6 @@ import Horror from "./Pages/Genres/Horror";
 import Mystery from "./Pages/Genres/Mystery";
 import Romance from "./Pages/Genres/Romance";
 import Sci_Fi from "./Pages/Genres/Sci-Fi";
-import Sport from "./Pages/Genres/Sport";
 import Thriller from "./Pages/Genres/Thriller";
 import War from "./Pages/Genres/War";
 import International from "./Pages/Movies/international";
@@ -30,6 +29,7 @@ import Korean_movies from "./Pages/Movies/asian_movies/Korean_movies";
 import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
 import Slider from "./Components/Slider";
+import Western from "./Pages/Genres/Western";
 
 
 export default function App() {
@@ -48,7 +48,7 @@ export default function App() {
         <Route path="/actions" element={<Action />} />
         <Route path="/adventure" element={<Adventure />} />
         <Route path="/animations" element={<Animations />} />
-        <Route path="/biography" element={<Biography />} />
+        <Route path="/history" element={<History />} />
         <Route path="/comedy" element={<Comedy />} />
         <Route path="/crime" element={<Crime />} />
         <Route path="/documentary" element={<Documentary />} />
@@ -60,7 +60,7 @@ export default function App() {
         <Route path="/mystery" element={<Mystery />} />
         <Route path="/romance" element={<Romance />} />
         <Route path="/sci-fi" element={<Sci_Fi />} />
-        <Route path="/sport" element={<Sport />} />
+        <Route path="/western" element={<Western />} />
         <Route path="/thriller" element={<Thriller />} />
         <Route path="/war" element={<War />} />
         <Route path="/international" element={<International />} />

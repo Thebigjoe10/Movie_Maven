@@ -11,7 +11,7 @@ return(
       key={index} className= "p-8 px-8 md:px-16">
           <h1 className="text-[20px] font-bold">{item.name}
             </h1>
-            <MovieList genreId={item.id}/>
+            <MovieList genreId={item.id} />
       </div>
       )
     }

@@ -5,29 +5,30 @@ import MovieList from '../../Components/MovieList';
 import { getMovieByGenreId } from '../../Services/GlobalApi';
 
 export default function Adventure() {
-  const scienceFictionGenre = GenreMovieList.genre.find((item) => item.name === 'Science Fiction');
+  const westernGenre = GenreMovieList.genre.find((item) => item.name === 'Western');
   const [, setMovieList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchMovies = async () => {
     try {
-      const response = await getMovieByGenreId(scienceFictionGenre.id, currentPage);
+      const response = await getMovieByGenreId(westernGenre.id, currentPage);
       console.log(response.data.results);
       setMovieList((prevMovies) => [...prevMovies, ...response.data.results]);
       setCurrentPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error('Error fetching movies by genre:', error);
     }
+
   };
   useEffect(() => {
     fetchMovies();
   }, []);
   return (
     <div>
-      {scienceFictionGenre && (
-        <div key={scienceFictionGenre.id} className="p-8 px-8 md:px-16">
-          <h1 className="text-[20px] font-bold">{scienceFictionGenre.name} Movies</h1>
-          <MovieList genreId={scienceFictionGenre.id} />
+      {westernGenre && (
+        <div key={westernGenre.id} className="p-8 px-8 md:px-16">
+          <h1 className="text-[20px] font-bold">{westernGenre.name} Movies</h1>
+          <MovieList genreId={westernGenre.id} />
         </div>
       )}
     </div>

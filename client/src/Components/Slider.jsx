@@ -37,18 +37,21 @@ export default function Slider() {
         className=" hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer right-0"
         onClick={() => sliderRight(elementRef.current)}
       />
+        <h1 className="p-2 px-8 md:px-16 text-xl font-bold">Trending</h1>
       <div
         className="flex overflow-x-auto w-full px-16 py-4 scrollbar-none scroll-smooth"
         ref={elementRef}
       >
+      
         {movies.map((item, index) => (
           <img
             src={ import.meta.env.VITE_MOVIE_BASE_IMG + item.poster_path}
             key={index}
             alt="Movies"
-            className="md:min-w-[600px] h-[300px] object-center mr-5 rounded-md hover:border-[4px] border-less-blue transition-all duration-100 ease-in"
+            className="md:min-w-[600px] h-[300px] object-center mr-5 rounded-md hover:border-[4px] border-less-blue transition-all duration-100 ease-in "
           />
         ))}
+      
       </div>
     </div>
   );
