@@ -68,7 +68,9 @@ export default function MovieList({ genreId }) {
       />
       <div ref={elementRef} className='flex overflow-x-auto gap-8 scrollbar-none scroll-smooth py-5 px-3'>
         {movieList.map((item, index) => (
-          <MovieCard key={index} movie={item} />
+          item.poster_path && (
+            <MovieCard key={index} movie={item} />
+          )
         ))}
       </div>
     </div>

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import GenreMovieList from '../../Constant/GenreMovieList';
 import MovieList from '../../Components/MovieList';
 import { getMovieByGenreId } from '../../Services/GlobalApi';
-import MovieCard from '../../Components/MovieCard';
 
 export default function Action() {
   const actionGenre = GenreMovieList.genre.find((item) => item.name === 'Action');

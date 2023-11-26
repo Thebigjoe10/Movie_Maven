@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./Pages/Home";
 import Chinese_drama from "./Pages/Chinese_drama";
@@ -28,17 +28,14 @@ import SouthAfrica from "./Pages/Movies/african_movies/SouthAfrica";
 import Korean_movies from "./Pages/Movies/asian_movies/Korean_movies";
 import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
-import Slider from "./Components/Slider";
 import Western from "./Pages/Genres/Western";
 
 
 export default function App() {
- 
 
   return (
-    <BrowserRouter>
+       <>
       <Header />
-      <Slider/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/chinese-drama" element={<Chinese_drama />} />
@@ -70,6 +67,6 @@ export default function App() {
         <Route path="/nollywood" element={<Nollywood />} />
         <Route path="/south-african" element={<SouthAfrica />} />
       </Routes>
-    </BrowserRouter>
+</>
   );
 }

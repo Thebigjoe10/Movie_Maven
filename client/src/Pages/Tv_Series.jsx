@@ -6,7 +6,8 @@ import Slider from '../Components/Slider'
 export default function Tv_Series() {
   return (
     <div>
-    <Slider isTvSeries={true} />
+       <Slider contentType="tvShows" />
+
     {
       MovieTvshowList.genres.map((item, index)=>
       <div key={index} className= "p-8 px-8 md:px-16">
