@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./Pages/Home";
 import Chinese_drama from "./Pages/Chinese_drama";
@@ -25,10 +25,10 @@ import International from "./Pages/Movies/international";
 import Bollywood from "./Pages/Movies/asian_movies/Bollywood";
 import Nollywood from "./Pages/Movies/african_movies/Nollywood";
 import SouthAfrica from "./Pages/Movies/african_movies/SouthAfrica";
-import Korean_movies from "./Pages/Movies/asian_movies/Korean_movies";
 import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
 import Western from "./Pages/Genres/Western";
+import Anime from "./Pages/Movies/asian_movies/anime";
 
 
 export default function App() {
@@ -62,7 +62,7 @@ export default function App() {
         <Route path="/war" element={<War />} />
         <Route path="/international" element={<International />} />
         <Route path="/bollywood" element={<Bollywood />} />
-        <Route path="/korean" element={<Korean_movies />} />
+        <Route path="/anime" element={<Anime/>} />
         <Route path="/phillipines" element={<Phillipines_movies />} />
         <Route path="/nollywood" element={<Nollywood />} />
         <Route path="/south-african" element={<SouthAfrica />} />

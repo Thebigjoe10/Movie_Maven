@@ -6,6 +6,7 @@ const movieByGenreBaseURL = import.meta.env.VITE_MOVIEBY_GENRE_BASE_URL;
 const movietvShow = import.meta.env.VITE_MOVIE_TVSHOW;
 const chineseDramaUrl = import.meta.env.VITE_CHINESE_URL
 const kDramaUrl = import.meta.env.VITE_KOREAN_URL
+const internationalMoviesUrl = import.meta.env.VITE_INTERNATIONAL_URL
 
 export function fetchTrendingVideos() {
   return axios.get(`${movieBaseURL}/trending/all/day?api_key=${api_key}&append_to_response=videos,images`);
@@ -33,5 +34,8 @@ export function getKoreanDrama(){
   return axios.get(`${kDramaUrl}`)
 }
 export function getKoreanDramaGenre(id, page){
-  return axios.get(`${kDramaUrl}?with_original_language=ko&with_genres=${id}$page=${page}`)
+  return axios.get(`${kDramaUrl}?with_original_language=ko&with_genres=${id}&page=${page}`)
+}
+export function getInternationalMovies(page){
+  return axios.get(`${internationalMoviesUrl}&page=${page}`)
 }

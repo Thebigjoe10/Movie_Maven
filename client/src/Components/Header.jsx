@@ -208,9 +208,9 @@ export default function Header() {
                           Bollywood
                         </li>
                       </Link>
-                      <Link to={"/korean"}>
+                      <Link to={"/anime"}>
                         <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                          Korean
+                          Anime
                         </li>
                       </Link>
                       <Link to={"/philipines"}>
@@ -478,9 +478,9 @@ export default function Header() {
                         Bollywood
                       </li>
                     </Link>
-                    <Link to={"/korean"}>
+                    <Link to={"/anime"}>
                       <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                        Korean
+                        Anime
                       </li>
                     </Link>
                     <Link to={"/phillipines"}>
