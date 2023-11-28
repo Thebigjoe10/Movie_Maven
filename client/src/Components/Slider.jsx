@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from 'react';
-import { fetchTrendingVideos, fetchTrendingTvShows, getChineseDrama, getKoreanDrama, getInternationalMovies, getBollywoodMovies } from '../Services/GlobalApi'; // Replace with your actual API functions
+import { fetchTrendingVideos, fetchTrendingTvShows, getChineseDrama, getKoreanDrama, getInternationalMovies, getBollywoodMovies, getPhillipineMovies, getNigeriaMovies, getSouthafricaMovies } from '../Services/GlobalApi'; // Replace with your actual API functions
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 
@@ -26,6 +26,15 @@ export default function Slider({ contentType }) {
         }
         else if(contentType==="bollywood"){
           response= await getBollywoodMovies()
+        }
+        else if(contentType==="phillipine"){
+          response= await getPhillipineMovies()
+        }
+        else if (contentType==="nollywood"){
+          response= await getNigeriaMovies()
+        }
+        else if (contentType==="southafrica"){
+          response= await getSouthafricaMovies()
         }
         else {
           response = await fetchTrendingVideos();
