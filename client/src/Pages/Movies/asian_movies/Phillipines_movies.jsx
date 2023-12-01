@@ -13,8 +13,6 @@ export default function Phillipines_movies() {
 
   const fetchMovies = async (page) => {
     try {
-      // Modify the following line to fetch Philippine movies
-      // Replace 'getPhillipineMovies' with the actual API function to fetch Philippine movies
       const response = await getPhillipineMovies(page);
       console.log(response.data.results);
       setPmovies((prevMovies) => [...prevMovies, ...response.data.results]);

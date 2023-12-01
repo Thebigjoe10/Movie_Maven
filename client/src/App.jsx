@@ -29,6 +29,7 @@ import Phillipines_movies from "./Pages/Movies/asian_movies/Phillipines_movies";
 import Music from "./Pages/Genres/Music";
 import Western from "./Pages/Genres/Western";
 import Anime from "./Pages/Movies/asian_movies/anime";
+import Details from "./Pages/details/Details"
 
 
 export default function App() {
@@ -66,6 +67,7 @@ export default function App() {
         <Route path="/phillipines" element={<Phillipines_movies />} />
         <Route path="/nollywood" element={<Nollywood />} />
         <Route path="/south-african" element={<SouthAfrica />} />
+        <Route path="/details/:id" element={<Details />} />
       </Routes>
 </>
   );

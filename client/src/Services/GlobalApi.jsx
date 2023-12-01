@@ -58,3 +58,7 @@ export function getNigeriaMovies(page) {
 export  function getSouthafricaMovies(page) {
  return axios.get(`${southafricaMoviesUrl}&page=${page}`)
 }
+
+export function getMovieDetails(id) {
+  return axios.get(`${movieBaseURL}/movie/${id}?api_key=${api_key}&append_to_response=videos,images`);
+}

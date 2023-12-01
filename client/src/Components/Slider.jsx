@@ -2,11 +2,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { fetchTrendingVideos, fetchTrendingTvShows, getChineseDrama, getKoreanDrama, getInternationalMovies, getBollywoodMovies, getPhillipineMovies, getNigeriaMovies, getSouthafricaMovies } from '../Services/GlobalApi'; // Replace with your actual API functions
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import ImageSkeleton from './ImageSkeleton';
+import { Link } from 'react-router-dom';
 
 
 export default function Slider({ contentType }) {
   const screenWidth = window.innerWidth;
   const [media, setMedia] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const elementRef = useRef();
 
   useEffect(() => {
@@ -42,6 +46,7 @@ export default function Slider({ contentType }) {
 
         console.log(response.data.results);
         setMedia(response.data.results);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -58,9 +63,10 @@ export default function Slider({ contentType }) {
     element.scrollLeft -= screenWidth - 110;
   };
 
+const placeholderCount = 20;
 
-  return (
-    <div>
+return (
+  <div>
     <FaChevronLeft
       className="hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer"
       onClick={() => sliderLeft(elementRef.current)}
@@ -72,19 +78,32 @@ export default function Slider({ contentType }) {
     <h1 className="p-2 px-8 md:px-16 text-xl font-bold">
       {contentType === 'tvShows' ? 'Trending TV Series' : 'Trending Movies'}
     </h1>
-    <div
-      className="flex overflow-x-auto w-full px-16 py-4 scrollbar-none scroll-smooth"
-      ref={elementRef}
-    >
-      {media.map((item, index) => (
-        <img
-          src={import.meta.env.VITE_MOVIE_BASE_IMG + item.poster_path}
-          key={index}
-          alt={contentType === 'tvShows' ? 'TV Show' : 'Movie'}
-          className="md:min-w-[600px] h-[300px] mr-5 rounded-md object-center hover:border-[4px] border-less-blue transition-all duration-100 ease-in"
-        />
-      ))}
+    <div className="flex gap-4 overflow-x-auto w-full px-16 py-4 scrollbar-none scroll-smooth" ref={elementRef}>
+      {isLoading ? (
+        Array.from({ length: placeholderCount }).map((_, index) => (
+          <div
+            key={index}
+          >
+            <ImageSkeleton />
+          </div>
+        ))
+      ) : (
+        media.map((item, index) => (
+          <Link to={`/details/${item.id}`} key={index}
+          >
+          <img
+            src={import.meta.env.VITE_MOVIE_BASE_IMG + item.backdrop_path}
+            className='md:min-w-[600px] min-w-[200px] h-[310px] object-left-top mr-5 rounded-md hover:border-[4px] border-less-blue transition-all duration-100 ease-in'
+            alt={contentType === 'tvShows' ? 'TV Show' : 'Movie'}
+            onLoad={() => setImageLoaded(true)}
+            style={imageLoaded ? {} : { display: 'none' }}
+          />
+        </Link>
+        ))
+      )}
     </div>
   </div>
 );
+
+
 }
