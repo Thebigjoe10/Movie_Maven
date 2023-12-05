@@ -4,11 +4,15 @@ import { fetchTrendingVideos, fetchTrendingTvShows, getChineseDrama, getKoreanDr
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import ImageSkeleton from './ImageSkeleton';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMovieList, selectMovieList } from '../features/movie/movieSlice';
 
 
 export default function Slider({ contentType }) {
+  const dispatch = useDispatch();
+  const movieList = useSelector(selectMovieList);
   const screenWidth = window.innerWidth;
-  const [media, setMedia] = useState([]);
+  const [, setMedia] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
   const elementRef = useRef();
@@ -47,13 +51,14 @@ export default function Slider({ contentType }) {
         console.log(response.data.results);
         setMedia(response.data.results);
         setIsLoading(false);
+        dispatch(setMovieList(response.data.results));
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
     fetchData();
-  }, [contentType]);
+  }, [contentType, dispatch]);
 
   const sliderRight = (element) => {
     element.scrollLeft += screenWidth - 110;
@@ -75,7 +80,7 @@ return (
       className="hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer right-0"
       onClick={() => sliderRight(elementRef.current)}
     />
-    <h1 className="p-2 px-8 md:px-16 text-xl font-bold">
+    <h1 className="p-2 px-8 md:px-16 text-xl font-bold text-white">
       {contentType === 'tvShows' ? 'Trending TV Series' : 'Trending Movies'}
     </h1>
     <div className="flex gap-4 overflow-x-auto w-full px-16 py-4 scrollbar-none scroll-smooth" ref={elementRef}>
@@ -88,7 +93,7 @@ return (
           </div>
         ))
       ) : (
-        media.map((item, index) => (
+        movieList.map((item, index) => (
           <Link to={`/details/${item.id}`} key={index}
           >
           <img
