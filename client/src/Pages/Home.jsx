@@ -22,7 +22,7 @@ return(
     }
     <h1 className="text-[20px] font-bold text-white p-8 px-8 md:px-16">Tv Series</h1>
     {
-      MovieTvshowList.genres.map((item, index)=> index<=5&&
+      MovieTvshowList.genres.map((item, index)=> index<=8&&
       <div
       key={index}
       className="p-8 px-8 md:px-16"
