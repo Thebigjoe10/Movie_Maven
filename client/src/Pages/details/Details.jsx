@@ -25,9 +25,9 @@ export default function Details() {
 
   return (
     <div>
-      <h1>{movieDetails.title}</h1>
-      <p>{movieDetails.overview}</p>
-      <p>Rating: {movieDetails.vote_average}</p>
+      <h1 className='text-white'>{movieDetails.title}</h1>
+      <p className='text-white'>{movieDetails.overview}</p>
+      <p className='text-white'>Rating: {movieDetails.vote_average}</p>
       {/* Render reviews here */}
     </div>
   );

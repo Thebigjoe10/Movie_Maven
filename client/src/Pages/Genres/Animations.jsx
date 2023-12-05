@@ -26,7 +26,7 @@ export default function Adventure() {
     <div>
       {animationGenre && (
         <div key={animationGenre.id} className="p-8 px-8 md:px-16">
-          <h1 className="text-[20px] font-bold">{animationGenre.name} Movies</h1>
+          <h1 className="text-[20px] font-bold text-white">{animationGenre.name} Movies</h1>
           <MovieList genreId={animationGenre.id} />
         </div>
       )}

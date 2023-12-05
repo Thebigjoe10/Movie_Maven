@@ -29,18 +29,14 @@ export function getMovieByTvShow(id, page=1){
   return axios.get(`${movietvShow}?api_key=${api_key}&with_genres=${id}&page=${page}&append_to_response=videos,images`)
 }
 
-export function getChineseDrama(){
-  return axios.get(`${chineseDramaUrl}`)
+export function getChineseDrama(page){
+  return axios.get(`${chineseDramaUrl}&page=${page}`)
 }
-export function getChineseDramaGenre(id, page){
-  return axios.get(`${chineseDramaUrl}?with_original_language=zh&with_genres=${id}&page=${page}`)
+
+export function getKoreanDrama(page){
+  return axios.get(`${kDramaUrl}&page=${page}`)
 }
-export function getKoreanDrama(){
-  return axios.get(`${kDramaUrl}`)
-}
-export function getKoreanDramaGenre(id, page){
-  return axios.get(`${kDramaUrl}?with_original_language=ko&with_genres=${id}&page=${page}`)
-}
+
 export function getInternationalMovies(page){
   return axios.get(`${internationalMoviesUrl}&page=${page}`)
 }

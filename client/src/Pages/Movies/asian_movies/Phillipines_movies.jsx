@@ -61,7 +61,7 @@ export default function Phillipines_movies() {
     <div>
       <Slider contentType="phillipine" />
       <div className= "p-8 px-8 md:px-16">
-          <h1 className="text-[20px] font-bold">Phillipines Movies</h1>
+          <h1 className="text-[20px] font-bold text-white">Phillipines Movies</h1>
           <FaChevronLeft
             className="hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer left-0"
             onClick={() => sliderLeft(elementRef.current)}

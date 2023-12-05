@@ -62,7 +62,7 @@ export default function Nollywood() {
     <div>
     <Slider contentType="nollywood"/>
     <div className= "p-8 px-8 md:px-16">
-      <h1 className="text-[20px] font-bold">Nollywood Movies</h1>
+      <h1 className="text-[20px] font-bold text-white">Nollywood Movies</h1>
       <FaChevronLeft
         className="hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer left-0"
         onClick={() => sliderLeft(elementRef.current)}

@@ -26,7 +26,7 @@ export default function Action() {
     <div>
       {actionGenre && (
         <div key={actionGenre.id} className="p-8 px-8 md:px-16">
-          <h1 className="text-[20px] font-bold">{actionGenre.name} Movies</h1>
+          <h1 className="text-[20px] font-bold text-white">{actionGenre.name} Movies</h1>
           <MovieList movieList={actionGenre.id} />
         </div>
       )}

@@ -13,8 +13,6 @@ export default function Bollywood() {
 
   const fetchMovies = async (page) => {
     try {
-      // Modify the following line to fetch Philippine movies
-      // Replace 'getPhillipineMovies' with the actual API function to fetch Philippine movies
       const response = await getBollywoodMovies(page);
       console.log(response.data.results);
       setBmovies((prevMovies) => [...prevMovies, ...response.data.results]);
@@ -63,7 +61,7 @@ export default function Bollywood() {
     <div>
       <Slider contentType="bollywood" />
       <div className= "p-8 px-8 md:px-16">
-      <h1 className="text-[20px] font-bold">Bollywood Movies</h1>
+      <h1 className="text-[20px] font-bold text-white">Bollywood Movies</h1>
           <FaChevronLeft
             className="hidden md:block text-less-blue text-[30px] absolute mx-8 mt-[150px] cursor-pointer left-0"
             onClick={() => sliderLeft(elementRef.current)}
