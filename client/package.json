@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
+    "firebase": "^10.7.1",
     "flowbite-react": "^0.7.2",
     "million": "^2.6.4",
     "moment": "^2.30.1",
@@ -21,7 +22,8 @@
     "react-quill": "^2.0.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.21.1",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "tailwind-scrollbar": "^3.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
