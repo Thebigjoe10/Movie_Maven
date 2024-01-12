@@ -38,9 +38,9 @@ export default function FooterCom() {
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  Github
+                  Twitter
                 </Footer.Link>
-                <Footer.Link href='#'>Discord</Footer.Link>
+                <Footer.Link href='#'>Telegram</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>

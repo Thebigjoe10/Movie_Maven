@@ -179,7 +179,7 @@ export default function UpdatePost() {
             setFormData({ ...formData, content: value });
           }}
         />
-        <Button type='submit' gradientDuoTone='purpleToPink'>
+        <Button type='submit' gradientDuoTone='purpleToBlue'>
           Update post
         </Button>
         {publishError && (

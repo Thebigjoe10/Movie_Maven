@@ -16,10 +16,7 @@ export default function About() {
               </p>
   
               <p>
-                We encourage you to leave comments on our posts and engage with
-                other readers. You can like other people's comments and reply to
-                them as well. We believe that a community of learners can help
-                each other grow and improve.
+               
               </p>
             </div>
           </div>

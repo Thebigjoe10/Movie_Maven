@@ -147,25 +147,6 @@ export default function CreatePost() {
           placeholder='Write something...'
           className='h-72 mb-12'
           required
-          modules={{
-            toolbar: [
-              [{ header: [1, 2, false] }],
-              ['bold', 'italic', 'underline'],
-              [{ list: 'ordered' }, { list: 'bullet' }],
-              ['image'],
-              ['clean'],
-              [{ custom: 'embed-link', title: 'Embed Link' }],
-            ],
-          }}
-          formats={[
-            'header',
-            'bold',
-            'italic',
-            'underline',
-            'list',
-            'bullet',
-            'image',
-          ]}
           onChange={(value) => {
             setFormData({ ...formData, content: value });
           }}

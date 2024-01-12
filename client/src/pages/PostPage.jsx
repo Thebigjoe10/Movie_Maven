@@ -39,7 +39,7 @@ export default function PostPage() {
   useEffect(() => {
     try {
       const fetchRecentPosts = async () => {
-        const res = await fetch(`/api/post/getposts?limit=3`);
+        const res = await fetch(`/api/post/getposts?limit=4`);
         const data = await res.json();
         if (res.ok) {
           setRecentPosts(data.posts);
@@ -73,7 +73,7 @@ export default function PostPage() {
       <img
         src={post && post.image}
         alt={post && post.title}
-        className='mt-10 p-3 max-h-[600px] w-full object-cover'
+        className='mt-10 p-3 h-full w-full object-cover'
       />
       <div className='flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs'>
         <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
@@ -86,7 +86,7 @@ export default function PostPage() {
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
       <div className='max-w-4xl mx-auto w-full'>
-        <CallToAction />
+        {/* <CallToAction /> */}
       </div>
       <CommentSection postId={post._id} />
 
