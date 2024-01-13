@@ -106,7 +106,7 @@ export default function Search() {
         <form className='flex flex-col gap-8' onSubmit={handleSubmit}>
           <div className='flex   items-center gap-2'>
             <label className='whitespace-nowrap font-semibold'>
-              Search:
+              Search Term:
             </label>
             <TextInput
               placeholder='Search...'
@@ -136,7 +136,7 @@ export default function Search() {
               <option value='news'>News</option>
             </Select>
           </div>
-          <Button type='submit' outline gradientDuoTone='purpleToPink'>
+          <Button type='submit' outline gradientDuoTone='purpleToBlue'>
             Apply Filters
           </Button>
         </form>
