@@ -8,31 +8,10 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
-
-const modules = {
-  toolbar: {
-    container: [
-      // ... other toolbar options
-      [{ 'header': 1 }, { 'header': 2 }],
-      ['link', 'image', 'video', 'customButton'], // add custom button to the toolbar
-      ['clean'],
-    ],
-    handlers: {
-      customButton: () => {
-        const imageUrl = prompt('Enter the image URL'); // prompt user for the URL
-        if (imageUrl) {
-          const range = quillRef.getEditor().getSelection();
-          const value = `<a href="${imageUrl}" target="_blank"><button style="background-color: #4CAF50; /* Green */ border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Download Here</button></a>`;
-          quillRef.getEditor().clipboard.dangerouslyPasteHTML(range.index, value);
-        }
-      },
-    },
-  },
-};
 
 export default function CreatePost() {
   const [file, setFile] = useState(null);
@@ -40,7 +19,6 @@ export default function CreatePost() {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
-  const quillRef = useRef();
 
   const navigate = useNavigate();
 
@@ -126,7 +104,7 @@ export default function CreatePost() {
           >
             <option value='uncategorized'>Select a category</option>
             <option value='movies'>Movies</option>
-            <option value='series'>Series</option>
+            <option value='series'>Seriess</option>
             <option value='news'>News</option>
           </Select>
         </div>
@@ -161,21 +139,18 @@ export default function CreatePost() {
           <img
             src={formData.image}
             alt='upload'
-            className='w-full h-full'
+            className='w-full h-full object-cover'
           />
         )}
         <ReactQuill
-        ref={(el) => quillRef.current = el}
-        theme='snow'
-        placeholder='Write something...'
-        className='h-72 mb-12'
-        required
-        modules={modules}
-        onChange={(value) => {
-          setFormData({ ...formData, content: value });
-        }}
-      />
-
+          theme='snow'
+          placeholder='Write something...'
+          className='h-72 mb-12'
+          required
+          onChange={(value) => {
+            setFormData({ ...formData, content: value });
+          }}
+        />
         <Button type='submit' gradientDuoTone='purpleToBlue'>
           Publish
         </Button>
