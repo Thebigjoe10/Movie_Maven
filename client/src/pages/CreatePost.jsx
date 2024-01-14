@@ -117,7 +117,7 @@ export default function CreatePost() {
   const handleAddFileLink = () => {
     const fileLink = prompt('Enter the file URL:');
     if (fileLink) {
-      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer">Download File</a>`;
+      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
       setFormData({ ...formData, fileLink: fileLink, content: updatedContent });
     }
   };
