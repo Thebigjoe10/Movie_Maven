@@ -1,11 +1,11 @@
-import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { toggleTheme } from '../redux/theme/themeSlice';
 import { signoutSuccess } from '../redux/user/userSlice';
-import { useEffect, useState } from 'react';
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -42,7 +42,7 @@ export default function Header() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
+    const urlParams = new URLSearchParams();
     urlParams.set('searchTerm', searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
@@ -54,7 +54,7 @@ export default function Header() {
         to='/'
         className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'
       >
-       <span className='px-2 py-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-lg text-white'>
+        <span className='px-2 py-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-lg text-white'>
           Movie
         </span>
         Maven
@@ -63,13 +63,13 @@ export default function Header() {
         <TextInput
           type='text'
           placeholder='Search...'
-          rightIcon={AiOutlineSearch}
+          rightIcon={AiOutlineSearch }
           className='hidden lg:inline'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
-      <Button className='w-12 h-10 lg:hidden' color='gray' pill>
+      <Button className='w-12 h-10 lg:hidden' color='gray' pill onClick={handleSubmit}>
         <AiOutlineSearch />
       </Button>
       <div className='flex gap-2 md:order-2'>
