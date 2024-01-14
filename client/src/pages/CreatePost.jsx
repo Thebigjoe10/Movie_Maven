@@ -81,7 +81,47 @@ export default function CreatePost() {
     } catch (error) {
       setPublishError('Something went wrong');
     }
+  }
+  const handleEmbedVideo = () => {
+    const videoLink = prompt('Enter the video URL:');
+    
+    if (videoLink) {
+      try {
+        let embedUrl;
+  
+        // Check if it's a YouTube URL
+        if (videoLink.includes('youtube.com') || videoLink.includes('youtu.be')) {
+          const videoId = new URL(videoLink).searchParams.get('v');
+          embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        }
+        // Add more checks for other platforms as needed
+        // For example, Vimeo
+        else if (videoLink.includes('vimeo.com')) {
+          const videoId = videoLink.split('/').pop();
+          embedUrl = `https://player.vimeo.com/video/${videoId}`;
+        }
+        // Add more cases for other platforms
+  
+        if (embedUrl) {
+          const updatedContent = `${formData.content || ''}\n<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+          setFormData({ ...formData, video: embedUrl, content: updatedContent });
+        } else {
+          console.error('Unsupported video platform or invalid URL');
+        }
+      } catch (error) {
+        console.error('Invalid video URL', error);
+      }
+    }
   };
+  
+  const handleAddFileLink = () => {
+    const fileLink = prompt('Enter the file URL:');
+    if (fileLink) {
+      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer">Download File</a>`;
+      setFormData({ ...formData, fileLink: fileLink, content: updatedContent });
+    }
+  };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -151,6 +191,47 @@ export default function CreatePost() {
             setFormData({ ...formData, content: value });
           }}
         />
+          <div className='flex gap-4'>
+          <Button
+            type='button'
+            gradientDuoTone='purpleToBlue'
+            size='sm'
+            outline
+            onClick={handleEmbedVideo}
+          >
+            Embed Video
+          </Button>
+          <Button
+            type='button'
+            gradientDuoTone='purpleToBlue'
+            size='sm'
+            outline
+            onClick={handleAddFileLink}
+          >
+            Add File Link
+          </Button>
+        </div>
+        {formData.video && (
+          <div className='mt-4'>
+            {/* Display embedded video */}
+            <iframe
+              title='Embedded Video'
+              width='560'
+              height='315'
+              src={formData.video}
+              frameBorder='0'
+              allowFullScreen
+            ></iframe>
+          </div>
+        )}
+        {formData.fileLink && (
+          <div className='mt-4'>
+            {/* Display download button for file link */}
+            <a href={formData.fileLink} target='_blank' rel='noopener noreferrer'>
+              <Button gradientDuoTone='purpleToBlue'>Download Video</Button>
+            </a>
+          </div>
+        )}
         <Button type='submit' gradientDuoTone='purpleToBlue'>
           Publish
         </Button>
