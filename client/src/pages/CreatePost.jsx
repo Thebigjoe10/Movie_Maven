@@ -213,27 +213,7 @@ export default function CreatePost() {
             Add File Link
           </Button>
         </div>
-        {formData.video && (
-          <div className='mt-4'>
-            {/* Display embedded video */}
-            <iframe
-              title='Embedded Video'
-              width='560'
-              height='315'
-              src={formData.video}
-              frameBorder='0'
-              allowFullScreen
-            ></iframe>
-          </div>
-        )}
-        {formData.fileLink && (
-          <div className='mt-4'>
-            {/* Display download button for file link */}
-            <a href={formData.fileLink} target='_blank' rel='noopener noreferrer'>
-              <Button gradientDuoTone='purpleToBlue'>Download Video</Button>
-            </a>
-          </div>
-        )}
+       
         <Button type='submit' gradientDuoTone='purpleToBlue'>
           Publish
         </Button>
