@@ -115,14 +115,16 @@ export default function UpdatePost() {
         let embedUrl;
   
         // Check if it's a YouTube URL
-        if (videoLink.includes('youtube.com') || videoLink.includes('youtu.be')) {
-          const videoId = new URL(videoLink).searchParams.get('v');
+        if (videoLink.includes('youtube.com')) {
+          let videoId = videoLink.split('/').pop();
+          videoId = videoId.split('&')[0];
           embedUrl = `https://www.youtube.com/embed/${videoId}`;
-        }
-        // Add more checks for other platforms as needed
+      }
+      
         // For example, Vimeo
         else if (videoLink.includes('vimeo.com')) {
-          const videoId = videoLink.split('/').pop();
+          let videoId = videoLink.split('/').pop();
+          videoId = videoId.split('&')[0];
           embedUrl = `https://player.vimeo.com/video/${videoId}`;
         }
         // Add more cases for other platforms
@@ -142,7 +144,7 @@ export default function UpdatePost() {
   const handleAddFileLink = () => {
     const fileLink = prompt('Enter the file URL:');
     if (fileLink) {
-      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
+      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
       setFormData({ ...formData, fileLink: fileLink, content: updatedContent });
     }
   };
@@ -239,27 +241,7 @@ export default function UpdatePost() {
             Add File Link
           </Button>
         </div>
-        {formData.video && (
-          <div className='mt-4'>
-            {/* Display embedded video */}
-            <iframe
-              title='Embedded Video'
-              width='560'
-              height='315'
-              src={formData.video}
-              frameBorder='0'
-              allowFullScreen
-            ></iframe>
-          </div>
-        )}
-        {formData.fileLink && (
-          <div className='mt-4'>
-            {/* Display download button for file link */}
-            <a href={formData.fileLink} target='_blank' rel='noopener noreferrer'>
-              <Button gradientDuoTone='purpleToBlue'>Download Video</Button>
-            </a>
-          </div>
-        )}
+        
         <Button type='submit' gradientDuoTone='purpleToBlue'>
           Update post
         </Button>

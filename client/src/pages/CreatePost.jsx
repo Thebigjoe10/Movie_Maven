@@ -90,14 +90,16 @@ export default function CreatePost() {
         let embedUrl;
   
         // Check if it's a YouTube URL
-        if (videoLink.includes('youtube.com') || videoLink.includes('youtu.be')) {
-          const videoId = new URL(videoLink).searchParams.get('v');
+        if (videoLink.includes('youtube.com')) {
+          let videoId = videoLink.split('/').pop();
+          videoId = videoId.split('&')[0];
           embedUrl = `https://www.youtube.com/embed/${videoId}`;
-        }
-        // Add more checks for other platforms as needed
+      }
+      
         // For example, Vimeo
         else if (videoLink.includes('vimeo.com')) {
-          const videoId = videoLink.split('/').pop();
+          let videoId = videoLink.split('/').pop();
+          videoId = videoId.split('&')[0];
           embedUrl = `https://player.vimeo.com/video/${videoId}`;
         }
         // Add more cases for other platforms
