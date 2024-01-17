@@ -23,11 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     isAdmin: {
       type: Boolean,
-      default: false,
-      // set: function (value) {
-      //   // some logic to determine the value of isAdmin
-      //   return value;
-      // },
+      default: true,
     },
   },
   { timestamps: true }

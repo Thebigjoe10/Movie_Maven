@@ -18,6 +18,7 @@ export default function CreatePost() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [editorContent, setEditorContent] = useState('');
   const [publishError, setPublishError] = useState(null);
 
   const navigate = useNavigate();
@@ -81,32 +82,17 @@ export default function CreatePost() {
     } catch (error) {
       setPublishError('Something went wrong');
     }
-  }
+  };
+
   const handleEmbedVideo = () => {
     const videoLink = prompt('Enter the video URL:');
-    
+
     if (videoLink) {
       try {
-        let embedUrl;
-  
-        // Check if it's a YouTube URL
-        if (videoLink.includes('youtube.com')) {
-          let videoId = videoLink.split('/').pop();
-          videoId = videoId.split('&')[0];
-          embedUrl = `https://www.youtube.com/embed/${videoId}`;
-      }
-      
-        // For example, Vimeo
-        else if (videoLink.includes('vimeo.com')) {
-          let videoId = videoLink.split('/').pop();
-          videoId = videoId.split('&')[0];
-          embedUrl = `https://player.vimeo.com/video/${videoId}`;
-        }
-        // Add more cases for other platforms
-  
+        const embedUrl = getEmbedUrl(videoLink);
         if (embedUrl) {
-          const updatedContent = `${formData.content || ''}\n<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
-          setFormData({ ...formData, video: embedUrl, content: updatedContent });
+          const updatedContent = `${editorContent || ''}\n<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+          setEditorContent(updatedContent);
         } else {
           console.error('Unsupported video platform or invalid URL');
         }
@@ -115,15 +101,31 @@ export default function CreatePost() {
       }
     }
   };
-  
+
   const handleAddFileLink = () => {
     const fileLink = prompt('Enter the file URL:');
     if (fileLink) {
-      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
-      setFormData({ ...formData, fileLink: fileLink, content: updatedContent });
+      const updatedContent = `${editorContent || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
+      setEditorContent(updatedContent);
     }
   };
 
+  const getEmbedUrl = (videoLink) => {
+    // YouTube
+    if (videoLink.includes('youtube.com')) {
+      const videoId = new URL(videoLink).searchParams.get('v');
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+    
+    // Vimeo
+    if (videoLink.includes('vimeo.com')) {
+      const videoId = videoLink.split('/').pop().split('&')[0];
+      return videoId ? `https://player.vimeo.com/video/${videoId}` : null;
+    }
+
+    
+    return null;
+  };
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -144,10 +146,12 @@ export default function CreatePost() {
               setFormData({ ...formData, category: e.target.value })
             }
           >
-            <option value='uncategorized'>Select a category</option>
+              <option value='uncategorized'>Select a category</option>
             <option value='movies'>Movies</option>
-            <option value='series'>Seriess</option>
             <option value='news'>News</option>
+            <option value='series'>Series</option>
+            <option value='anime'>Anime</option>
+            <option value='kdrama'>kdrama</option>
           </Select>
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
@@ -189,31 +193,29 @@ export default function CreatePost() {
           placeholder='Write something...'
           className='h-72 mb-12'
           required
+          value={editorContent}
           onChange={(value) => {
+            setEditorContent(value);
             setFormData({ ...formData, content: value });
           }}
         />
-          <div className='flex gap-4'>
           <Button
-            type='button'
-            gradientDuoTone='purpleToBlue'
-            size='sm'
-            outline
-            onClick={handleEmbedVideo}
-          >
-            Embed Video
-          </Button>
-          <Button
-            type='button'
-            gradientDuoTone='purpleToBlue'
-            size='sm'
-            outline
-            onClick={handleAddFileLink}
-          >
-            Add File Link
-          </Button>
-        </div>
-       
+          type='button'
+          gradientDuoTone='purpleToBlue'  
+          size='sm'
+          onClick={handleEmbedVideo}
+        >
+          Embed Video
+        </Button>
+
+        <Button
+          type='button'
+          gradientDuoTone='purpleToBlue'  
+          size='sm'
+          onClick={handleAddFileLink}
+        >
+          Add File Link
+        </Button>
         <Button type='submit' gradientDuoTone='purpleToBlue'>
           Publish
         </Button>

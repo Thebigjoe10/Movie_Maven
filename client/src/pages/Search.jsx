@@ -133,6 +133,8 @@ export default function Search() {
               <option value='uncategorized'>Uncategorized</option>
               <option value='movies'>Movies</option>
               <option value='series'>Series</option>
+              <option value='anime'>Anime</option>
+              <option value='kdrama'>Kdrama</option>
               <option value='news'>News</option>
             </Select>
           </div>
