@@ -1,78 +1,68 @@
-// Import necessary dependencies and components
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 import { app } from '../firebase';
+import { useEffect, useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-// Component
 export default function UpdatePost() {
-  // State variables
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
-
-  // Other hooks
-  const navigate = useNavigate();
-  const { currentUser } = useSelector((state) => state.user);
   const { postId } = useParams();
 
+  const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
+    try {
+      const fetchPost = async () => {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
-  
         if (!res.ok) {
           console.log(data.message);
           setPublishError(data.message);
           return;
         }
-  
-        setPublishError(null);
-        
-        // Assuming data.posts[0] contains the post information
-        const fetchedPost = data.posts[0];
-  
-        if (fetchedPost) {
-          setFormData(fetchedPost);
-        } else {
-          setPublishError("Post not found");
+        if (res.ok) {
+          setPublishError(null);
+          setFormData(data.posts[0]);
         }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-  
-    fetchPost();
+      };
+
+      fetchPost();
+    } catch (error) {
+      console.log(error.message);
+    }
   }, [postId]);
-  
-  // Handle image upload
+
   const handleUpdloadImage = async () => {
     try {
       if (!file) {
         setImageUploadError('Please select an image');
         return;
       }
-
       setImageUploadError(null);
-
       const storage = getStorage(app);
       const fileName = new Date().getTime() + '-' + file.name;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
-
       uploadTask.on(
         'state_changed',
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUploadProgress(progress.toFixed(0));
         },
         (error) => {
@@ -90,14 +80,11 @@ export default function UpdatePost() {
     } catch (error) {
       setImageUploadError('Image upload failed');
       setImageUploadProgress(null);
-      console.error(error);
+      console.log(error);
     }
   };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     try {
       const res = await fetch(`/api/post/updatepost/${formData._id}/${currentUser._id}`, {
         method: 'PUT',
@@ -106,16 +93,16 @@ export default function UpdatePost() {
         },
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         setPublishError(data.message);
         return;
       }
 
-      setPublishError(null);
-      navigate(`/post/${data.slug}`);
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
     } catch (error) {
       setPublishError('Something went wrong');
     }
