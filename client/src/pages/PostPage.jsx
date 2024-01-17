@@ -7,12 +7,10 @@ import PostCard from '../components/PostCard';
 
 export default function PostPage() {
   const { postSlug } = useParams();
-  const { postId } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
   const [recentPosts, setRecentPosts] = useState(null);
-  const [relatedPosts, setRelatedPosts] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -53,40 +51,7 @@ export default function PostPage() {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchRelatedPosts = async () => {
-      try {
-        // Check if postId is available before making the request
-        if (post && post._id) {
-          setLoading(true);
-  
-          // Convert ObjectId to string
-          const postIdString = post._id.toString();
-  
-          const res = await fetch(`/api/post/getrelatedposts?postId=${postIdString}`);
-          const data = await res.json();
-  
-          if (!res.ok) {
-            setError(true);
-            setLoading(false);
-            return;
-          }
-  
-          if (res.ok) {
-            setRelatedPosts(data.relatedPosts);
-            setLoading(false);
-            setError(false);
-          }
-        }
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
-    };
-  
-    fetchRelatedPosts();
-  }, [post]);
-  
+ 
   if (loading)
     return (
       <div className='flex justify-center items-center min-h-screen'>
@@ -131,13 +96,6 @@ export default function PostPage() {
         <div className='flex flex-wrap gap-5 mt-5 justify-center'>
           {recentPosts &&
             recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
-        </div>
-      </div>
-      <div className='flex flex-col justify-center items-center mb-5'>
-        <h1 className='text-xl mt-5'>Related articles</h1>
-        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
-          {relatedPosts &&
-            relatedPosts.map((post) => <PostCard key={post._id} post={post} />)}
         </div>
       </div>
     </main>
