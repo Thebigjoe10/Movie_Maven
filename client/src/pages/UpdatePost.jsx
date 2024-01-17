@@ -24,29 +24,36 @@ export default function UpdatePost() {
   const { currentUser } = useSelector((state) => state.user);
   const { postId } = useParams();
 
-  // Fetch post data on component mount
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
-
+  
         if (!res.ok) {
           console.log(data.message);
           setPublishError(data.message);
           return;
         }
-
+  
         setPublishError(null);
-        setFormData(data.posts[0]);
+        
+        // Assuming data.posts[0] contains the post information
+        const fetchedPost = data.posts[0];
+  
+        if (fetchedPost) {
+          setFormData(fetchedPost);
+        } else {
+          setPublishError("Post not found");
+        }
       } catch (error) {
         console.log(error.message);
       }
     };
-
+  
     fetchPost();
   }, [postId]);
-
+  
   // Handle image upload
   const handleUpdloadImage = async () => {
     try {
