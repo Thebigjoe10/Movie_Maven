@@ -23,30 +23,30 @@ export default function UpdatePost() {
   const { postId } = useParams();
 
   const navigate = useNavigate();
-    const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    try {
-      const fetchPost = async () => {
+    const fetchPost = async () => {
+      try {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
+
         if (!res.ok) {
           console.log(data.message);
           setPublishError(data.message);
           return;
         }
-        if (res.ok) {
-          setPublishError(null);
-          setFormData(data.posts[0]);
-        }
-      };
 
-      fetchPost();
-    } catch (error) {
-      console.log(error.message);
-    }
+        setPublishError(null);
+        setFormData(data.posts[0]);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchPost();
   }, [postId]);
-
+  
   const handleUpdloadImage = async () => {
     try {
       if (!file) {
@@ -85,29 +85,40 @@ export default function UpdatePost() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      if (!formData._id || !currentUser._id) {
+        setPublishError('Invalid post or user ID');
+        return;
+      }
+
       const res = await fetch(`/api/post/updatepost/${formData._id}/${currentUser._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          title: formData.title,
+          content: formData.content,
+          category: formData.category,
+          image: formData.image,
+        }),
       });
+
       const data = await res.json();
+
       if (!res.ok) {
         setPublishError(data.message);
         return;
       }
 
-      if (res.ok) {
-        setPublishError(null);
-        navigate(`/post/${data.slug}`);
-      }
+      setPublishError(null);
+      navigate(`/post/${data.slug}`);
     } catch (error) {
       setPublishError('Something went wrong');
     }
   };
-
+  
   // Handle embedding video
   const handleEmbedVideo = () => {
     const videoLink = prompt('Enter the video URL:');
