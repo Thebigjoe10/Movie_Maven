@@ -82,6 +82,50 @@ export default function CreatePost() {
       setPublishError('Something went wrong');
     }
   };
+   // Handle embedding video
+   const handleEmbedVideo = () => {
+    const videoLink = prompt('Enter the video URL:');
+
+    if (videoLink) {
+      try {
+        const embedUrl = getEmbedUrl(videoLink);
+
+        if (embedUrl) {
+          const updatedContent = `${formData.content || ''}\n<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+          setFormData({ ...formData, content: updatedContent });
+        } else {
+          console.error('Unsupported video platform or invalid URL');
+        }
+      } catch (error) {
+        console.error('Invalid video URL', error);
+      }
+    }
+  };
+
+  // Handle adding file link
+  const handleAddFileLink = () => {
+    const fileLink = prompt('Enter the file URL:');
+
+    if (fileLink) {
+      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
+      setFormData({ ...formData, content: updatedContent });
+    }
+  };
+
+  // Function to get the embed URL for videos
+  const getEmbedUrl = (videoLink) => {
+    if (videoLink.includes('youtube.com')) {
+      const videoId = new URL(videoLink).searchParams.get('v');
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    if (videoLink.includes('vimeo.com')) {
+      const videoId = videoLink.split('/').pop().split('&')[0];
+      return videoId ? `https://player.vimeo.com/video/${videoId}` : null;
+    }
+
+    return null;
+  };
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -153,6 +197,22 @@ export default function CreatePost() {
             setFormData({ ...formData, content: value });
           }}
         />
+        <Button
+          type='button'
+          gradientDuoTone='purpleToBlue'
+          size='sm'
+          onClick={handleEmbedVideo}
+        >
+          Embed Video
+        </Button>
+        <Button
+          type='button'
+          gradientDuoTone='purpleToBlue'
+          size='sm'
+          onClick={handleAddFileLink}
+        >
+          Add File Link
+        </Button>
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Publish
         </Button>
