@@ -13,6 +13,9 @@ import UpdatePost from './pages/UpdatePost';
 import PostPage from './pages/PostPage';
 import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search';
+import HowToDownload from './pages/HowToDownload';
+import Support from './pages/support';
+import Disclaimer from './pages/Disclaimer';
 
 export default function App() {
   return (
@@ -23,8 +26,11 @@ export default function App() {
         <Route path='/' element={<Home />} />
         <Route path='/search' element={<Search />} />
         <Route path='/about' element={<About />} />
+        <Route path='/howtodownload' element={<HowToDownload />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/support' element={<Support />} />
+        <Route path='/disclaimer' element={<Disclaimer />} />
         <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
         </Route>
