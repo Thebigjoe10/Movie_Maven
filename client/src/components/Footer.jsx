@@ -34,7 +34,7 @@ export default function FooterCom() {
               <Footer.Title title='Follow us' />
               <Footer.LinkGroup col>
                 <Footer.Link
-                  href=''
+                  href='/https://twitter.com/MovieMaven_xyz'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
