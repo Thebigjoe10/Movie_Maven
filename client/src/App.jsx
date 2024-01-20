@@ -14,9 +14,10 @@ import PostPage from './pages/PostPage';
 import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search';
 import HowToDownload from './pages/HowToDownload';
-import Support from './pages/support';
 import Disclaimer from './pages/Disclaimer';
-
+import SupportUs from './pages/SupportUs';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsConditons from './pages/TermsConditons';
 export default function App() {
   return (
     <BrowserRouter>
@@ -29,8 +30,12 @@ export default function App() {
         <Route path='/howtodownload' element={<HowToDownload />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/support' element={<Support />} />
         <Route path='/disclaimer' element={<Disclaimer />} />
+        <Route path='/support' element={<SupportUs />} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='/terms&conditions' element={<TermsConditons />} />
+
+        
         <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
         </Route>
