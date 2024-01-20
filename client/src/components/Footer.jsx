@@ -33,13 +33,13 @@ export default function FooterCom() {
             <div>
               <Footer.Title title='Follow us' />
               <Footer.LinkGroup col>
-                <Footer.Link
-                  href='/https://twitter.com/MovieMaven_xyz'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  Twitter
-                </Footer.Link>
+              <Footer.Link
+                  href='https://twitter.com/MovieMaven_xyz'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    Twitter
+                  </Footer.Link>
                 <Footer.Link href='#'>Telegram</Footer.Link>
               </Footer.LinkGroup>
             </div>
