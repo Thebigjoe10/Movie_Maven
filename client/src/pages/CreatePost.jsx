@@ -149,7 +149,6 @@ export default function CreatePost() {
             <option value='uncategorized'>Select a category</option>
             <option value='movies'>Movies</option>
             <option value='series'>Series</option>
-            <option value='anime'>Anime</option>
             <option value='Kdrama'>Kdrama</option>
             <option value='news'>Anime</option>
           </Select>
@@ -185,7 +184,7 @@ export default function CreatePost() {
           <img
             src={formData.image}
             alt='upload'
-            className='w-full h-72 object-cover'
+            className='w-full h-full object-cover'
           />
         )}
         <ReactQuill
@@ -193,8 +192,8 @@ export default function CreatePost() {
           placeholder='Write something...'
           className='h-72 mb-12'
           required
-          onChange={(value) => {
-            setFormData({ ...formData, content: value });
+          onChange={(updatedContent) => {
+            setFormData({ ...formData, content: updatedContent });
           }}
         />
         <Button

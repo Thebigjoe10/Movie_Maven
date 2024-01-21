@@ -226,8 +226,8 @@ export default function UpdatePost() {
           placeholder='Write something...'
           className='h-72 mb-12'
           required
-          onChange={(value) => {
-            setFormData((prevData) => ({ ...prevData, content: value }));
+          onChange={(updatedContent) => {
+            setFormData((prevData) => ({ ...prevData, content: updatedContent }));
           }}
         />
         <Button
