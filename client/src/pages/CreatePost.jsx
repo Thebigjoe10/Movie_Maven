@@ -151,6 +151,7 @@ export default function CreatePost() {
             <option value='series'>Series</option>
             <option value='Kdrama'>Kdrama</option>
             <option value='news'>Anime</option>
+            <option value='anime'>News</option>
           </Select>
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
