@@ -181,7 +181,7 @@ export default function UpdatePost() {
             <option value='uncategorized'>Select a category</option>
             <option value='movies'>Movies</option>
             <option value='series'>Series</option>
-            <option value='Kdrama'>Kdrama</option>
+            <option value='kdrama'>Kdrama</option>
             <option value='anime'>Anime</option>
             <option value='news'>News</option>
           </Select>
