@@ -213,7 +213,7 @@ export default function CreatePost() {
         >
           Add File Link
         </Button>
-        <Button type='submit' gradientDuoTone='purpleToPink'>
+        <Button type='submit' gradientDuoTone='purpleToBlue'>
           Publish
         </Button>
         {publishError && (
