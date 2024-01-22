@@ -43,7 +43,11 @@ export default function PostPage() {
         const res = await fetch(`/api/post/getposts?category=${post && post.category}&limit=3`);
         const data = await res.json();
         if (res.ok) {
-          setRelatedPosts(data.posts);
+          // Exclude the current post from related posts
+          const filteredRelatedPosts = data.posts.filter(
+            (relatedPost) => relatedPost._id !== (post && post._id)
+          );
+          setRelatedPosts(filteredRelatedPosts);
         }
       };
       fetchRelatedPosts();
@@ -55,13 +59,14 @@ export default function PostPage() {
   useEffect(() => {
     try {
       const fetchRecommendedPosts = async () => {
-        // Fetch recommended posts from a different category
+        // Fetch recommended posts from different categories
         const res = await fetch(`/api/post/getposts?limit=3`);
         const data = await res.json();
         if (res.ok) {
-          // Exclude posts from the same category as the current post
+          // Exclude the current post from recommended posts
           const filteredRecommendedPosts = data.posts.filter(
             (recommendedPost) =>
+              recommendedPost._id !== (post && post._id) &&
               recommendedPost.category !== (post && post.category)
           );
           setRecommendedPosts(filteredRecommendedPosts);
@@ -72,7 +77,7 @@ export default function PostPage() {
       console.log(error.message);
     }
   }, [post]);
-
+  
   if (loading)
     return (
       <div className='flex justify-center items-center min-h-screen'>
@@ -127,7 +132,7 @@ export default function PostPage() {
 
       {/* Recommended Posts Section */}
       <div className='flex flex-col justify-center items-center mb-5'>
-        <h1 className='text-xl mt-5'>Recommended</h1>
+        <h1 className='text-xl mt-5'>Recommended Post To Check Out</h1>
         <div className='flex flex-wrap gap-5 mt-5 justify-center'>
           {recommendedPosts &&
             recommendedPosts.map((post) => <PostCard key={post._id} post={post} />)}
@@ -138,9 +143,9 @@ export default function PostPage() {
       <CommentSection postId={post._id} />
 
       {/* CallToAction */}
-      <div className='max-w-4xl mx-auto w-full'>
+      {/* <div className='max-w-4xl mx-auto w-full'>
         <CallToAction />
-      </div>
+      </div> */}
     </main>
   );
 }
