@@ -1,3 +1,4 @@
+import React, { useState, useRef } from 'react';
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -8,7 +9,6 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
-import { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ export default function CreatePost() {
   const [publishError, setPublishError] = useState(null);
 
   const navigate = useNavigate();
+  const quillRef = useRef();
 
   const handleUpdloadImage = async () => {
     try {
@@ -55,9 +56,10 @@ export default function CreatePost() {
     } catch (error) {
       setImageUploadError('Image upload failed');
       setImageUploadProgress(null);
-      console.log(error);
+      console.error(error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -80,10 +82,10 @@ export default function CreatePost() {
       }
     } catch (error) {
       setPublishError('Something went wrong');
+      console.error(error);
     }
   };
- 
-  // Handle adding file link
+
   const handleAddFileLink = () => {
     const fileLink = prompt('Enter the file URL:');
 
@@ -93,8 +95,7 @@ export default function CreatePost() {
     }
   };
 
-  // Function to get the embed URL for videos
-  const const handleEmbedVideo = () => {
+  const handleEmbedVideo = () => {
     const videoLink = prompt('Enter the video URL:');
 
     if (videoLink) {
@@ -102,14 +103,10 @@ export default function CreatePost() {
         const embedUrl = getEmbedUrl(videoLink);
 
         if (embedUrl) {
-          // Use Quill's insertText method to insert the iframe
-          const quill = quillRef.current; // Assume you have a quillRef for your ReactQuill instance
-          quill.insertText(quill.getLength(), '\n'); // Add a newline before the iframe
+          const quill = quillRef.current;
+          quill.insertText(quill.getLength(), '\n');
           quill.clipboard.dangerouslyPasteHTML(quill.getLength(), `<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`);
-
-          // Update the formData state if needed
-          setFormData({ ...formData }); // Assuming formData is a state variable
-
+          setFormData({ ...formData });
         } else {
           console.error('Unsupported video platform or invalid URL');
         }
@@ -119,7 +116,6 @@ export default function CreatePost() {
     }
   };
 
-  // Function to get the embed URL for videos
   const getEmbedUrl = (videoLink) => {
     if (videoLink.includes('youtube.com')) {
       const videoId = new URL(videoLink).searchParams.get('v');
@@ -133,6 +129,7 @@ export default function CreatePost() {
 
     return null;
   };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -196,15 +193,15 @@ export default function CreatePost() {
           />
         )}
         <ReactQuill
-        theme='snow'
-        placeholder='Write something...'
-        className='h-72 mb-12'
-        required
-        onChange={(updatedContent) => {
-          setFormData({ ...formData, content: updatedContent });
-        }}
-        ref={quillRef} // Make sure you have a ref for the ReactQuill instance
-      />
+          theme='snow'
+          placeholder='Write something...'
+          className='h-72 mb-12'
+          required
+          onChange={(updatedContent) => {
+            setFormData({ ...formData, content: updatedContent });
+          }}
+          ref={quillRef}
+        />
         <Button
           type='button'
           gradientDuoTone='purpleToBlue'
