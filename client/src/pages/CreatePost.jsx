@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -8,7 +9,6 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
-import { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
@@ -22,17 +22,20 @@ export default function CreatePost() {
 
   const navigate = useNavigate();
 
-  const handleUpdloadImage = async () => {
+  const handleUploadImage = async () => {
     try {
       if (!file) {
         setImageUploadError('Please select an image');
         return;
       }
+
       setImageUploadError(null);
+
       const storage = getStorage(app);
       const fileName = new Date().getTime() + '-' + file.name;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
+
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -55,11 +58,13 @@ export default function CreatePost() {
     } catch (error) {
       setImageUploadError('Image upload failed');
       setImageUploadProgress(null);
-      console.log(error);
+      console.error(error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await fetch('/api/post/create', {
         method: 'POST',
@@ -68,7 +73,9 @@ export default function CreatePost() {
         },
         body: JSON.stringify(formData),
       });
+
       const data = await res.json();
+
       if (!res.ok) {
         setPublishError(data.message);
         return;
@@ -80,10 +87,20 @@ export default function CreatePost() {
       }
     } catch (error) {
       setPublishError('Something went wrong');
+      console.error(error);
     }
   };
-   // Handle embedding video
-   const handleEmbedVideo = () => {
+
+  const handleAddFileLink = () => {
+    const fileLink = prompt('Enter the file URL:');
+
+    if (fileLink) {
+      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
+      setFormData({ ...formData, content: updatedContent });
+    }
+  };
+
+  const handleEmbedVideo = () => {
     const videoLink = prompt('Enter the video URL:');
 
     if (videoLink) {
@@ -102,17 +119,6 @@ export default function CreatePost() {
     }
   };
 
-  // Handle adding file link
-  const handleAddFileLink = () => {
-    const fileLink = prompt('Enter the file URL:');
-
-    if (fileLink) {
-      const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
-      setFormData({ ...formData, content: updatedContent });
-    }
-  };
-
-  // Function to get the embed URL for videos
   const getEmbedUrl = (videoLink) => {
     if (videoLink.includes('youtube.com')) {
       const videoId = new URL(videoLink).searchParams.get('v');
@@ -126,6 +132,7 @@ export default function CreatePost() {
 
     return null;
   };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -149,9 +156,9 @@ export default function CreatePost() {
             <option value='uncategorized'>Select a category</option>
             <option value='movies'>Movies</option>
             <option value='series'>Series</option>
-            <option value='Kdrama'>Kdrama</option>
-            <option value='news'>Anime</option>
-            <option value='anime'>News</option>
+            <option value='kdrama'>Kdrama</option>
+            <option value='anime'>Anime</option>
+            <option value='news'>News</option>
           </Select>
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
@@ -165,7 +172,7 @@ export default function CreatePost() {
             gradientDuoTone='purpleToBlue'
             size='sm'
             outline
-            onClick={handleUpdloadImage}
+            onClick={handleUploadImage}
             disabled={imageUploadProgress}
           >
             {imageUploadProgress ? (
@@ -213,7 +220,7 @@ export default function CreatePost() {
         >
           Add File Link
         </Button>
-        <Button type='submit' gradientDuoTone='purpleToPink'>
+        <Button type='submit' gradientDuoTone='purpleToBlue'>
           Publish
         </Button>
         {publishError && (
