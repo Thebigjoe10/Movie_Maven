@@ -82,26 +82,7 @@ export default function CreatePost() {
       setPublishError('Something went wrong');
     }
   };
-   // Handle embedding video
-   const handleEmbedVideo = () => {
-    const videoLink = prompt('Enter the video URL:');
-
-    if (videoLink) {
-      try {
-        const embedUrl = getEmbedUrl(videoLink);
-
-        if (embedUrl) {
-          const updatedContent = `${formData.content || ''}\n<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
-          setFormData({ ...formData, content: updatedContent });
-        } else {
-          console.error('Unsupported video platform or invalid URL');
-        }
-      } catch (error) {
-        console.error('Invalid video URL', error);
-      }
-    }
-  };
-
+ 
   // Handle adding file link
   const handleAddFileLink = () => {
     const fileLink = prompt('Enter the file URL:');
@@ -109,6 +90,32 @@ export default function CreatePost() {
     if (fileLink) {
       const updatedContent = `${formData.content || ''}\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
       setFormData({ ...formData, content: updatedContent });
+    }
+  };
+
+  // Function to get the embed URL for videos
+  const const handleEmbedVideo = () => {
+    const videoLink = prompt('Enter the video URL:');
+
+    if (videoLink) {
+      try {
+        const embedUrl = getEmbedUrl(videoLink);
+
+        if (embedUrl) {
+          // Use Quill's insertText method to insert the iframe
+          const quill = quillRef.current; // Assume you have a quillRef for your ReactQuill instance
+          quill.insertText(quill.getLength(), '\n'); // Add a newline before the iframe
+          quill.clipboard.dangerouslyPasteHTML(quill.getLength(), `<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`);
+
+          // Update the formData state if needed
+          setFormData({ ...formData }); // Assuming formData is a state variable
+
+        } else {
+          console.error('Unsupported video platform or invalid URL');
+        }
+      } catch (error) {
+        console.error('Invalid video URL', error);
+      }
     }
   };
 
@@ -189,14 +196,15 @@ export default function CreatePost() {
           />
         )}
         <ReactQuill
-          theme='snow'
-          placeholder='Write something...'
-          className='h-72 mb-12'
-          required
-          onChange={(updatedContent) => {
-            setFormData({ ...formData, content: updatedContent });
-          }}
-        />
+        theme='snow'
+        placeholder='Write something...'
+        className='h-72 mb-12'
+        required
+        onChange={(updatedContent) => {
+          setFormData({ ...formData, content: updatedContent });
+        }}
+        ref={quillRef} // Make sure you have a ref for the ReactQuill instance
+      />
         <Button
           type='button'
           gradientDuoTone='purpleToBlue'
