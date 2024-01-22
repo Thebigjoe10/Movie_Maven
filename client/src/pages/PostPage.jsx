@@ -10,7 +10,8 @@ export default function PostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
-  const [recentPosts, setRecentPosts] = useState(null);
+  const [relatedPosts, setRelatedPosts] = useState([]);
+  const [recommendedPosts, setRecommendedPosts] = useState([]);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -18,7 +19,7 @@ export default function PostPage() {
         setLoading(true);
         const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
-        if (!res.ok) {
+        if (!res.ok || data.posts.length === 0) {
           setError(true);
           setLoading(false);
           return;
@@ -38,26 +39,54 @@ export default function PostPage() {
 
   useEffect(() => {
     try {
-      const fetchRecentPosts = async () => {
-        const res = await fetch(`/api/post/getposts?limit=3`);
+      const fetchRelatedPosts = async () => {
+        const res = await fetch(`/api/post/getposts?category=${post && post.category}&limit=3`);
         const data = await res.json();
         if (res.ok) {
-          setRecentPosts(data.posts);
+          setRelatedPosts(data.posts);
         }
       };
-      fetchRecentPosts();
+      fetchRelatedPosts();
     } catch (error) {
       console.log(error.message);
     }
-  }, []);
+  }, [post]);
 
- 
+  useEffect(() => {
+    try {
+      const fetchRecommendedPosts = async () => {
+        // Fetch recommended posts from a different category
+        const res = await fetch(`/api/post/getposts?limit=3`);
+        const data = await res.json();
+        if (res.ok) {
+          // Exclude posts from the same category as the current post
+          const filteredRecommendedPosts = data.posts.filter(
+            (recommendedPost) =>
+              recommendedPost.category !== (post && post.category)
+          );
+          setRecommendedPosts(filteredRecommendedPosts);
+        }
+      };
+      fetchRecommendedPosts();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [post]);
+
   if (loading)
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <Spinner size='xl' />
       </div>
     );
+  
+  if (error)
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <p>Error loading post. Please try again later.</p>
+      </div>
+    );
+
   return (
     <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>
       <h1 className='text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl'>
@@ -86,17 +115,31 @@ export default function PostPage() {
         className='p-3 max-w-2xl mx-auto w-full post-content'
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
-      {/* <div className='max-w-4xl mx-auto w-full'>
-        <CallToAction />
-      </div> */}
+      
+      {/* Related Posts Section */}
+      <div className='flex flex-col justify-center items-center mb-5'>
+        <h1 className='text-xl mt-5'>Related {post && post.category}</h1>
+        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
+          {relatedPosts &&
+            relatedPosts.map((post) => <PostCard key={post._id} post={post} />)}
+        </div>
+      </div>
+
+      {/* Recommended Posts Section */}
+      <div className='flex flex-col justify-center items-center mb-5'>
+        <h1 className='text-xl mt-5'>Recommended</h1>
+        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
+          {recommendedPosts &&
+            recommendedPosts.map((post) => <PostCard key={post._id} post={post} />)}
+        </div>
+      </div>
+
+      {/* Comment Section */}
       <CommentSection postId={post._id} />
 
-      <div className='flex flex-col justify-center items-center mb-5'>
-        <h1 className='text-xl mt-5'>Recent articles</h1>
-        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
-          {recentPosts &&
-            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
-        </div>
+      {/* CallToAction */}
+      <div className='max-w-4xl mx-auto w-full'>
+        <CallToAction />
       </div>
     </main>
   );

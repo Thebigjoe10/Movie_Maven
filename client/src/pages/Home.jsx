@@ -4,15 +4,48 @@ import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [series, setSeries] = useState([]);
+  const [kdramas, setKdramas] = useState([]);
+  const [animes, setAnimes] = useState([]);
+  const [news, setNews] = useState([]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const res = await fetch('/api/post/getPosts');
-      const data = await res.json();
-      setPosts(data.posts);
+    const fetchPostsByCategory = async (category) => {
+      try {
+        const res = await fetch(`/api/post/getposts?category=${category}&limit=4`);
+        const data = await res.json();
+
+        switch (category) {
+          case 'movies':
+            setMovies(data.posts);
+            break;
+          case 'series':
+            setSeries(data.posts);
+            break;
+          case 'kdrama':
+            setKdramas(data.posts);
+            break;
+          case 'anime':
+            setAnimes(data.posts);
+            break;
+          case 'news':
+            setNews(data.posts);
+            break;
+          default:
+            break;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     };
-    fetchPosts();
+
+    // Fetch posts for each category
+    fetchPostsByCategory('movies');
+    fetchPostsByCategory('series');
+    fetchPostsByCategory('kdrama');
+    fetchPostsByCategory('anime');
+    fetchPostsByCategory('news');
   }, []);
   return (
     <div>
@@ -34,19 +67,92 @@ export default function Home() {
       </div>
 
       <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7'>
-        {posts && posts.length > 0 && (
+        {/* Movies Section */}
+        {movies && movies.length > 0 && (
           <div className='flex flex-col gap-6'>
-            <h2 className='text-2xl font-semibold text-center'>Recent Posts</h2>
+            <h2 className='text-2xl font-semibold text-center'>Recent Movies</h2>
             <div className='flex flex-wrap gap-4'>
-              {posts.map((post) => (
+              {movies.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
             <Link
-              to={'/search'}
+              to={'/search?category=movies'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
-              show all posts
+              show all movies
+            </Link>
+          </div>
+        )}
+
+        {/* Series Section */}
+        {series && series.length > 0 && (
+          <div className='flex flex-col gap-6'>
+            <h2 className='text-2xl font-semibold text-center'>Recent Series</h2>
+            <div className='flex flex-wrap gap-4'>
+              {series.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </div>
+            <Link
+              to={'/search?category=series'}
+              className='text-lg text-teal-500 hover:underline text-center'
+            >
+              show all series
+            </Link>
+          </div>
+        )}
+
+        {/* Kdrama Section */}
+        {kdramas && kdramas.length > 0 && (
+          <div className='flex flex-col gap-6'>
+            <h2 className='text-2xl font-semibold text-center'>Recent Kdramas</h2>
+            <div className='flex flex-wrap gap-4'>
+              {kdramas.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </div>
+            <Link
+              to={'/search?category=kdrama'}
+              className='text-lg text-teal-500 hover:underline text-center'
+            >
+              show all Kdramas
+            </Link>
+          </div>
+        )}
+
+        {/* Anime Section */}
+        {animes && animes.length > 0 && (
+          <div className='flex flex-col gap-6'>
+            <h2 className='text-2xl font-semibold text-center'>Recent Anime</h2>
+            <div className='flex flex-wrap gap-4'>
+              {animes.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </div>
+            <Link
+              to={'/search?category=anime'}
+              className='text-lg text-teal-500 hover:underline text-center'
+            >
+              show all Anime
+            </Link>
+          </div>
+        )}
+
+        {/* News Section */}
+        {news && news.length > 0 && (
+          <div className='flex flex-col gap-6'>
+            <h2 className='text-2xl font-semibold text-center'>Recent News</h2>
+            <div className='flex flex-wrap gap-4'>
+              {news.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </div>
+            <Link
+              to={'/search?category=news'}
+              className='text-lg text-teal-500 hover:underline text-center'
+            >
+              show all News
             </Link>
           </div>
         )}
