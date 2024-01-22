@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -21,19 +21,21 @@ export default function CreatePost() {
   const [publishError, setPublishError] = useState(null);
 
   const navigate = useNavigate();
-  const quillRef = useRef();
 
-  const handleUpdloadImage = async () => {
+  const handleUploadImage = async () => {
     try {
       if (!file) {
         setImageUploadError('Please select an image');
         return;
       }
+
       setImageUploadError(null);
+
       const storage = getStorage(app);
       const fileName = new Date().getTime() + '-' + file.name;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
+
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -62,6 +64,7 @@ export default function CreatePost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await fetch('/api/post/create', {
         method: 'POST',
@@ -70,7 +73,9 @@ export default function CreatePost() {
         },
         body: JSON.stringify(formData),
       });
+
       const data = await res.json();
+
       if (!res.ok) {
         setPublishError(data.message);
         return;
@@ -103,10 +108,8 @@ export default function CreatePost() {
         const embedUrl = getEmbedUrl(videoLink);
 
         if (embedUrl) {
-          const quill = quillRef.current;
-          quill.insertText(quill.getLength(), '\n');
-          quill.clipboard.dangerouslyPasteHTML(quill.getLength(), `<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`);
-          setFormData({ ...formData });
+          const updatedContent = `${formData.content || ''}\n<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+          setFormData({ ...formData, content: updatedContent });
         } else {
           console.error('Unsupported video platform or invalid URL');
         }
@@ -169,7 +172,7 @@ export default function CreatePost() {
             gradientDuoTone='purpleToBlue'
             size='sm'
             outline
-            onClick={handleUpdloadImage}
+            onClick={handleUploadImage}
             disabled={imageUploadProgress}
           >
             {imageUploadProgress ? (
@@ -200,7 +203,6 @@ export default function CreatePost() {
           onChange={(updatedContent) => {
             setFormData({ ...formData, content: updatedContent });
           }}
-          ref={quillRef}
         />
         <Button
           type='button'
