@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPostsByCategory = async (category) => {
       try {
-        const res = await fetch(`/api/post/getposts?category=${category}&limit=4`);
+        const res = await fetch(`/api/post/getposts?category=${category}&limit=3`);
         const data = await res.json();
 
         switch (category) {
