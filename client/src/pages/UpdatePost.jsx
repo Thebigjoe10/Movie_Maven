@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
@@ -8,12 +8,14 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import 'quill-mention';
+
 
 export default function UpdatePost() {
   const { postId } = useParams();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
-
+  const quillRef = useRef(null);
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
@@ -98,6 +100,7 @@ export default function UpdatePost() {
           content: formData.content,
           category: formData.category,
           image: formData.image,
+          keywords: formData.keywords,
         }),
       });
 
@@ -160,6 +163,21 @@ export default function UpdatePost() {
     }
   };
 
+  const handleAddKeywords = () => {
+    const keywords = prompt('Enter SEO keywords:');
+    if (keywords !== null) {
+      const quill = quillRef.current.editor;
+      const range = quill.getSelection();
+  
+      // Customize the inserted content with button-like appearance
+      const buttonHTML = `<a href="/post/${postId}" style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</a>`;
+
+      quill.clipboard.dangerouslyPasteHTML(range ? range.index : 0, buttonHTML);
+
+      setFormData((prevData) => ({ ...prevData, keywords }));
+    }
+  };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Update post</h1>
@@ -183,7 +201,7 @@ export default function UpdatePost() {
             <option value='series'>Series</option>
             <option value='kdrama'>Kdrama</option>
             <option value='anime'>Anime</option>
-            <option value='news'>News</option>
+            <option value='reviews'>Reviews</option>
           </Select>
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
@@ -221,6 +239,7 @@ export default function UpdatePost() {
           />
         )}
         <ReactQuill
+          ref={quillRef}
           theme='snow'
           value={formData.content || ''}
           placeholder='Write something...'
@@ -230,6 +249,14 @@ export default function UpdatePost() {
             setFormData((prevData) => ({ ...prevData, content: updatedContent }));
           }}
         />
+        <Button
+          type='button'
+          gradientDuoTone='purpleToBlue'
+          size='sm'
+          onClick={handleAddKeywords}
+          >
+          Add SEO Keywords
+         </Button>
         <Button
           type='button'
           gradientDuoTone='purpleToBlue'
