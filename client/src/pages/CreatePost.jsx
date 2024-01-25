@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -12,6 +12,8 @@ import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
+import 'quill-mention';
+
 
 export default function CreatePost() {
   const [file, setFile] = useState(null);
@@ -19,7 +21,7 @@ export default function CreatePost() {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
-
+  const quillRef = useRef(null);
   const navigate = useNavigate();
 
   const handleUploadImage = async () => {
@@ -133,6 +135,18 @@ export default function CreatePost() {
     return null;
   };
 
+  const handleAddKeywords = () => {
+    const keywords = prompt('Enter SEO keywords:');
+    if (keywords !== null) {
+      const quill = quillRef.current.editor;
+      const range = quill.getSelection();
+  
+      // Customize the inserted content with button-like appearance
+      const buttonHTML = `<a href="/post/${postId}" style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</a>`;
+      quill.clipboard.dangerouslyPasteHTML(range ? range.index : 0, buttonHTML);
+    }
+  };
+  
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -158,7 +172,7 @@ export default function CreatePost() {
             <option value='series'>Series</option>
             <option value='kdrama'>Kdrama</option>
             <option value='anime'>Anime</option>
-            <option value='news'>News</option>
+            <option value='reviews'>Reviews</option>
           </Select>
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
@@ -196,6 +210,7 @@ export default function CreatePost() {
           />
         )}
         <ReactQuill
+          ref={quillRef}
           theme='snow'
           placeholder='Write something...'
           className='h-72 mb-12'
@@ -204,6 +219,15 @@ export default function CreatePost() {
             setFormData({ ...formData, content: updatedContent });
           }}
         />
+        <Button
+          type='button'
+          gradientDuoTone='purpleToBlue'
+          size='sm'
+          onClick={handleAddKeywords}
+          >
+          Add SEO Keywords
+       </Button>
+
         <Button
           type='button'
           gradientDuoTone='purpleToBlue'
