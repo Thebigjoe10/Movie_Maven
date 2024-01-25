@@ -135,7 +135,7 @@ export default function Search() {
               <option value='series'>Series</option>
               <option value='anime'>Anime</option>
               <option value='kdrama'>Kdrama</option>
-              <option value='news'>News</option>
+              <option value='reviews'>Reviews</option>
             </Select>
           </div>
           <Button type='submit' outline gradientDuoTone='purpleToBlue'>

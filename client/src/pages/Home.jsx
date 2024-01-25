@@ -8,7 +8,7 @@ export default function Home() {
   const [series, setSeries] = useState([]);
   const [kdramas, setKdramas] = useState([]);
   const [animes, setAnimes] = useState([]);
-  const [news, setNews] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const fetchPostsByCategory = async (category) => {
@@ -29,8 +29,8 @@ export default function Home() {
           case 'anime':
             setAnimes(data.posts);
             break;
-          case 'news':
-            setNews(data.posts);
+          case 'reviews':
+            setReviews(data.posts);
             break;
           default:
             break;
@@ -45,7 +45,7 @@ export default function Home() {
     fetchPostsByCategory('series');
     fetchPostsByCategory('kdrama');
     fetchPostsByCategory('anime');
-    fetchPostsByCategory('news');
+    fetchPostsByCategory('reviews');
   }, []);
   return (
     <div>
@@ -140,19 +140,19 @@ export default function Home() {
         )}
 
         {/* News Section */}
-        {news && news.length > 0 && (
+        {reviews && reviews.length > 0 && (
           <div className='flex flex-col gap-6'>
-            <h2 className='text-2xl font-semibold text-center'>Recent News</h2>
+            <h2 className='text-2xl font-semibold text-center'>Reviews</h2>
             <div className='flex flex-wrap gap-4'>
-              {news.map((post) => (
+              {reviews.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
             <Link
-              to={'/search?category=news'}
+              to={'/search?category=reviews'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
-              show all News
+              show all Reviews
             </Link>
           </div>
         )}
