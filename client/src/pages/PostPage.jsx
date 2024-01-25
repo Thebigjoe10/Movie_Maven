@@ -112,7 +112,7 @@ export default function PostPage() {
 
   return (
     <React.Fragment>
-     <Helmet>
+        <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content={pageKeywords} />
