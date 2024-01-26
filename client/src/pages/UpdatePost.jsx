@@ -170,8 +170,7 @@ export default function UpdatePost() {
       const range = quill.getSelection();
   
       // Customize the inserted content with button-like appearance
-      const buttonHTML = `<a href="/post/${postId}" style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</a>`;
-
+      const buttonHTML = `<span style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</span>`;
       quill.clipboard.dangerouslyPasteHTML(range ? range.index : 0, buttonHTML);
 
       setFormData((prevData) => ({ ...prevData, keywords }));

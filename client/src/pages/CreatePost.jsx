@@ -11,11 +11,12 @@ import {
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, } from 'react-router-dom';
 import 'quill-mention';
 
 
 export default function CreatePost() {
+  const { postId } = useParams();
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
@@ -142,7 +143,7 @@ export default function CreatePost() {
       const range = quill.getSelection();
   
       // Customize the inserted content with button-like appearance
-      const buttonHTML = `<a href="/post/${postId}" style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</a>`;
+      const buttonHTML = `<span style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</span>`;
       quill.clipboard.dangerouslyPasteHTML(range ? range.index : 0, buttonHTML);
     }
   };
