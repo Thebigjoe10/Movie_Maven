@@ -1,8 +1,10 @@
 import { Button } from 'flowbite-react'
 import React from 'react'
+import AdComponent from '../components/Ads'
 
 export default function SupportUs() {
     return (
+        
         <div className='flex flex-col sm:flex-row p-3 border border-teal-500 justify-center items-center rounded-tl-3xl rounded-br-3xl text-center'>
             <div className="flex-1 justify-center flex flex-col">
                 <h2 className='text-2xl'>
@@ -20,6 +22,8 @@ export default function SupportUs() {
             <div className="p-7 flex-1">
                 <img src="https://media.istockphoto.com/id/813128966/photo/hand-putting-coins-in-glass-jar-for-giving-and-donation-concept.jpg?s=612x612&w=0&k=20&c=n6JuwHg5qL5usrI45PCsvjXjX743Mk0Ov4pW2GtO8CA=" />
             </div>
+
+            <AdComponent/>
         </div>
       )
 }

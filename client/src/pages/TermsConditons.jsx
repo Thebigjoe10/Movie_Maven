@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import AdComponent from '../components/Ads'
 
 export default function TermsConditons() {
   return (
@@ -21,6 +22,7 @@ export default function TermsConditons() {
             </div>
           </div>
         </div>
+        <AdComponent/>
       </div>
   )
 }

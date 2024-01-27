@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import { Helmet } from 'react-helmet';
+import AdComponent from '../components/Ads';
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
@@ -129,6 +130,7 @@ export default function Search() {
         <meta property="og:image" content={ogImageUrl} />
         <script type="application/ld+json">{JSON.stringify(movieSchema)}</script>
         </Helmet>
+        <AdComponent/>
     <div className='flex flex-col md:flex-row'>
       <div className='p-7 border-b md:border-r md:min-h-screen border-gray-500'>
         <form className='flex flex-col gap-8' onSubmit={handleSubmit}>

@@ -1,4 +1,5 @@
 import React from 'react'
+import AdComponent from '../components/Ads';
 
 export default function PrivacyPolicy() {
     return (
@@ -40,6 +41,7 @@ These websites may collect data about you, use cookies, embed additional third-p
               </div>
             </div>
           </div>
+          <AdComponent/>
         </div>
       );
 }
