@@ -130,7 +130,7 @@ export default function Search() {
         <meta property="og:image" content={ogImageUrl} />
         <script type="application/ld+json">{JSON.stringify(movieSchema)}</script>
         </Helmet>
-        <AdComponent/>
+        {/* <AdComponent/> */}
     <div className='flex flex-col md:flex-row'>
       <div className='p-7 border-b md:border-r md:min-h-screen border-gray-500'>
         <form className='flex flex-col gap-8' onSubmit={handleSubmit}>

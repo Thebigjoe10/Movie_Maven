@@ -69,7 +69,7 @@ export default function Home() {
   }
   return (
     <div>
-    <AdComponent/>
+    {/* <AdComponent/> */}
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
