@@ -25,6 +25,12 @@ const movieSchema = {
     'reviewCount': '100'
   }
 }
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/client/public/');
+  });
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
    <Helmet>
