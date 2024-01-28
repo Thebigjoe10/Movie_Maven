@@ -27,7 +27,7 @@ const movieSchema = {
 }
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/client/public/');
+    navigator.serviceWorker.register('/client/public/sw.js');
   });
 }
 
