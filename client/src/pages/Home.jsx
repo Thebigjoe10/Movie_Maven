@@ -3,7 +3,8 @@ import CallToAction from '../components/CallToAction';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 import { Helmet } from 'react-helmet';
-import AdComponent from '../components/Ads';
+import { Button } from 'flowbite-react';
+// import AdComponent from '../components/Ads';
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
@@ -108,12 +109,18 @@ export default function Home() {
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
+            <Button
+             type='button'
+             gradientDuoTone='purpleToBlue'
+             size='sm'
+            >
             <Link
               to={'/search?category=movies'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
               show all movies
             </Link>
+            </Button>
           </div>
         )}
 
@@ -126,12 +133,18 @@ export default function Home() {
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
+            <Button
+            type='button'
+          gradientDuoTone='purpleToBlue'
+          size='sm'
+            >
             <Link
               to={'/search?category=series'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
               show all series
             </Link>
+            </Button>
           </div>
         )}
 
@@ -144,12 +157,18 @@ export default function Home() {
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
+            <Button
+            type='button'
+            gradientDuoTone='purpleToBlue'
+            size='sm'
+             >
             <Link
               to={'/search?category=kdrama'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
               show all Kdramas
             </Link>
+            </Button>
           </div>
         )}
 
@@ -162,12 +181,18 @@ export default function Home() {
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
+            <Button
+             type='button'
+             gradientDuoTone='purpleToBlue'
+             size='sm'
+            >
             <Link
               to={'/search?category=anime'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
               show all Anime
             </Link>
+            </Button>
           </div>
         )}
 
@@ -180,12 +205,14 @@ export default function Home() {
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
+            <Button>
             <Link
               to={'/search?category=reviews'}
               className='text-lg text-teal-500 hover:underline text-center'
             >
               show all Reviews
             </Link>
+            </Button>
           </div>
         )}
       </div>

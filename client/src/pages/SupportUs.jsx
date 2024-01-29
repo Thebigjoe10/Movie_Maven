@@ -1,6 +1,6 @@
 import { Button } from 'flowbite-react'
 import React from 'react'
-import AdComponent from '../components/Ads'
+// import AdComponent from '../components/Ads'
 
 export default function SupportUs() {
     return (
@@ -23,7 +23,7 @@ export default function SupportUs() {
                 <img src="https://media.istockphoto.com/id/813128966/photo/hand-putting-coins-in-glass-jar-for-giving-and-donation-concept.jpg?s=612x612&w=0&k=20&c=n6JuwHg5qL5usrI45PCsvjXjX743Mk0Ov4pW2GtO8CA=" />
             </div>
 
-            <AdComponent/>
+            {/* <AdComponent/> */}
         </div>
       )
 }

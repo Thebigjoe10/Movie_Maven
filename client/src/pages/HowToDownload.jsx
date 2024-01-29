@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import AdComponent from '../components/Ads';
+// import AdComponent from '../components/Ads';
 
 export default function HowToDownload() {
     return (
@@ -35,7 +35,7 @@ You can support us by donating cryptocurrency to us to help maintain the website
               </div>
             </div>
           </div>
-          <AdComponent/>
+          // <AdComponent/>
         </div>
       );
 }

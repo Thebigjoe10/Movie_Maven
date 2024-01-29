@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import { Helmet } from 'react-helmet';
-import AdComponent from '../components/Ads';
+// import AdComponent from '../components/Ads';
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({

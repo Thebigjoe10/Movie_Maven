@@ -5,7 +5,7 @@ import CallToAction from '../components/CallToAction';
 import CommentSection from '../components/CommentSection';
 import PostCard from '../components/PostCard';
 import { Helmet } from 'react-helmet';
-import AdComponent from '../components/Ads';
+// import AdComponent from '../components/Ads';
 
 export default function PostPage() {
   const { postSlug } = useParams();
