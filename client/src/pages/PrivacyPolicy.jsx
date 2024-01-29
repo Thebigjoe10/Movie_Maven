@@ -41,7 +41,7 @@ These websites may collect data about you, use cookies, embed additional third-p
               </div>
             </div>
           </div>
-          // <AdComponent/>
+           {/* <AdComponent/> */}
         </div>
       );
 }

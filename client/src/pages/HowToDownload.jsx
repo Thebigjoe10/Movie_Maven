@@ -35,7 +35,7 @@ You can support us by donating cryptocurrency to us to help maintain the website
               </div>
             </div>
           </div>
-          // <AdComponent/>
+           {/* <AdComponent/> */}
         </div>
       );
 }
