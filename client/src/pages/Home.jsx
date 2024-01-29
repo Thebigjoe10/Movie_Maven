@@ -124,7 +124,7 @@ export default function Home() {
             <Button type="button" gradientDuoTone="purpleToBlue" size="sm">
               <Link
                 to={"/search?category=movies"}
-                className="text-lg text-teal-500 hover:underline text-center">
+                className="text-lg text-white hover:underline text-center">
                 show all movies
               </Link>
             </Button>
@@ -145,7 +145,7 @@ export default function Home() {
             <Button type="button" gradientDuoTone="purpleToBlue" size="sm">
               <Link
                 to={"/search?category=series"}
-                className="text-lg text-teal-500 hover:underline text-center">
+                className="text-lg text-white hover:underline text-center">
                 show all series
               </Link>
             </Button>
@@ -166,7 +166,7 @@ export default function Home() {
             <Button type="button" gradientDuoTone="purpleToBlue" size="sm">
               <Link
                 to={"/search?category=kdrama"}
-                className="text-lg text-teal-500 hover:underline text-center">
+                className="text-lg text-white hover:underline text-center">
                 show all Kdramas
               </Link>
             </Button>
@@ -185,7 +185,7 @@ export default function Home() {
             <Button type="button" gradientDuoTone="purpleToBlue" size="sm">
               <Link
                 to={"/search?category=anime"}
-                className="text-lg text-teal-500 hover:underline text-center">
+                className="text-lg text-white hover:underline text-center">
                 show all Anime
               </Link>
             </Button>
@@ -204,7 +204,7 @@ export default function Home() {
             <Button type="button" gradientDuoTone="purpleToBlue" size="sm">
               <Link
                 to={"/search?category=reviews"}
-                className="text-lg text-teal-500 hover:underline text-center">
+                className="text-lg text-white hover:underline text-center">
                 show all Reviews
               </Link>
             </Button>
