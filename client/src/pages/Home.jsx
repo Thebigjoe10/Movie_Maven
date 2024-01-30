@@ -116,7 +116,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-center">
               Recent Movies
             </h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {movies.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
@@ -137,7 +137,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-center">
               Recent Series
             </h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {series.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
@@ -158,7 +158,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-center">
               Recent Kdramas
             </h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {kdramas.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
@@ -177,7 +177,7 @@ export default function Home() {
         {animes && animes.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">Recent Anime</h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {animes.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
@@ -196,7 +196,7 @@ export default function Home() {
         {reviews && reviews.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">Reviews</h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {reviews.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
