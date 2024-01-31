@@ -65,8 +65,7 @@ export default function Home() {
     "@context": "http://schema.org",
     "@type": "Movie",
     name: "Movie Maven",
-    description:
-      "Explore an extensive selection of entertainment options like movies, TV series, kdramas and animes. Also find insightful movie reviews that shed light on the world of cinema. Immerse yourself in a world where staying updated with current events is effortless while indulging in engaging content that's impossible to ignore - all handpicked for you at one destination. Brace yourself for unforgettable immersive experiences! ",
+    description: "Explore an extensive selection of entertainment options like movies, TV series, kdramas and animes. Also find insightful movie reviews that shed light on the world of cinema. Immerse yourself in a world where staying updated with current events is effortless while indulging in engaging content that's impossible to ignore - all handpicked for you at one destination. Brace yourself for unforgettable immersive experiences! ",
     image: "https://www.moviemaven.xyz/moviemaven.webp",
     aggregateRating: {
       "@type": "AggregateRating",
