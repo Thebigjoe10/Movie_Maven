@@ -95,8 +95,8 @@ export default function Home() {
           Welcome to Movie Maven
         </h1>
         <p className="text-gray-500 text-xs sm:text-sm">
-          Here you'll find a variety of movies, series and news on topics such
-          as movies, stay updated with news, and binge-watch series. All in one
+          Here you'll find a variety of movies, series, animes and reviews on topics such
+          as movies, stay updated with reviews, and binge-watch series and animes. All in one
           place. Enjoy! 🎬📺
         </p>
         <Link
