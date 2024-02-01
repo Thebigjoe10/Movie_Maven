@@ -29,7 +29,7 @@ export default function PostPage() {
         }
         if (res.ok) {
           setPost(data.posts[0]);
-          setOgImageUrl(data.posts[0].image);
+          setOgImageUrl(data.posts[0].image || 'https://www.moviemaven.xyz/moviemaven.webp');
           setLoading(false);
           setError(false);
         }
