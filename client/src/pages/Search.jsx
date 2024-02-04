@@ -12,13 +12,11 @@ export default function Search() {
     category: 'uncategorized',
   });
 
-  console.log(sidebarData);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
   const location = useLocation();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +24,7 @@ export default function Search() {
     const searchTermFromUrl = urlParams.get('searchTerm');
     const sortFromUrl = urlParams.get('sort');
     const categoryFromUrl = urlParams.get('category');
+
     if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
       setSidebarData({
         ...sidebarData,
@@ -39,21 +38,18 @@ export default function Search() {
       setLoading(true);
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/post/getposts?${searchQuery}`);
+      
       if (!res.ok) {
         setLoading(false);
         return;
       }
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data.posts);
-        setLoading(false);
-        if (data.posts.length === 10) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
-        }
-      }
+
+      const data = await res.json();
+      setPosts(data.posts);
+      setLoading(false);
+      setShowMore(data.posts.length === 9); 
     };
+
     fetchPosts();
   }, [location.search]);
 
@@ -87,20 +83,19 @@ export default function Search() {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set('startIndex', startIndex);
     const searchQuery = urlParams.toString();
+    
     const res = await fetch(`/api/post/getposts?${searchQuery}`);
+    
     if (!res.ok) {
+      console.error('Error fetching more posts:', res.status, res.statusText);
       return;
     }
-    if (res.ok) {
-      const data = await res.json();
-      setPosts([...posts, ...data.posts]);
-      if (data.posts.length === 9) {
-        setShowMore(true);
-      } else {
-        setShowMore(false);
-      }
-    }
+
+    const data = await res.json();
+    setPosts([...posts, ...data.posts]);
+    setShowMore(data.posts.length === 9);  // Assuming you fetch 10 posts at a time
   };
+
   useEffect(() => {
     const defaultImageUrl = 'https://www.moviemaven.xyz/moviemaven.webp';
     const ogImageUrl = posts.length > 0 ? posts[0].image || defaultImageUrl : defaultImageUrl;
