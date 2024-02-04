@@ -43,7 +43,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <meta property="og:image" content={ogImageUrl} />
         <script type="application/ld+json">{JSON.stringify(movieSchema)}</script>
       </Helmet>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1263396093645014"
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8414334205797074"
      crossorigin="anonymous"></script>
   <PersistGate persistor={persistor}>
     <Provider store={store}>
