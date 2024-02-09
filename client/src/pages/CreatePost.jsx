@@ -147,13 +147,13 @@ export default function CreatePost() {
   };
 
   const getEmbedUrl = (videoLink) => {
-    if (videoLink.includes('youtube.com')) {
-      const videoId = new URL(videoLink).searchParams.get('v');
+    if (videoLink.includes("youtube.com")) {
+      const videoId = new URL(videoLink).searchParams.get("v");
       return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
     }
 
-    if (videoLink.includes('vimeo.com')) {
-      const videoId = videoLink.split('/').pop().split('&')[0];
+    if (videoLink.includes("vimeo.com")) {
+      const videoId = videoLink.split("/").pop().split("&")[0];
       return videoId ? `https://player.vimeo.com/video/${videoId}` : null;
     }
 
