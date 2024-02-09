@@ -25,6 +25,30 @@ export default function CreatePost() {
   const quillRef = useRef(null);
   const navigate = useNavigate();
 
+  const genres = [
+    { value: 'uncategorized', label: 'Select a genre' },
+    { value: 'action', label: 'Action' },
+    { value: 'comedy', label: 'Comedy' },
+    { value: 'drama', label: 'Drama' },
+    { value: 'romance', label: 'Romance' },
+    { value: 'horror', label: 'Horror' },
+    { value: 'thriller', label: 'Thriller' },
+    { value: 'sci-fi', label: 'Science Fiction' },
+    { value: 'fantasy', label: 'Fantasy' },
+    { value: 'animation', label: 'Animation' },
+    { value: 'adventure', label: 'Adventure' },
+    { value: 'mystery', label: 'Mystery' },
+    { value: 'crime', label: 'Crime' },
+    { value: 'documentary', label: 'Documentary' },
+    { value: 'family', label: 'Family' },
+    { value: 'musical', label: 'Musical' },
+    { value: 'biography', label: 'Biography' },
+    { value: 'history', label: 'History' },
+    { value: 'war', label: 'War' },
+    { value: 'sport', label: 'Sport' },
+    { value: 'western', label: 'Western' },
+  ];
+
   const handleUploadImage = async () => {
     try {
       if (!file) {
@@ -175,6 +199,18 @@ export default function CreatePost() {
             <option value='anime'>Anime</option>
             <option value='reviews'>Reviews</option>
           </Select>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, genre: e.target.value })
+            }
+          >
+            {genres.map((genre) => (
+              <option key={genre.value} value={genre.value}>
+                {genre.label}
+              </option>
+            ))}
+          </Select>
+
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
           <FileInput
