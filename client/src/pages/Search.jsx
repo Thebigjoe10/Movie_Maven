@@ -32,8 +32,8 @@ export default function Search() {
       ...sidebarData,
       searchTerm: searchTermFromUrl,
       sort: sortFromUrl,
-      category: categoryFromUrl,
-      genre: genreFromUrl,
+      category: categoryFromUrl || "uncategorized", // Default to "uncategorized" if not provided
+      genre: genreFromUrl || "uncategorized", // Default to "uncategorized" if not provided
     });
   }
 
@@ -44,19 +44,14 @@ export default function Search() {
       let url;
 
       if (categoryFromUrl === "movies" && genreFromUrl === "uncategorized") {
-        // Special case: Show all movies without considering the genre
         url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
       } else if (categoryFromUrl === "series" && genreFromUrl === "uncategorized") {
-        // Special case: Show all series without considering the genre
         url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
       } else if (categoryFromUrl === "kdrama" && genreFromUrl === "uncategorized") {
-        // Special case: Show all KDRAMA without considering the genre
         url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
       } else if (categoryFromUrl === "anime" && genreFromUrl === "uncategorized") {
-        // Special case: Show all Anime without considering the genre
         url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
       } else {
-        // General case: Filter posts based on category and genre
         url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`;
       }
 
@@ -91,15 +86,14 @@ export default function Search() {
   fetchPosts();
 }, [location.search]);
 
-
-  const handleShowMore = async () => {
+const handleShowMore = async () => {
   const numberOfPosts = posts.length;
   const startIndex = numberOfPosts;
   const urlParams = new URLSearchParams(location.search);
-  
+
   // Remove the genre parameter before fetching more posts
   urlParams.delete("genre");
-  
+
   urlParams.set("startIndex", startIndex);
   const searchQuery = urlParams.toString();
 
@@ -115,36 +109,34 @@ export default function Search() {
   setShowMore(data.posts.length === 9);
 };
 
+const handleChange = (e) => {
+  if (e.target.id === "searchTerm") {
+    setSidebarData({ ...sidebarData, searchTerm: e.target.value });
+  }
+  if (e.target.id === "sort") {
+    const order = e.target.value || "desc";
+    setSidebarData({ ...sidebarData, sort: order });
+  }
+  if (e.target.id === "category") {
+    const category = e.target.value || "uncategorized";
+    setSidebarData({ ...sidebarData, category });
+  }
+  if (e.target.id === "genre") {
+    const genre = e.target.value || "uncategorized";
+    setSidebarData({ ...sidebarData, genre });
+  }
+};
 
-  const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
-      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
-    }
-    if (e.target.id === "sort") {
-      const order = e.target.value || "desc";
-      setSidebarData({ ...sidebarData, sort: order });
-    }
-    if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized";
-      setSidebarData({ ...sidebarData, category });
-    }
-    if (e.target.id === "genre") {
-      const genre = e.target.value || "uncategorized";
-      setSidebarData({ ...sidebarData, genre });
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("searchTerm", sidebarData.searchTerm);
-    urlParams.set("sort", sidebarData.sort);
-    urlParams.set("category", sidebarData.category);
-    urlParams.set("genre", sidebarData.genre);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
-  };
-
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const urlParams = new URLSearchParams(location.search);
+  urlParams.set("searchTerm", sidebarData.searchTerm);
+  urlParams.set("sort", sidebarData.sort);
+  urlParams.set("category", sidebarData.category);
+  urlParams.set("genre", sidebarData.genre);
+  const searchQuery = urlParams.toString();
+  navigate(`/search?${searchQuery}`);
+};
 
   useEffect(() => {
     const defaultImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
