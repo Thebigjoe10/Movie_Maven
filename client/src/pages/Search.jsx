@@ -1,12 +1,4 @@
-import { Button, Select, TextInput } from "flowbite-react";
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import PostCard from "../components/PostCard";
-import { Helmet } from "react-helmet";
-// import AdComponent from '../components/Ads';
-
-export default function Search() {
-  const [sidebarData, setSidebarData] = useState({
+const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
     category: "uncategorized",
@@ -27,13 +19,12 @@ export default function Search() {
     const categoryFromUrl = urlParams.get("category");
     const genreFromUrl = urlParams.get("genre");
 
-    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
+    if (searchTermFromUrl !== null || sortFromUrl !== null || categoryFromUrl !== null || genreFromUrl !== null) {
       setSidebarData({
-        ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
-        genre: genreFromUrl,
+        searchTerm: searchTermFromUrl || "",
+        sort: sortFromUrl || "desc",
+        category: categoryFromUrl || "uncategorized",
+        genre: genreFromUrl || "uncategorized",
       });
     }
 
@@ -52,9 +43,8 @@ export default function Search() {
       // Filter posts based on both category and genre
       const filteredPosts = data.posts.filter((post) => {
         if (
-          (categoryFromUrl === "uncategorized" ||
-            post.category === categoryFromUrl) &&
-          (genreFromUrl === "uncategorized" || post.genre === genreFromUrl)
+          (categoryFromUrl === "uncategorized" || post.category === categoryFromUrl || categoryFromUrl === null) &&
+          (genreFromUrl === "uncategorized" || post.genre === genreFromUrl || genreFromUrl === null)
         ) {
           return true;
         }
@@ -68,7 +58,6 @@ export default function Search() {
 
     fetchPosts();
   }, [location.search]);
-
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
@@ -117,6 +106,7 @@ export default function Search() {
     setPosts([...posts, ...data.posts]);
     setShowMore(data.posts.length === 9);
   };
+
   useEffect(() => {
     const defaultImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
     const ogImageUrl =
