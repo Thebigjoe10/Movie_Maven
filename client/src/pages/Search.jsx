@@ -47,6 +47,9 @@ const fetchPosts = async () => {
       }
 
       const data = await res.json();
+  const res = await fetch(
+    `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`
+  );
 
       const filteredPosts = data.posts.filter((post) => {
         if (
@@ -67,24 +70,28 @@ const fetchPosts = async () => {
   }, [location.search]);
 
   const handleShowMore = async () => {
-    const numberOfPosts = posts.length;
-    const startIndex = numberOfPosts;
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("startIndex", startIndex);
-    const searchQuery = urlParams.toString();
+  const numberOfPosts = posts.length;
+  const startIndex = numberOfPosts;
+  const urlParams = new URLSearchParams(location.search);
+  
+  // Remove the genre parameter before fetching more posts
+  urlParams.delete("genre");
+  
+  urlParams.set("startIndex", startIndex);
+  const searchQuery = urlParams.toString();
 
-    const res = await fetch(`/api/post/getposts?${searchQuery}`);
+  const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
-    if (!res.ok) {
-      console.error("Error fetching more posts:", res.status, res.statusText);
-      return;
-    }
+  if (!res.ok) {
+    console.error("Error fetching more posts:", res.status, res.statusText);
+    return;
+  }
 
-    const data = await res.json();
-    setPosts([...posts, ...data.posts]);
-    setShowMore(data.posts.length === 9);
-  };
-;
+  const data = await res.json();
+  setPosts([...posts, ...data.posts]);
+  setShowMore(data.posts.length === 9);
+};
+
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
