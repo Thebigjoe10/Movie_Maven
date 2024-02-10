@@ -36,43 +36,55 @@ export default function Search() {
         genre: genreFromUrl,
       });
     }
-
-    // Modified fetchPosts function
 const fetchPosts = async () => {
-  setLoading(true);
-  const urlParams = new URLSearchParams(location.search);
-  const searchTermFromUrl = urlParams.get("searchTerm");
-  const sortFromUrl = urlParams.get("sort");
-  const categoryFromUrl = urlParams.get("category") || "uncategorized";
-  const genreFromUrl = urlParams.get("genre") || "uncategorized";
+      setLoading(true);
+      const searchQuery = urlParams.toString();
+      const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
-  const res = await fetch(
-    `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`
-  );
+      if (!res.ok) {
+        setLoading(false);
+        return;
+      }
 
-  if (!res.ok) {
-    setLoading(false);
-    return;
-  }
+      const data = await res.json();
 
-  const data = await res.json();
+      const filteredPosts = data.posts.filter((post) => {
+        if (
+          (categoryFromUrl === "uncategorized" || post.category === categoryFromUrl) &&
+          (genreFromUrl === "uncategorized" || post.genre === genreFromUrl)
+        ) {
+          return true;
+        }
+        return false;
+      });
 
-  // Filter posts based on both category and genre
-  const filteredPosts = data.posts.filter((post) => {
-    if (
-      (categoryFromUrl === "uncategorized" || post.category === categoryFromUrl) &&
-      (genreFromUrl === "uncategorized" || post.genre === genreFromUrl)
-    ) {
-      return true;
+      setPosts(filteredPosts);
+      setLoading(false);
+      setShowMore(filteredPosts.length === 9);
+    };
+
+    fetchPosts();
+  }, [location.search]);
+
+  const handleShowMore = async () => {
+    const numberOfPosts = posts.length;
+    const startIndex = numberOfPosts;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+
+    const res = await fetch(`/api/post/getposts?${searchQuery}`);
+
+    if (!res.ok) {
+      console.error("Error fetching more posts:", res.status, res.statusText);
+      return;
     }
-    return false;
-  });
 
-  setPosts(filteredPosts);
-  setLoading(false);
-  setShowMore(filteredPosts.length === 9);
-};
-};
+    const data = await res.json();
+    setPosts([...posts, ...data.posts]);
+    setShowMore(data.posts.length === 9);
+  };
+;
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
@@ -103,24 +115,6 @@ const fetchPosts = async () => {
     navigate(`/search?${searchQuery}`);
   };
 
-  const handleShowMore = async () => {
-  const numberOfPosts = posts.length;
-  const startIndex = numberOfPosts;
-  const urlParams = new URLSearchParams(location.search);
-  urlParams.set("startIndex", startIndex);
-  const searchQuery = urlParams.toString();
-
-  const res = await fetch(`/api/post/getposts?${searchQuery}`);
-
-  if (!res.ok) {
-    console.error("Error fetching more posts:", res.status, res.statusText);
-    return;
-  }
-
-  const data = await res.json();
-  setPosts([...posts, ...data.posts]);
-  setShowMore(data.posts.length === 9);
-};
 
   useEffect(() => {
     const defaultImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
