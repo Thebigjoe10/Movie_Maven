@@ -21,41 +21,26 @@ export default function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const urlParams = new URLSearchParams(location.search);
-  const searchTermFromUrl = urlParams.get("searchTerm");
-  const sortFromUrl = urlParams.get("sort");
-  const categoryFromUrl = urlParams.get("category");
-  const genreFromUrl = urlParams.get("genre");
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const sortFromUrl = urlParams.get("sort");
+    const categoryFromUrl = urlParams.get("category");
+    const genreFromUrl = urlParams.get("genre");
 
-  if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
-    setSidebarData({
-      ...sidebarData,
-      searchTerm: searchTermFromUrl,
-      sort: sortFromUrl,
-      category: categoryFromUrl || "uncategorized", // Default to "uncategorized" if not provided
-      genre: genreFromUrl || "uncategorized", // Default to "uncategorized" if not provided
-    });
-  }
+    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
+      setSidebarData({
+        ...sidebarData,
+        searchTerm: searchTermFromUrl,
+        sort: sortFromUrl,
+        category: categoryFromUrl,
+        genre: genreFromUrl,
+      });
+    }
 
-  const fetchPosts = async () => {
-    setLoading(true);
-
-    try {
-      let url;
-
-      if (categoryFromUrl === "movies" && genreFromUrl === "uncategorized") {
-        url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
-      } else if (categoryFromUrl === "series" && genreFromUrl === "uncategorized") {
-        url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
-      } else if (categoryFromUrl === "kdrama" && genreFromUrl === "uncategorized") {
-        url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
-      } else if (categoryFromUrl === "anime" && genreFromUrl === "uncategorized") {
-        url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
-      } else {
-        url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`;
-      }
-
-      const res = await fetch(url + location.search);
+    const fetchPosts = async () => {
+      setLoading(true);
+      const searchQuery = urlParams.toString();
+      const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
       if (!res.ok) {
         setLoading(false);
@@ -64,9 +49,11 @@ export default function Search() {
 
       const data = await res.json();
 
+      // Filter posts based on both category and genre
       const filteredPosts = data.posts.filter((post) => {
         if (
-          (categoryFromUrl === "uncategorized" || post.category === categoryFromUrl) &&
+          (categoryFromUrl === "uncategorized" ||
+            post.category === categoryFromUrl) &&
           (genreFromUrl === "uncategorized" || post.genre === genreFromUrl)
         ) {
           return true;
@@ -77,67 +64,59 @@ export default function Search() {
       setPosts(filteredPosts);
       setLoading(false);
       setShowMore(filteredPosts.length === 9);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      setLoading(false);
+    };
+
+    fetchPosts();
+  }, [location.search]);
+
+
+  const handleChange = (e) => {
+    if (e.target.id === "searchTerm") {
+      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
+    }
+    if (e.target.id === "sort") {
+      const order = e.target.value || "desc";
+      setSidebarData({ ...sidebarData, sort: order });
+    }
+    if (e.target.id === "category") {
+      const category = e.target.value || "uncategorized";
+      setSidebarData({ ...sidebarData, category });
+    }
+    if (e.target.id === "genre") {
+      const genre = e.target.value || "uncategorized";
+      setSidebarData({ ...sidebarData, genre });
     }
   };
 
-  fetchPosts();
-}, [location.search]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("searchTerm", sidebarData.searchTerm);
+    urlParams.set("sort", sidebarData.sort);
+    urlParams.set("category", sidebarData.category);
+    urlParams.set("genre", sidebarData.genre);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
 
-const handleShowMore = async () => {
-  const numberOfPosts = posts.length;
-  const startIndex = numberOfPosts;
-  const urlParams = new URLSearchParams(location.search);
+  const handleShowMore = async () => {
+    const numberOfPosts = posts.length;
+    const startIndex = numberOfPosts;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
 
-  // Remove the genre parameter before fetching more posts
-  urlParams.delete("genre");
+    const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
-  urlParams.set("startIndex", startIndex);
-  const searchQuery = urlParams.toString();
+    if (!res.ok) {
+      console.error("Error fetching more posts:", res.status, res.statusText);
+      return;
+    }
 
-  const res = await fetch(`/api/post/getposts?${searchQuery}`);
-
-  if (!res.ok) {
-    console.error("Error fetching more posts:", res.status, res.statusText);
-    return;
-  }
-
-  const data = await res.json();
-  setPosts([...posts, ...data.posts]);
-  setShowMore(data.posts.length === 9);
-};
-
-const handleChange = (e) => {
-  if (e.target.id === "searchTerm") {
-    setSidebarData({ ...sidebarData, searchTerm: e.target.value });
-  }
-  if (e.target.id === "sort") {
-    const order = e.target.value || "desc";
-    setSidebarData({ ...sidebarData, sort: order });
-  }
-  if (e.target.id === "category") {
-    const category = e.target.value || "uncategorized";
-    setSidebarData({ ...sidebarData, category });
-  }
-  if (e.target.id === "genre") {
-    const genre = e.target.value || "uncategorized";
-    setSidebarData({ ...sidebarData, genre });
-  }
-};
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const urlParams = new URLSearchParams(location.search);
-  urlParams.set("searchTerm", sidebarData.searchTerm);
-  urlParams.set("sort", sidebarData.sort);
-  urlParams.set("category", sidebarData.category);
-  urlParams.set("genre", sidebarData.genre);
-  const searchQuery = urlParams.toString();
-  navigate(`/search?${searchQuery}`);
-};
-
+    const data = await res.json();
+    setPosts([...posts, ...data.posts]);
+    setShowMore(data.posts.length === 9);
+  };
   useEffect(() => {
     const defaultImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
     const ogImageUrl =
