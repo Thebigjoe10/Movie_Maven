@@ -5,6 +5,7 @@ import PostCard from "../components/PostCard";
 import { Helmet } from "react-helmet";
 // import AdComponent from '../components/Ads';
 
+
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
