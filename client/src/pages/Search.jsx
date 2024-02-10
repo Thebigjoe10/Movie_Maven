@@ -74,7 +74,6 @@ const fetchPosts = async () => {
 };
 
 
-
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
       setSidebarData({ ...sidebarData, searchTerm: e.target.value });
