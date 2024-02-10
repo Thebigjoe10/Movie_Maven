@@ -38,40 +38,64 @@ export default function Search() {
   }
 
   const fetchPosts = async () => {
-    setLoading(true);
-    const url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`;
+  setLoading(true);
 
-    try {
-      const res = await fetch(url);
+  const urlParams = new URLSearchParams(location.search);
+  const searchTermFromUrl = urlParams.get("searchTerm");
+  const sortFromUrl = urlParams.get("sort");
+  const categoryFromUrl = urlParams.get("category");
+  const genreFromUrl = urlParams.get("genre");
 
-      if (!res.ok) {
-        setLoading(false);
-        return;
-      }
+  try {
+    let url;
 
-      const data = await res.json();
-
-      const filteredPosts = data.posts.filter((post) => {
-        if (
-          (categoryFromUrl === "uncategorized" || post.category === categoryFromUrl) &&
-          (genreFromUrl === "uncategorized" || post.genre === genreFromUrl)
-        ) {
-          return true;
-        }
-        return false;
-      });
-
-      setPosts(filteredPosts);
-      setLoading(false);
-      setShowMore(filteredPosts.length === 9);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      setLoading(false);
+    if (categoryFromUrl === "movies" && genreFromUrl === "uncategorized") {
+      // Special case: Show all movies without considering the genre
+      url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
+    } else if (categoryFromUrl === "series" && genreFromUrl === "uncategorized") {
+      // Special case: Show all series without considering the genre
+      url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
+    } else if (categoryFromUrl === "kdrama" && genreFromUrl === "uncategorized") {
+      // Special case: Show all KDRAMA without considering the genre
+      url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
+    } else if (categoryFromUrl === "anime" && genreFromUrl === "uncategorized") {
+      // Special case: Show all Anime without considering the genre
+      url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}`;
+    } else {
+      // General case: Filter posts based on category and genre
+      url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`;
     }
-  };
 
-  fetchPosts();
-}, [location.search]);
+    const res = await fetch(url + location.search);
+
+    if (!res.ok) {
+      setLoading(false);
+      return;
+    }
+
+    const data = await res.json();
+
+    const filteredPosts = data.posts.filter((post) => {
+      if (
+        (categoryFromUrl === "uncategorized" || post.category === categoryFromUrl) &&
+        (genreFromUrl === "uncategorized" || post.genre === genreFromUrl)
+      ) {
+        return true;
+      }
+      return false;
+    });
+
+    setPosts(filteredPosts);
+    setLoading(false);
+    setShowMore(filteredPosts.length === 9);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    setLoading(false);
+  }
+};
+
+fetchPosts();
+
 
   const handleShowMore = async () => {
   const numberOfPosts = posts.length;
