@@ -21,25 +21,28 @@ export default function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    const sortFromUrl = urlParams.get("sort");
-    const categoryFromUrl = urlParams.get("category");
-    const genreFromUrl = urlParams.get("genre");
+  const urlParams = new URLSearchParams(location.search);
+  const searchTermFromUrl = urlParams.get("searchTerm");
+  const sortFromUrl = urlParams.get("sort");
+  const categoryFromUrl = urlParams.get("category");
+  const genreFromUrl = urlParams.get("genre");
 
-    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
-      setSidebarData({
-        ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
-        genre: genreFromUrl,
-      });
-    }
-const fetchPosts = async () => {
-      setLoading(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/getposts?${searchQuery}`);
+  if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
+    setSidebarData({
+      ...sidebarData,
+      searchTerm: searchTermFromUrl,
+      sort: sortFromUrl,
+      category: categoryFromUrl,
+      genre: genreFromUrl,
+    });
+  }
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    const url = `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`;
+
+    try {
+      const res = await fetch(url);
 
       if (!res.ok) {
         setLoading(false);
@@ -47,9 +50,6 @@ const fetchPosts = async () => {
       }
 
       const data = await res.json();
-  const res = await fetch(
-    `/api/post/getposts?searchTerm=${searchTermFromUrl}&sort=${sortFromUrl}&category=${categoryFromUrl}&genre=${genreFromUrl}`
-  );
 
       const filteredPosts = data.posts.filter((post) => {
         if (
@@ -64,10 +64,14 @@ const fetchPosts = async () => {
       setPosts(filteredPosts);
       setLoading(false);
       setShowMore(filteredPosts.length === 9);
-    };
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      setLoading(false);
+    }
+  };
 
-    fetchPosts();
-  }, [location.search]);
+  fetchPosts();
+}, [location.search]);
 
   const handleShowMore = async () => {
   const numberOfPosts = posts.length;
