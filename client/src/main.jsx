@@ -45,6 +45,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </Helmet>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8414334205797074"
      crossorigin="anonymous"></script>
+     <script src="https://alwingulla.com/88/tag.min.js" data-zone="39045" async data-cfasync="false"></script>
   <PersistGate persistor={persistor}>
     <Provider store={store}>
       <ThemeProvider>
