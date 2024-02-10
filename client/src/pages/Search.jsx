@@ -72,7 +72,7 @@ const fetchPosts = async () => {
   setLoading(false);
   setShowMore(filteredPosts.length === 9);
 };
-
+};
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
