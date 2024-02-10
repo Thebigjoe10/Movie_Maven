@@ -201,6 +201,7 @@ export default function PostPage() {
         {/* <div className='max-w-4xl mx-auto w-full'>
         <CallToAction />
       </div> */}
+      <script src="https://alwingulla.com/88/tag.min.js" data-zone="43089" async data-cfasync="false"></script>
       </main>
     </React.Fragment>
   );
