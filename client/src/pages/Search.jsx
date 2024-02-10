@@ -37,9 +37,8 @@ export default function Search() {
       });
     }
 
-    const fetchPosts = async () => {
-      setLoading(true);
-      const searconst fetchPosts = async () => {
+    // Modified fetchPosts function
+const fetchPosts = async () => {
   setLoading(true);
   const urlParams = new URLSearchParams(location.search);
   const searchTermFromUrl = urlParams.get("searchTerm");
@@ -73,6 +72,7 @@ export default function Search() {
   setLoading(false);
   setShowMore(filteredPosts.length === 9);
 };
+
 
 
   const handleChange = (e) => {
