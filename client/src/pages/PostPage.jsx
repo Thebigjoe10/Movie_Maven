@@ -16,31 +16,51 @@ export default function PostPage() {
   const [recommendedPosts, setRecommendedPosts] = useState([]);
 
   useEffect(() => {
+  
+  useEffect(() => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
+        // Use the correct API route
+        const res = await fetch(`/api/post/getpost?slug=${postSlug}`);
         const data = await res.json();
+        
         if (!res.ok || data.posts.length === 0) {
           setError(true);
           setLoading(false);
           return;
         }
+
         if (res.ok) {
+          // Use setPost instead of setOgImageUrl
           setPost(data.posts[0]);
-          setOgImageUrl(
-            data.posts[0].image 
-          );
           setLoading(false);
           setError(false);
         }
       } catch (error) {
+        console.error(error); // Log the error for debugging
         setError(true);
         setLoading(false);
       }
     };
+
     fetchPost();
   }, [postSlug]);
+
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner size="xl" />
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p>Error loading post. Please try again later.</p>
+      </div>
+    );
 
   useEffect(() => {
     try {
