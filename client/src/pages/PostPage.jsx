@@ -41,45 +41,42 @@ export default function PostPage() {
       setLoading(false);
     }
   };
+useEffect(() => {
+  try {
+    const fetchRelatedPosts = async () => {
+      if (!post || (!post.category && !post.genre)) {
+        // If post data is incomplete, do nothing
+        return;
+      }
 
-  fetchPost();
-}, [postSlug]);
+      let apiUrl = '/api/post/getposts?limit=3';
 
-  useEffect(() => {
-    try {
-      const fetchRelatedPosts = async () => {
-        if (!post || (!post.category && !post.genre)) {
-          // If post data is incomplete, do nothing
-          return;
-        }
-  
-        let apiUrl = '/api/post/getposts?limit=3';
-  
-        if (post.category) {
-          apiUrl += `&category=${post.category}`;
-        }
-  
-        if (post.genre) {
-          apiUrl += `&genre=${post.genre}`;
-        }
-  
-        const res = await fetch(apiUrl);
-  
-        const data = await res.json();
-        if (res.ok) {
-          // Exclude the current post from related posts
-          const filteredRelatedPosts = data.posts.filter(
-            (relatedPost) => relatedPost._id !== post._id
-          );
-          setRelatedPosts(filteredRelatedPosts);
-        }
-      };
-  
-      fetchRelatedPosts();
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, [post]);
+      if (post.category) {
+        apiUrl += `&category=${post.category}`;
+      }
+
+      if (post.genre) {
+        apiUrl += `&genre=${post.genre}`;
+      }
+
+      const res = await fetch(apiUrl);
+
+      const data = await res.json();
+      if (res.ok) {
+        // Exclude the current post from related posts
+        const filteredRelatedPosts = data.posts.filter(
+          (relatedPost) => relatedPost._id !== post._id
+        );
+        setRelatedPosts(filteredRelatedPosts);
+      }
+    };
+
+    fetchRelatedPosts();
+  } catch (error) {
+    console.log(error.message);
+  }
+}, [post]);
+
   
   useEffect(() => {
     try {
