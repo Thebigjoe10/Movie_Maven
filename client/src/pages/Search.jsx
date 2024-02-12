@@ -62,7 +62,7 @@ export default function Search() {
 
       setPosts(filteredPosts);
       setLoading(false);
-      setShowMore(filteredPosts.length === 9);
+      setShowMore(filteredPosts.length === 10);
     };
 
     fetchPosts();
