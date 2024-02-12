@@ -16,51 +16,34 @@ export default function PostPage() {
   const [recommendedPosts, setRecommendedPosts] = useState([]);
 
   useEffect(() => {
-  
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        // Use the correct API route
-        const res = await fetch(`/api/post/getpost?slug=${postSlug}`);
-        const data = await res.json();
-        
-        if (!res.ok || data.posts.length === 0) {
-          setError(true);
-          setLoading(false);
-          return;
-        }
+  const fetchPost = async () => {
+    try {
+      setLoading(true);
+      // Use the correct API route
+      const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
+      const data = await res.json();
 
-        if (res.ok) {
-          // Use setPost instead of setOgImageUrl
-          setPost(data.posts[0]);
-          setLoading(false);
-          setError(false);
-        }
-      } catch (error) {
-        console.error(error); // Log the error for debugging
+      if (!res.ok || data.posts.length === 0) {
         setError(true);
         setLoading(false);
+        return;
       }
-    };
 
-    fetchPost();
-  }, [postSlug]);
+      if (res.ok) {
+        // Assuming you want to set the first post in the array
+        setPost(data.posts[0]);
+        setLoading(false);
+        setError(false);
+      }
+    } catch (error) {
+      console.error(error); // Log the error for debugging
+      setError(true);
+      setLoading(false);
+    }
+  };
 
-
-  if (loading)
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Spinner size="xl" />
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p>Error loading post. Please try again later.</p>
-      </div>
-    );
+  fetchPost();
+}, [postSlug]);
 
   useEffect(() => {
     try {
