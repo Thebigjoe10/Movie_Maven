@@ -113,7 +113,7 @@ export default function Search() {
 
     const data = await res.json();
     setPosts([...posts, ...data.posts]);
-    setShowMore(data.posts.length === 9);
+    setShowMore(data.posts.length === 10);
   };
 
   useEffect(() => {
