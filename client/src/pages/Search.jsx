@@ -226,6 +226,8 @@ export default function Search() {
                 <option value="war">War</option>
                 <option value="sport">Sport</option>
                 <option value="western">Western</option>
+                <option value="asian-movie">Asian-movie</option>
+                <option value="bollywood-movie">Bollywood</option>
               </Select>
             </div>
             <Button type="submit" outline gradientDuoTone="purpleToBlue">
