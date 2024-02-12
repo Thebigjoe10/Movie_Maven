@@ -53,7 +53,7 @@ export default function PostPage() {
           return;
         }
 
-        let apiUrl = '/api/post/getposts?limit=3';
+        let apiUrl = "/api/post/getposts?limit=3";
 
         if (post.category) {
           apiUrl += `&category=${post.category}`;
@@ -102,7 +102,7 @@ export default function PostPage() {
       console.log(error.message);
     }
   }, [post]);
-  
+
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -119,12 +119,19 @@ export default function PostPage() {
 
   return (
     <React.Fragment>
-    <Helmet>
+      <Helmet>
         <title>{post && post.title}</title>
         <meta property="og:title" content={post && post.title} />
-        <meta property="og:description" content="Explore an extensive selection of entertainment options like movies, TV series, kdramas and animes. Also find insightful movie reviews that shed light on the world of cinema. Immerse yourself in a world where staying updated with current events is effortless while indulging in engaging content that's impossible to ignore - all handpicked for you at one destination. Brace yourself for unforgettable immersive experiences!" />
+        <meta
+          property="og:description"
+          content="Explore an extensive selection of entertainment options like movies, TV series, kdramas, and animes. Also find insightful movie reviews that shed light on the world of cinema. Immerse yourself in a world where staying updated with current events is effortless while indulging in engaging content that's impossible to ignore - all handpicked for you at one destination. Brace yourself for unforgettable immersive experiences!"
+        />
         <meta property="og:image" content={post && post.image} />
-        <meta property="og:url" content={`https://moviemaven.xyz/post/${postSlug}`} />
+        {/* Make sure to provide a secure (https) URL for the image */}
+        <meta
+          property="og:url"
+          content={`https://moviemaven.xyz/post/${postSlug}`}
+        />
       </Helmet>
       {/* <AdComponent/> */}
       <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
@@ -141,12 +148,11 @@ export default function PostPage() {
         <Link
           to={`/search?genre=${post && post.genre}`}
           className="self-center mt-5">
-          {post &&
-            post.genre && ( 
-              <Button color="gray" pill size="xs">
-                {post.genre}
-              </Button>
-            )}
+          {post && post.genre && (
+            <Button color="gray" pill size="xs">
+              {post.genre}
+            </Button>
+          )}
         </Link>
         <img
           src={post && post.image}
@@ -192,7 +198,11 @@ export default function PostPage() {
         {/* <div className='max-w-4xl mx-auto w-full'>
         <CallToAction />
       </div> */}
-      <script src="https://alwingulla.com/88/tag.min.js" data-zone="43089" async data-cfasync="false"></script>
+        <script
+          src="https://alwingulla.com/88/tag.min.js"
+          data-zone="43089"
+          async
+          data-cfasync="false"></script>
       </main>
     </React.Fragment>
   );
