@@ -4,7 +4,7 @@ export default function PostCard({ post }) {
   return (
     <div className='group relative w-1/3 md:w-1/3 lg:w-1/4 border border-teal-500 hover:border-2 md:h-auto overflow-hidden rounded-lg transition-all'>
       <Link to={`/post/${post.slug}`}>
-        <div className="aspect-w-16 aspect-h-9">
+        <div className="aspect-w-20 aspect-h-16">
           <img
             src={post.image}
             alt='post cover'
