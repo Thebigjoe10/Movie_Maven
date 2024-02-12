@@ -16,69 +16,71 @@ export default function PostPage() {
   const [recommendedPosts, setRecommendedPosts] = useState([]);
 
   useEffect(() => {
-  const fetchPost = async () => {
-    try {
-      setLoading(true);
-      // Use the correct API route
-      const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
-      const data = await res.json();
+    const fetchPost = async () => {
+      try {
+        setLoading(true);
+        // Use the correct API route
+        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
+        const data = await res.json();
 
-      if (!res.ok || data.posts.length === 0) {
+        if (!res.ok || data.posts.length === 0) {
+          setError(true);
+          setLoading(false);
+          return;
+        }
+
+        if (res.ok) {
+          // Assuming you want to set the first post in the array
+          setPost(data.posts[0]);
+          setLoading(false);
+          setError(false);
+        }
+      } catch (error) {
+        console.error(error); // Log the error for debugging
         setError(true);
         setLoading(false);
-        return;
-      }
-
-      if (res.ok) {
-        // Assuming you want to set the first post in the array
-        setPost(data.posts[0]);
-        setLoading(false);
-        setError(false);
-      }
-    } catch (error) {
-      console.error(error); // Log the error for debugging
-      setError(true);
-      setLoading(false);
-    }
-  };
-useEffect(() => {
-  try {
-    const fetchRelatedPosts = async () => {
-      if (!post || (!post.category && !post.genre)) {
-        // If post data is incomplete, do nothing
-        return;
-      }
-
-      let apiUrl = '/api/post/getposts?limit=3';
-
-      if (post.category) {
-        apiUrl += `&category=${post.category}`;
-      }
-
-      if (post.genre) {
-        apiUrl += `&genre=${post.genre}`;
-      }
-
-      const res = await fetch(apiUrl);
-
-      const data = await res.json();
-      if (res.ok) {
-        // Exclude the current post from related posts
-        const filteredRelatedPosts = data.posts.filter(
-          (relatedPost) => relatedPost._id !== post._id
-        );
-        setRelatedPosts(filteredRelatedPosts);
       }
     };
 
-    fetchRelatedPosts();
-  } catch (error) {
-    console.log(error.message);
-  }
-}, [post]);
+    fetchPost();
+  }, [postSlug]);
 
+  useEffect(() => {
+    try {
+      const fetchRelatedPosts = async () => {
+        if (!post || (!post.category && !post.genre)) {
+          // If post data is incomplete, do nothing
+          return;
+        }
 
-  
+        let apiUrl = '/api/post/getposts?limit=3';
+
+        if (post.category) {
+          apiUrl += `&category=${post.category}`;
+        }
+
+        if (post.genre) {
+          apiUrl += `&genre=${post.genre}`;
+        }
+
+        const res = await fetch(apiUrl);
+
+        const data = await res.json();
+        if (res.ok) {
+          // Exclude the current post from related posts
+          const filteredRelatedPosts = data.posts.filter(
+            (relatedPost) => relatedPost._id !== post._id
+          );
+          setRelatedPosts(filteredRelatedPosts);
+        }
+      };
+
+      fetchRelatedPosts();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [post]);
+
   useEffect(() => {
     try {
       const fetchRecommendedPosts = async () => {
@@ -100,7 +102,6 @@ useEffect(() => {
       console.log(error.message);
     }
   }, [post]);
-
   
   if (loading)
     return (
