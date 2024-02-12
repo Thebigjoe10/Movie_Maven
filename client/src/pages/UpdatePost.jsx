@@ -48,6 +48,8 @@ export default function UpdatePost() {
     { value: "war", label: "War" },
     { value: "sport", label: "Sport" },
     { value: "western", label: "Western" },
+    { value: "asian-movie", label:"Asian-movie"},
+    {value: "bollywood-movie", label: "Bollywood-movie"},
   ];
   useEffect(() => {
     const fetchPost = async () => {
