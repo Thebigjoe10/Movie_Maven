@@ -124,7 +124,7 @@ export default function Home() {
               <Link
                 to={"/search?category=movies"}
                 className="text-lg text-white hover:underline text-center">
-                show all movies
+                show more movies
               </Link>
             </Button>
           </div>
@@ -145,7 +145,7 @@ export default function Home() {
               <Link
                 to={"/search?category=series"}
                 className="text-lg text-white hover:underline text-center">
-                show all series
+                show more series
               </Link>
             </Button>
           </div>
@@ -166,7 +166,7 @@ export default function Home() {
               <Link
                 to={"/search?category=kdrama"}
                 className="text-lg text-white hover:underline text-center">
-                show all Kdramas
+                show more Kdramas
               </Link>
             </Button>
           </div>
@@ -185,7 +185,7 @@ export default function Home() {
               <Link
                 to={"/search?category=anime"}
                 className="text-lg text-white hover:underline text-center">
-                show all Anime
+                show more Anime
               </Link>
             </Button>
           </div>
@@ -204,7 +204,7 @@ export default function Home() {
               <Link
                 to={"/search?category=reviews"}
                 className="text-lg text-white hover:underline text-center">
-                show all Reviews
+                show more Reviews
               </Link>
             </Button>
           </div>
