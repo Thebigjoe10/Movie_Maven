@@ -10,8 +10,8 @@ export default function Search() {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
-    category: "uncategorized",
-    genre: "uncategorized",
+    category: "",
+    genre: "",
   });
 
   const [posts, setPosts] = useState([]);
@@ -22,47 +22,29 @@ export default function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    const sortFromUrl = urlParams.get("sort");
-    const categoryFromUrl = urlParams.get("category");
-    const genreFromUrl = urlParams.get("genre");
-
-    if (searchTermFromUrl !== null || sortFromUrl !== null || categoryFromUrl !== null || genreFromUrl !== null) {
-      setSidebarData({
-        searchTerm: searchTermFromUrl || "",
-        sort: sortFromUrl || "desc",
-        category: categoryFromUrl || "uncategorized",
-        genre: genreFromUrl || "uncategorized",
-      });
-    }
-
     const fetchPosts = async () => {
       setLoading(true);
-      const searchQuery = urlParams.toString();
+
+      const searchQuery = new URLSearchParams({
+        searchTerm: encodeURIComponent(sidebarData.searchTerm),
+        sort: sidebarData.sort,
+        category: sidebarData.category,
+        genre: sidebarData.genre,
+      }).toString();
+
       const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
       if (!res.ok) {
+        console.error("Error fetching posts:", res.status, res.statusText);
         setLoading(false);
         return;
       }
 
       const data = await res.json();
 
-      // Filter posts based on both category and genre
-      const filteredPosts = data.posts.filter((post) => {
-        if (
-          (categoryFromUrl === "uncategorized" || post.category === categoryFromUrl || categoryFromUrl === null) &&
-          (genreFromUrl === "uncategorized" || post.genre === genreFromUrl || genreFromUrl === null)
-        ) {
-          return true;
-        }
-        return false;
-      });
-
-      setPosts(filteredPosts);
+      setPosts(data.posts);
       setLoading(false);
-      setShowMore(filteredPosts.length === 10);
+      setShowMore(data.posts.length === 10);
     };
 
     fetchPosts();
@@ -77,25 +59,27 @@ export default function Search() {
       setSidebarData({ ...sidebarData, sort: order });
     }
     if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized";
+      const category = e.target.value ;
       setSidebarData({ ...sidebarData, category });
     }
     if (e.target.id === "genre") {
-      const genre = e.target.value || "uncategorized";
+      const genre = e.target.value ;
       setSidebarData({ ...sidebarData, genre });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("searchTerm", sidebarData.searchTerm);
-    urlParams.set("sort", sidebarData.sort);
-    urlParams.set("category", sidebarData.category);
-    urlParams.set("genre", sidebarData.genre);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
+
+    const searchQuery = new URLSearchParams();
+    searchQuery.set("searchTerm", encodeURIComponent(sidebarData.searchTerm));
+    searchQuery.set("sort", sidebarData.sort);
+    searchQuery.set("category", sidebarData.category);
+    searchQuery.set("genre", sidebarData.genre);
+
+    navigate(`/search?${searchQuery.toString()}`);
   };
+  
 
   const handleShowMore = async () => {
     const numberOfPosts = posts.length;
@@ -113,7 +97,7 @@ export default function Search() {
 
     const data = await res.json();
     setPosts([...posts, ...data.posts]);
-    setShowMore(data.posts.length === 10);
+    setShowMore(data.posts.length === 12);
   };
 
   useEffect(() => {
