@@ -17,7 +17,7 @@ export default function Home() {
     const fetchPostsByCategory = async (category) => {
       try {
         const res = await fetch(
-          `/api/post/getposts?category=${category}&limit=6`
+          `/api/post/getposts?category=${category}&limit=12`
         );
         const data = await res.json();
 
