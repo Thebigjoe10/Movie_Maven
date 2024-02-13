@@ -10,8 +10,8 @@ export default function Search() {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
-    category: "",
-    genre: "",
+    category: "uncategorized",
+    genre: "uncategorized",
   });
 
   const [posts, setPosts] = useState([]);
@@ -59,11 +59,11 @@ export default function Search() {
       setSidebarData({ ...sidebarData, sort: order });
     }
     if (e.target.id === "category") {
-      const category = e.target.value ;
+      const category = e.target.value || "uncategorized" ;
       setSidebarData({ ...sidebarData, category });
     }
     if (e.target.id === "genre") {
-      const genre = e.target.value ;
+      const genre = e.target.value || "uncategorized" ;
       setSidebarData({ ...sidebarData, genre });
     }
   };
