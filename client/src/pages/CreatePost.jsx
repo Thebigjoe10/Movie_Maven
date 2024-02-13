@@ -48,6 +48,7 @@ export default function CreatePost() {
     { value: "western", label: "Western" },
     { value: "asian-movie", label:"Asian-movie"},
     {value: "bollywood-movie", label: "Bollywood-movie"},
+    {value: "wwe", label: "WWE"},
   ];
 
   const handleUploadImage = async () => {
