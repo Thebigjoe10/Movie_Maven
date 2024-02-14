@@ -22,31 +22,39 @@ export default function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    consuseEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get('searchTerm');
+    const sortFromUrl = urlParams.get('sort');
+    const categoryFromUrl = urlParams.get('category');
+    if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
+      setSidebarData({
+        ...sidebarData,
+        searchTerm: searchTermFromUrl,
+        sort: sortFromUrl,
+        category: categoryFromUrl,
+      });
+    }
+
     const fetchPosts = async () => {
       setLoading(true);
-
-      const searchQuery = new URLSearchParams({
-        searchTerm: encodeURIComponent(sidebarData.searchTerm),
-        sort: sidebarData.sort,
-        category: sidebarData.category,
-        genre: sidebarData.genre,
-      }).toString();
-
+      const searchQuery = urlParams.toString();
       const res = await fetch(`/api/post/getposts?${searchQuery}`);
-
       if (!res.ok) {
-        console.error("Error fetching posts:", res.status, res.statusText);
         setLoading(false);
         return;
       }
-
-      const data = await res.json();
-
-      setPosts(data.posts);
-      setLoading(false);
-      setShowMore(data.posts.length === 10);
+      if (res.ok) {
+        const data = await res.json();
+        setPosts(data.posts);
+        setLoading(false);
+        if (data.posts.length === 12) {
+          setShowMore(true);
+        } else {
+          setShowMore(false);
+        }
+      }
     };
-
     fetchPosts();
   }, [location.search]);
 
