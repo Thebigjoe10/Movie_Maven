@@ -60,7 +60,7 @@ export default function Search() {
     };
 
     fetchPosts();
-  }, [location.search]);
+  }, [location.search, sidebarData]);
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
@@ -86,6 +86,7 @@ export default function Search() {
     urlParams.set('searchTerm', sidebarData.searchTerm);
     urlParams.set('sort', sidebarData.sort);
     urlParams.set('category', sidebarData.category);
+    urlParams.set('genre', sidebarData.genre);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
