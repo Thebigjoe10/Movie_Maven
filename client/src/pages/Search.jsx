@@ -27,12 +27,14 @@ export default function Search() {
     const searchTermFromUrl = urlParams.get('searchTerm');
     const sortFromUrl = urlParams.get('sort');
     const categoryFromUrl = urlParams.get('category');
-    if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
+     const genreFromUrl = urlParams.get('genre');
+    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
       setSidebarData({
         ...sidebarData,
         searchTerm: searchTermFromUrl,
         sort: sortFromUrl,
         category: categoryFromUrl,
+        genre: genreFromUrl,
       });
     }
 
