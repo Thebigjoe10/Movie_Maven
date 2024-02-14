@@ -61,32 +61,33 @@ export default function Search() {
   }, [location.search]);
 
   const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
-      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
-    }
-    if (e.target.id === "sort") {
-      const order = e.target.value || "desc";
-      setSidebarData({ ...sidebarData, sort: order });
-    }
-    if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized" ;
-      setSidebarData({ ...sidebarData, category });
-    }
-    if (e.target.id === "genre") {
-      const genre = e.target.value || "uncategorized" ;
-      setSidebarData({ ...sidebarData, genre });
-      
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set('searchTerm', sidebarData.searchTerm);
-    urlParams.set('sort', sidebarData.sort);
-    urlParams.set('category', sidebarData.category);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
-  };
-  
+  if (e.target.id === "searchTerm") {
+    setSidebarData({ ...sidebarData, searchTerm: e.target.value });
+  }
+  if (e.target.id === "sort") {
+    const order = e.target.value || "desc";
+    setSidebarData({ ...sidebarData, sort: order });
+  }
+  if (e.target.id === "category") {
+    const category = e.target.value || "uncategorized";
+    setSidebarData({ ...sidebarData, category });
+  }
+  if (e.target.id === "genre") {
+    const genre = e.target.value || "uncategorized";
+    setSidebarData({ ...sidebarData, genre });
+  }
+}; 
 
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const urlParams = new URLSearchParams(location.search);
+  urlParams.set('searchTerm', sidebarData.searchTerm);
+  urlParams.set('sort', sidebarData.sort);
+  urlParams.set('category', sidebarData.category);
+  const searchQuery = urlParams.toString();
+  navigate(`/search?${searchQuery}`);
+};
+  
   const handleShowMore = async () => {
     const numberOfPosts = posts.length;
     const startIndex = numberOfPosts;
