@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { Helmet } from "react-helmet";
-// import AdComponent from '../components/Ads';
-
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
@@ -22,29 +20,43 @@ export default function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get('searchTerm');
+    const sortFromUrl = urlParams.get('sort');
+    const categoryFromUrl = urlParams.get('category');
+    const genreFromUrl = urlParams.get('genre');
+
+    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
+      setSidebarData({
+        ...sidebarData,
+        searchTerm: searchTermFromUrl,
+        sort: sortFromUrl,
+        category: categoryFromUrl,
+        genre: genreFromUrl,
+      });
+    }
+
     const fetchPosts = async () => {
       setLoading(true);
-
-      const searchQuery = new URLSearchParams({
-        searchTerm: encodeURIComponent(sidebarData.searchTerm),
-        sort: sidebarData.sort,
-        category: sidebarData.category,
-        genre: sidebarData.genre,
-      }).toString();
-
+      const searchQuery = urlParams.toString();
       const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
       if (!res.ok) {
-        console.error("Error fetching posts:", res.status, res.statusText);
         setLoading(false);
         return;
       }
 
-      const data = await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        setPosts(data.posts);
+        setLoading(false);
 
-      setPosts(data.posts);
-      setLoading(false);
-      setShowMore(data.posts.length === 10);
+        if (data.posts.length === 12) {
+          setShowMore(true);
+        } else {
+          setShowMore(false);
+        }
+      }
     };
 
     fetchPosts();
@@ -59,27 +71,24 @@ export default function Search() {
       setSidebarData({ ...sidebarData, sort: order });
     }
     if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized" ;
+      const category = e.target.value || "uncategorized";
       setSidebarData({ ...sidebarData, category });
     }
     if (e.target.id === "genre") {
-      const genre = e.target.value || "uncategorized" ;
+      const genre = e.target.value || "uncategorized";
       setSidebarData({ ...sidebarData, genre });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const searchQuery = new URLSearchParams();
-    searchQuery.set("searchTerm", encodeURIComponent(sidebarData.searchTerm));
-    searchQuery.set("sort", sidebarData.sort);
-    searchQuery.set("category", sidebarData.category);
-    searchQuery.set("genre", sidebarData.genre);
-
-    navigate(`/search?${searchQuery.toString()}`);
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('searchTerm', sidebarData.searchTerm);
+    urlParams.set('sort', sidebarData.sort);
+    urlParams.set('category', sidebarData.category);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
   };
-  
 
   const handleShowMore = async () => {
     const numberOfPosts = posts.length;
@@ -102,14 +111,13 @@ export default function Search() {
 
   useEffect(() => {
     const defaultImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
-    const ogImageUrl =
-      posts.length > 0 ? posts[0].image || defaultImageUrl : defaultImageUrl;
+    const ogImageUrl = posts.length > 0 ? posts[0].image || defaultImageUrl : defaultImageUrl;
     document
       .querySelector('meta[property="og:image"]')
       .setAttribute("content", ogImageUrl);
   }, [posts]);
-  const pageTitle =
-    "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
+
+  const pageTitle = "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
   const pageDescription =
     "Explore a variety of movies, series, and reviews on MovieMaven. Your go-to source for all things entertainment.";
   const pageKeywords =
@@ -129,6 +137,7 @@ export default function Search() {
       reviewCount: "100",
     },
   };
+
   return (
     <React.Fragment>
       <Helmet>
@@ -143,14 +152,11 @@ export default function Search() {
           {JSON.stringify(movieSchema)}
         </script>
       </Helmet>
-      {/* <AdComponent/> */}
       <div className="flex flex-col md:flex-row">
         <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
           <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-            <div className="flex   items-center gap-2">
-              <label className="whitespace-nowrap font-semibold">
-                Search Term:
-              </label>
+            <div className="flex items-center gap-2">
+              <label className="whitespace-nowrap font-semibold">Search Term:</label>
               <TextInput
                 placeholder="Search..."
                 id="searchTerm"
@@ -164,7 +170,8 @@ export default function Search() {
               <Select
                 onChange={handleChange}
                 value={sidebarData.sort}
-                id="sort">
+                id="sort"
+              >
                 <option value="desc">Latest</option>
                 <option value="asc">Oldest</option>
               </Select>
@@ -174,7 +181,8 @@ export default function Search() {
               <Select
                 onChange={handleChange}
                 value={sidebarData.category}
-                id="category">
+                id="category"
+              >
                 <option value="uncategorized">Uncategorized</option>
                 <option value="movies">Movies</option>
                 <option value="series">Series</option>
@@ -188,7 +196,8 @@ export default function Search() {
               <Select
                 onChange={handleChange}
                 value={sidebarData.genre}
-                id="genre">
+                id="genre"
+              >
                 <option value="uncategorized">Select a genre</option>
                 <option value="action">Action</option>
                 <option value="comedy">Comedy</option>
@@ -221,7 +230,7 @@ export default function Search() {
           </form>
         </div>
         <div className="w-full">
-          <h1 className="text-3xl font-semibold sm:border-b border-gray-500 p-3 mt-5 ">
+          <h1 className="text-3xl font-semibold sm:border-b border-gray-500 p-3 mt-5">
             Posts results:
           </h1>
           <div className="p-7 flex flex-wrap justify-center gap-4">
@@ -235,7 +244,8 @@ export default function Search() {
             {showMore && (
               <button
                 onClick={handleShowMore}
-                className="text-teal-500 text-lg hover:underline p-7 w-full">
+                className="text-teal-500 text-lg hover:underline p-7 w-full"
+              >
                 Show More
               </button>
             )}
