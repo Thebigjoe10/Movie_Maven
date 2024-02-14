@@ -75,19 +75,15 @@ export default function Search() {
     if (e.target.id === "genre") {
       const genre = e.target.value || "uncategorized" ;
       setSidebarData({ ...sidebarData, genre });
-    }
-  };
-
+      
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const searchQuery = new URLSearchParams();
-    searchQuery.set("searchTerm", encodeURIComponent(sidebarData.searchTerm));
-    searchQuery.set("sort", sidebarData.sort);
-    searchQuery.set("category", sidebarData.category);
-    searchQuery.set("genre", sidebarData.genre);
-
-    navigate(`/search?${searchQuery.toString()}`);
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('searchTerm', sidebarData.searchTerm);
+    urlParams.set('sort', sidebarData.sort);
+    urlParams.set('category', sidebarData.category);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
   };
   
 
