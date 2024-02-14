@@ -20,47 +20,47 @@ export default function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get('searchTerm');
-    const sortFromUrl = urlParams.get('sort');
-    const categoryFromUrl = urlParams.get('category');
-    const genreFromUrl = urlParams.get('genre');
+  const urlParams = new URLSearchParams(location.search);
+  const searchTermFromUrl = urlParams.get('searchTerm');
+  const sortFromUrl = urlParams.get('sort');
+  const categoryFromUrl = urlParams.get('category');
+  const genreFromUrl = urlParams.get('genre');
 
-    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
-      setSidebarData({
-        ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
-        genre: genreFromUrl,
-      });
+  if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
+    setSidebarData((prevSidebarData) => ({
+      ...prevSidebarData,
+      searchTerm: searchTermFromUrl,
+      sort: sortFromUrl,
+      category: categoryFromUrl,
+      genre: genreFromUrl,
+    }));
+  }
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/post/getposts?${searchQuery}`);
+
+    if (!res.ok) {
+      setLoading(false);
+      return;
     }
 
-    const fetchPosts = async () => {
-      setLoading(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/getposts?${searchQuery}`);
+    if (res.ok) {
+      const data = await res.json();
+      setPosts(data.posts);
+      setLoading(false);
 
-      if (!res.ok) {
-        setLoading(false);
-        return;
+      if (data.posts.length === 12) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
       }
+    }
+  };
 
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data.posts);
-        setLoading(false);
-
-        if (data.posts.length === 12) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
-        }
-      }
-    };
-
-    fetchPosts();
-  }, [location.search, sidebarData]);
+  fetchPosts();
+}, [location.search]);
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
