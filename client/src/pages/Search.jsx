@@ -8,8 +8,8 @@ export default function Search() {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
-    category: "uncategorized",
-    genre: "uncategorized",
+    category: "",
+    genre: "",
   });
 
   const [posts, setPosts] = useState([]);
@@ -65,11 +65,11 @@ export default function Search() {
     }
     if (e.target.id === "category") {
       const category = e.target.value;
-      setSidebarData({ ...sidebarData, category });
+      setSidebarData({ ...sidebarData, category : category });
     }
     if (e.target.id === "genre") {
       const genre = e.target.value;
-      setSidebarData({ ...sidebarData, genre });
+      setSidebarData({ ...sidebarData, genre: genre });
     }
   };
 
@@ -177,7 +177,6 @@ export default function Search() {
                 value={sidebarData.category}
                 id="category"
               >
-                <option value="uncategorized">Uncategorized</option>
                 <option value="movies">Movies</option>
                 <option value="series">Series</option>
                 <option value="anime">Anime</option>
@@ -192,7 +191,6 @@ export default function Search() {
                 value={sidebarData.genre}
                 id="genre"
               >
-                <option value="uncategorized">Select a genre</option>
                 <option value="action">Action</option>
                 <option value="comedy">Comedy</option>
                 <option value="drama">Drama</option>
