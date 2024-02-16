@@ -176,9 +176,9 @@ console.log(sidebarData)
                 onChange={handleChange}
                 value={sidebarData.category}
                 id="category"
-              ><option value="">""</option>
+              ><option value=""></option>
                 <option value="movies">Movies</option>
-                <option value="series">Series</option>
+               <option value="series">Series</option>
                 <option value="anime">Anime</option>
                 <option value="kdrama">Kdrama</option>
                 <option value="reviews">Reviews</option>
@@ -191,7 +191,7 @@ console.log(sidebarData)
                 value={sidebarData.genre}
                 id="genre"
               >
-                <option value="">""</option>
+                <option value=""></option>
                 <option value="action">Action</option>
                 <option value="comedy">Comedy</option>
                 <option value="drama">Drama</option>
