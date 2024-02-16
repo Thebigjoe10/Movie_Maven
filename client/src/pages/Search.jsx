@@ -11,7 +11,7 @@ export default function Search() {
     category: "",
     genre: "",
   });
-
+console.log(sidebarData)
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -27,13 +27,13 @@ export default function Search() {
   const genreFromUrl = urlParams.get('genre');
 
   if (searchTermFromUrl || sortFromUrl || categoryFromUrl !== null || genreFromUrl !== null) {
-    setSidebarData((prevSidebarData) => ({
-      ...prevSidebarData,
+    setSidebarData({
+      ...sidebarData,
       searchTerm: searchTermFromUrl,
       sort: sortFromUrl,
       category: categoryFromUrl,
       genre: genreFromUrl,
-    }));
+    });
   }
 
   const fetchPosts = async () => {
@@ -176,7 +176,7 @@ export default function Search() {
                 onChange={handleChange}
                 value={sidebarData.category}
                 id="category"
-              >
+              ><option value="">""</option>
                 <option value="movies">Movies</option>
                 <option value="series">Series</option>
                 <option value="anime">Anime</option>
@@ -191,6 +191,7 @@ export default function Search() {
                 value={sidebarData.genre}
                 id="genre"
               >
+                <option value="">""</option>
                 <option value="action">Action</option>
                 <option value="comedy">Comedy</option>
                 <option value="drama">Drama</option>
