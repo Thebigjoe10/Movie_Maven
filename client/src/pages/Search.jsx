@@ -26,7 +26,7 @@ export default function Search() {
   const categoryFromUrl = urlParams.get('category');
   const genreFromUrl = urlParams.get('genre');
 
-  if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
+  if (searchTermFromUrl || sortFromUrl || categoryFromUrl !== null || genreFromUrl !== null) {
     setSidebarData((prevSidebarData) => ({
       ...prevSidebarData,
       searchTerm: searchTermFromUrl,
@@ -37,28 +37,21 @@ export default function Search() {
   }
 
   const fetchPosts = async () => {
-    setLoading(true);
-    const searchQuery = urlParams.toString();
-    const res = await fetch(`/api/post/getposts?${searchQuery}`);
+  setLoading(true);
+  const searchQuery = urlParams.toString();
+  const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
-    if (!res.ok) {
-      setLoading(false);
-      return;
-    }
+  if (!res.ok) {
+    setLoading(false);
+    return;
+  }
 
-    if (res.ok) {
-      const data = await res.json();
-      setPosts(data.posts);
-      setLoading(false);
+  const data = await res.json();
+  setPosts(data.posts);
+  setLoading(false);
 
-      if (data.posts.length === 12) {
-        setShowMore(true);
-      } else {
-        setShowMore(false);
-      }
-    }
-  };
-
+  setShowMore(data.posts.length === 12);
+};
   fetchPosts();
 }, [location.search]);
 
@@ -71,11 +64,11 @@ export default function Search() {
       setSidebarData({ ...sidebarData, sort: order });
     }
     if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized";
+      const category = e.target.value;
       setSidebarData({ ...sidebarData, category });
     }
     if (e.target.id === "genre") {
-      const genre = e.target.value || "uncategorized";
+      const genre = e.target.value;
       setSidebarData({ ...sidebarData, genre });
     }
   };
