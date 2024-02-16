@@ -25,7 +25,6 @@ export default function CreatePost() {
   const navigate = useNavigate();
 
   const genres = [
-    { value: "uncategorized", label: "Select a genre" },
     { value: "action", label: "Action" },
     { value: "comedy", label: "Comedy" },
     { value: "drama", label: "Drama" },
@@ -197,7 +196,7 @@ export default function CreatePost() {
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }>
-            <option value="uncategorized">Select a category</option>
+       
             <option value="movies">Movies</option>
             <option value="series">Series</option>
             <option value="kdrama">Kdrama</option>
