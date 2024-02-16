@@ -6,12 +6,12 @@ import { Helmet } from "react-helmet";
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
-    searchTerm: "",
-    sort: "desc",
-    category: "",
-    genre: "",
+    searchTerm: '',
+    sort: 'desc',
+    category: '',
+    genre: '',
   });
-console.log(sidebarData)
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -20,54 +20,55 @@ console.log(sidebarData)
   const navigate = useNavigate();
 
   useEffect(() => {
-  const urlParams = new URLSearchParams(location.search);
-  const searchTermFromUrl = urlParams.get('searchTerm');
-  const sortFromUrl = urlParams.get('sort');
-  const categoryFromUrl = urlParams.get('category');
-  const genreFromUrl = urlParams.get('genre');
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get('searchTerm');
+    const sortFromUrl = urlParams.get('sort');
+    const categoryFromUrl = urlParams.get('category');
+    const genreFromUrl = urlParams.get('genre');
 
-  if (searchTermFromUrl || sortFromUrl || categoryFromUrl !== null || genreFromUrl !== null) {
-    setSidebarData({
-      ...sidebarData,
-      searchTerm: searchTermFromUrl,
-      sort: sortFromUrl,
-      category: categoryFromUrl,
-      genre: genreFromUrl,
-    });
-  }
+    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
+      setSidebarData({
+        ...sidebarData,
+        searchTerm: searchTermFromUrl,
+        sort: sortFromUrl,
+        category: categoryFromUrl,
+        genre: genreFromUrl,
+      });
+    }
 
-  const fetchPosts = async () => {
-  setLoading(true);
-  const searchQuery = urlParams.toString();
-  const res = await fetch(`/api/post/getposts?${searchQuery}`);
+    const fetchPosts = async () => {
+      setLoading(true);
+      const searchQuery = urlParams.toString();
+      const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
-  if (!res.ok) {
-    setLoading(false);
-    return;
-  }
+      if (!res.ok) {
+        setLoading(false);
+        return;
+      }
 
-  const data = await res.json();
-  setPosts(data.posts);
-  setLoading(false);
+      const data = await res.json();
+      setPosts(data.posts);
+      setLoading(false);
 
-  setShowMore(data.posts.length === 12);
-};
-  fetchPosts();
-}, [location.search]);
+      setShowMore(data.posts.length === 12);
+    };
+
+    fetchPosts();
+  }, [location.search]);
 
   const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
+    if (e.target.id === 'searchTerm') {
       setSidebarData({ ...sidebarData, searchTerm: e.target.value });
     }
-    if (e.target.id === "sort") {
-      const order = e.target.value || "desc";
+    if (e.target.id === 'sort') {
+      const order = e.target.value || 'desc';
       setSidebarData({ ...sidebarData, sort: order });
     }
-    if (e.target.id === "category") {
+    if (e.target.id === 'category') {
       const category = e.target.value;
-      setSidebarData({ ...sidebarData, category : category });
+      setSidebarData({ ...sidebarData, category: category });
     }
-    if (e.target.id === "genre") {
+    if (e.target.id === 'genre') {
       const genre = e.target.value;
       setSidebarData({ ...sidebarData, genre: genre });
     }
@@ -88,13 +89,13 @@ console.log(sidebarData)
     const numberOfPosts = posts.length;
     const startIndex = numberOfPosts;
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set("startIndex", startIndex);
+    urlParams.set('startIndex', startIndex);
     const searchQuery = urlParams.toString();
 
     const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
     if (!res.ok) {
-      console.error("Error fetching more posts:", res.status, res.statusText);
+      console.error('Error fetching more posts:', res.status, res.statusText);
       return;
     }
 
@@ -105,13 +106,15 @@ console.log(sidebarData)
 
   useEffect(() => {
     const defaultImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
-    const ogImageUrl = posts.length > 0 ? posts[0].image || defaultImageUrl : defaultImageUrl;
+    const ogImageUrl =
+      posts.length > 0 ? posts[0].image || defaultImageUrl : defaultImageUrl;
     document
       .querySelector('meta[property="og:image"]')
       .setAttribute("content", ogImageUrl);
   }, [posts]);
 
-  const pageTitle = "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
+  const pageTitle =
+    "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
   const pageDescription =
     "Explore a variety of movies, series, and reviews on MovieMaven. Your go-to source for all things entertainment.";
   const pageKeywords =
@@ -150,7 +153,9 @@ console.log(sidebarData)
         <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
           <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
             <div className="flex items-center gap-2">
-              <label className="whitespace-nowrap font-semibold">Search Term:</label>
+              <label className="whitespace-nowrap font-semibold">
+                Search Term:
+              </label>
               <TextInput
                 placeholder="Search..."
                 id="searchTerm"
@@ -164,8 +169,7 @@ console.log(sidebarData)
               <Select
                 onChange={handleChange}
                 value={sidebarData.sort}
-                id="sort"
-              >
+                id="sort">
                 <option value="desc">Latest</option>
                 <option value="asc">Oldest</option>
               </Select>
@@ -175,10 +179,10 @@ console.log(sidebarData)
               <Select
                 onChange={handleChange}
                 value={sidebarData.category}
-                id="category"
-              ><option value=""></option>
+                id="category">
+                <option value=""></option>
                 <option value="movies">Movies</option>
-               <option value="series">Series</option>
+                <option value="series">Series</option>
                 <option value="anime">Anime</option>
                 <option value="kdrama">Kdrama</option>
                 <option value="reviews">Reviews</option>
@@ -189,8 +193,7 @@ console.log(sidebarData)
               <Select
                 onChange={handleChange}
                 value={sidebarData.genre}
-                id="genre"
-              >
+                id="genre">
                 <option value=""></option>
                 <option value="action">Action</option>
                 <option value="comedy">Comedy</option>
@@ -227,9 +230,10 @@ console.log(sidebarData)
             Posts results:
           </h1>
           <div className="p-7 flex flex-wrap justify-center gap-4">
-            {!loading && posts.length === 0 && (
+            {!loading && posts && posts.length === 0 && (
               <p className="text-xl text-gray-500">No posts found.</p>
             )}
+
             {loading && <p className="text-xl text-gray-500">Loading...</p>}
             {!loading &&
               posts &&
@@ -237,8 +241,7 @@ console.log(sidebarData)
             {showMore && (
               <button
                 onClick={handleShowMore}
-                className="text-teal-500 text-lg hover:underline p-7 w-full"
-              >
+                className="text-teal-500 text-lg hover:underline p-7 w-full">
                 Show More
               </button>
             )}
