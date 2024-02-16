@@ -27,7 +27,6 @@ export default function UpdatePost() {
   const [publishError, setPublishError] = useState(null);
 
   const genres = [
-    { value: "uncategorized", label: "Select a genre" },
     { value: "action", label: "Action" },
     { value: "comedy", label: "Comedy" },
     { value: "drama", label: "Drama" },
@@ -242,8 +241,8 @@ export default function UpdatePost() {
                 category: e.target.value,
               }))
             }
-            value={formData.category || "uncategorized"}>
-            <option value="uncategorized">Select a category</option>
+            value={formData.category || ""}
+            >
             <option value="movies">Movies</option>
             <option value="series">Series</option>
             <option value="kdrama">Kdrama</option>
