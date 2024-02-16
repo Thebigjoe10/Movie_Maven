@@ -51,7 +51,6 @@ export const getposts = async (req, res, next) => {
     const totalPosts = await Post.countDocuments();
 
     const now = new Date();
-
     const oneMonthAgo = new Date(
       now.getFullYear(),
       now.getMonth() - 1,
@@ -71,7 +70,6 @@ export const getposts = async (req, res, next) => {
     next(error);
   }
 };
-
 export const deletepost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to delete this post"));
