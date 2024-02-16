@@ -105,7 +105,7 @@ export default function Home() {
         </Link>
       </div>
       <div className="p-3 bg-amber-100 dark:bg-slate-700">
-        {/* <CallToAction /> */}
+        <CallToAction />
       </div>
 
       <div className="p-3 flex flex-col gap-8 ">
@@ -113,7 +113,7 @@ export default function Home() {
         {movies && movies.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">
-              Recent Movies
+              New Movies Upload
             </h2>
             <div className="flex flex-wrap justify-center gap-8">
               {movies.map((post) => (
@@ -134,7 +134,7 @@ export default function Home() {
         {series && series.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">
-              Recent Series
+              New Series Upload
             </h2>
             <div className="flex flex-wrap justify-center gap-8">
               {series.map((post) => (
@@ -155,7 +155,7 @@ export default function Home() {
         {kdramas && kdramas.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">
-              Recent Kdramas
+              New Kdramas Upload
             </h2>
             <div className="flex flex-wrap justify-center gap-8">
               {kdramas.map((post) => (
@@ -175,7 +175,7 @@ export default function Home() {
         {/* Anime Section */}
         {animes && animes.length > 0 && (
           <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-semibold text-center">Recent Anime</h2>
+            <h2 className="text-2xl font-semibold text-center">New Anime Uploads</h2>
             <div className="flex flex-wrap justify-center gap-8">
               {animes.map((post) => (
                 <PostCard key={post._id} post={post} />
@@ -194,7 +194,7 @@ export default function Home() {
         {/* News Section */}
         {reviews && reviews.length > 0 && (
           <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-semibold text-center">Reviews</h2>
+            <h2 className="text-2xl font-semibold text-center"> Recent Reviews</h2>
             <div className="flex flex-wrap justify-center gap-8">
               {reviews.map((post) => (
                 <PostCard key={post._id} post={post} />
