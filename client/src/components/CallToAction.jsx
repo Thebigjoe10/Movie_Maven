@@ -14,7 +14,7 @@ export default function CallToAction() {
             Want to learn more about Movie_Maven? go to the <Link to={"/about"}>about page 🤗🤗</Link> .
             </p>
             <Button gradientDuoTone='purpleToBlue' className='rounded-tl-xl rounded-bl-none'>
-                <a href="" target='_blank' rel='noopener noreferrer'>
+                <a href="https://t.me/+ImSBsxo2Mm44ZTA8" target='_blank' rel='noopener noreferrer'>
                     Join Telegram 
                 </a>
             </Button>
