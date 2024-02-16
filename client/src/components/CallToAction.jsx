@@ -10,7 +10,7 @@ export default function CallToAction() {
             </h2>
             <p className='text-gray-500 my-2'>
             Movie_Maven has pop ads which means a new tab opens once you click just click close the new tab and continue browsing. 
-            Join our telegram channel to receive live updates and be among the first to know once a movie is uploaded. You can also use the comment box below for movie requests, suggestions and feedback ❤. Most importantly please stay home and stay safe 🤗🤗. We recommend using Chrome to download. <br></br>
+            Join our telegram channel to receive live updates and be among the first to know once a movie is uploaded. You can also use the comment box below for movie requests, suggestions and feedback ❤. Most importantly please stay home and stay safe 🤗🤗. We recommend using Chrome or Opera Mini to download. <br></br>
             Want to learn more about Movie_Maven? go to the <Link to={"/about"}>about page 🤗🤗</Link> .
             </p>
             <Button gradientDuoTone='purpleToBlue' className='rounded-tl-xl rounded-bl-none'>
