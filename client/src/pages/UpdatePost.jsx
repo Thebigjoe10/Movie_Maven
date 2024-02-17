@@ -196,7 +196,7 @@ export default function UpdatePost() {
     if (fileLink) {
       const updatedContent = `${
         formData.content || ""
-      }\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Download File</a>`;
+      }\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Stream Here</a>`;
       setFormData((prevData) => ({ ...prevData, content: updatedContent }));
     }
   };
