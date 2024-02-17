@@ -133,7 +133,6 @@ export default function PostPage() {
           content={`https://moviemaven.xyz/post/${postSlug}`}
         />
       </Helmet>
-      {/* <AdComponent/> */}
       <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
         <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
           {post && post.title}

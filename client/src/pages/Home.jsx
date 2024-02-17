@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import { Helmet } from "react-helmet";
 import { Button } from "flowbite-react";
-// import AdComponent from '../components/Ads';
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
@@ -75,7 +74,6 @@ export default function Home() {
   };
   return (
     <div>
-      {/* <AdComponent/> */}
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
