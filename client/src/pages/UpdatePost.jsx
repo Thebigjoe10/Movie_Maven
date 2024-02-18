@@ -27,6 +27,7 @@ export default function UpdatePost() {
   const [publishError, setPublishError] = useState(null);
 
   const genres = [
+    { value: "", label: "" },
     { value: "action", label: "Action" },
     { value: "comedy", label: "Comedy" },
     { value: "drama", label: "Drama" },
@@ -47,9 +48,9 @@ export default function UpdatePost() {
     { value: "war", label: "War" },
     { value: "sport", label: "Sport" },
     { value: "western", label: "Western" },
-    { value: "asian-movie", label:"Asian-movie"},
-    {value: "bollywood-movie", label: "Bollywood-movie"},
-    {value: "wwe", label: "WWE"},
+    { value: "asian-movie", label: "Asian-movie" },
+    { value: "bollywood-movie", label: "Bollywood-movie" },
+    { value: "wwe", label: "WWE" },
   ];
   useEffect(() => {
     const fetchPost = async () => {
@@ -196,7 +197,7 @@ export default function UpdatePost() {
     if (fileLink) {
       const updatedContent = `${
         formData.content || ""
-      }\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Stream Here</a>`;
+      }\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Stream Here or Download later</a>`;
       setFormData((prevData) => ({ ...prevData, content: updatedContent }));
     }
   };
@@ -241,8 +242,8 @@ export default function UpdatePost() {
                 category: e.target.value,
               }))
             }
-            value={formData.category || ""}
-            >
+            value={formData.category || ""}>
+            <option value=""></option>
             <option value="movies">Movies</option>
             <option value="series">Series</option>
             <option value="kdrama">Kdrama</option>
