@@ -25,6 +25,7 @@ export default function CreatePost() {
   const navigate = useNavigate();
 
   const genres = [
+    {value:"", label: ""},
     { value: "action", label: "Action" },
     { value: "comedy", label: "Comedy" },
     { value: "drama", label: "Drama" },
@@ -45,9 +46,9 @@ export default function CreatePost() {
     { value: "war", label: "War" },
     { value: "sport", label: "Sport" },
     { value: "western", label: "Western" },
-    { value: "asian-movie", label:"Asian-movie"},
-    {value: "bollywood-movie", label: "Bollywood-movie"},
-    {value: "wwe", label: "WWE"},
+    { value: "asian-movie", label: "Asian-movie" },
+    { value: "bollywood-movie", label: "Bollywood-movie" },
+    { value: "wwe", label: "WWE" },
   ];
 
   const handleUploadImage = async () => {
@@ -125,7 +126,7 @@ export default function CreatePost() {
     if (fileLink) {
       const updatedContent = `${
         formData.content || ""
-      }\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Stream Here </a>`;
+      }\n<a href="${fileLink}" target="_blank" rel="noopener noreferrer" style="background-color: blue; color: white; padding: 16px 32px; text-decoration: none; display: inline-block; border-radius: 4px;">Stream Here or Download later </a>`;
       setFormData({ ...formData, content: updatedContent });
     }
   };
@@ -195,7 +196,7 @@ export default function CreatePost() {
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }>
-       
+            <option value=""></option>
             <option value="movies">Movies</option>
             <option value="series">Series</option>
             <option value="kdrama">Kdrama</option>
