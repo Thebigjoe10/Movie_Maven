@@ -120,17 +120,16 @@ export default function PostPage() {
   return (
     <React.Fragment>
       <Helmet>
+        <meta property="og:image" content={post && post.image} />
+        <meta
+          property="og:url"
+          content={`https://moviemaven.xyz/post/${postSlug}`}
+        />
         <title>{post && post.title}</title>
         <meta property="og:title" content={post && post.title} />
         <meta
           property="og:description"
-          content="Explore an extensive selection of entertainment options like movies, TV series, kdramas, and animes. Also find insightful movie reviews that shed light on the world of cinema. Immerse yourself in a world where staying updated with current events is effortless while indulging in engaging content that's impossible to ignore - all handpicked for you at one destination. Brace yourself for unforgettable immersive experiences!"
-        />
-        <meta property="og:image" content={post && post.image} />
-        {/* Make sure to provide a secure (https) URL for the image */}
-        <meta
-          property="og:url"
-          content={`https://moviemaven.xyz/post/${postSlug}`}
+          content={post && (post.content.length / 1000).toFixed(0)}
         />
       </Helmet>
       <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
@@ -181,7 +180,7 @@ export default function PostPage() {
 
         {/* Recommended Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">Recommended Post To Check Out</h1>
+          <h1 className="text-xl mt-5">YOU MIGHT ALSO LIKE</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
             {recommendedPosts &&
               recommendedPosts.map((post) => (
