@@ -85,7 +85,7 @@ export default function PostPage() {
     try {
       const fetchRecommendedPosts = async () => {
         // Fetch recommended posts from different categories
-        const res = await fetch(`/api/post/getposts?limit=3`);
+        const res = await fetch(`/api/post/getposts?limit=5`);
         const data = await res.json();
         if (res.ok) {
           // Exclude the current post from recommended posts

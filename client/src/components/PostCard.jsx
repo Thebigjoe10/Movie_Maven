@@ -14,8 +14,8 @@ export default function PostCard({ post }) {
       </Link>
       <div className='p-3 flex flex-col gap-2'>
         <p className='text-lg font-semibold line-clamp-2'>{post.title}</p>
-        <span className='italic text-sm text-white'>{post.category}</span>
-          <span className='italic text-sm text-white'>{post.genre}</span>
+        <span className='italic text-sm'>{post.category}</span>
+          <span className='italic text-sm'>{post.genre}</span>
         <Link
             to={`/post/${post.slug}`}
             className='z-10 text-teal-500 hover:bg-teal-500 hover:text-white transition-all duration-300 text-center py-2 rounded-md !rounded-tl-none m-2'
