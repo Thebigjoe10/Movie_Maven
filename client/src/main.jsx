@@ -55,6 +55,21 @@ const Main = () => {
     });
   };
 
+  useEffect(() => {
+    // Dynamically update Open Graph meta tags when Schemamovies or Schemaseries change
+    const updateOpenGraphTags = () => {
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.text = JSON.stringify([
+        ...generateMediaSchemaArray(Schemamovies),
+        ...generateMediaSchemaArray(Schemaseries),
+      ]);
+      document.getElementById("json-ld-script")?.replaceWith(script);
+    };
+
+    updateOpenGraphTags();
+  }, [Schemamovies, Schemaseries]);
+
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("/client/public/sw.js");
@@ -72,12 +87,11 @@ const Main = () => {
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" content={ogImageUrl} />
-        <script type="application/ld+json">
-          {JSON.stringify([
-            ...generateMediaSchemaArray(Schemamovies),
-            ...generateMediaSchemaArray(Schemaseries),
-          ])}
-        </script>
+        {/* Placeholder for JSON-LD script */}
+        <script
+          id="json-ld-script"
+          type="application/ld+json"
+        >{`[]`}</script>
       </Helmet>
       <PersistGate persistor={persistor}>
         <Provider store={store}>
