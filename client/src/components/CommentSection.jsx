@@ -141,7 +141,7 @@ export default function CommentSection({ postId }) {
           className='border border-teal-500 rounded-md p-3'
         >
           <Textarea
-            placeholder='Add a comment...'
+            placeholder='Request for Movies | TvShow By Adding a comment...'
             rows='3'
             maxLength='200'
             onChange={(e) => setComment(e.target.value)}
