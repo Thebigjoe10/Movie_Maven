@@ -6,10 +6,10 @@ import { Helmet } from "react-helmet";
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
-    searchTerm: '',
-    sort: 'desc',
-    category: '',
-    genre: '',
+    searchTerm: "",
+    sort: "desc",
+    category: "",
+    genre: "",
   });
 
   const [posts, setPosts] = useState([]);
@@ -21,19 +21,21 @@ export default function Search() {
 
   const [Schemamovies, setSchemaMovies] = useState([]);
   const [Schemaseries, setSchemaSeries] = useState([]);
-  
+
   useEffect(() => {
     // Fetch movies and series
     const fetchPostsByCategory = async (category, setPosts) => {
       try {
-        const res = await fetch(`/api/post/getposts?category=${category}&limit=3`);
+        const res = await fetch(
+          `/api/post/getposts?category=${category}&limit=3`
+        );
         const data = await res.json();
         setPosts(data.posts);
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     // Fetch movies and series when the component mounts
     fetchPostsByCategory("Schemamovies", setSchemaMovies);
     fetchPostsByCategory("Schemaseries", setSchemaSeries);
@@ -41,10 +43,10 @@ export default function Search() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get('searchTerm');
-    const sortFromUrl = urlParams.get('sort');
-    const categoryFromUrl = urlParams.get('category');
-    const genreFromUrl = urlParams.get('genre');
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const sortFromUrl = urlParams.get("sort");
+    const categoryFromUrl = urlParams.get("category");
+    const genreFromUrl = urlParams.get("genre");
 
     if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
       setSidebarData({
@@ -77,18 +79,18 @@ export default function Search() {
   }, [location.search]);
 
   const handleChange = (e) => {
-    if (e.target.id === 'searchTerm') {
+    if (e.target.id === "searchTerm") {
       setSidebarData({ ...sidebarData, searchTerm: e.target.value });
     }
-    if (e.target.id === 'sort') {
-      const order = e.target.value || 'desc';
+    if (e.target.id === "sort") {
+      const order = e.target.value || "desc";
       setSidebarData({ ...sidebarData, sort: order });
     }
-    if (e.target.id === 'category') {
+    if (e.target.id === "category") {
       const category = e.target.value;
       setSidebarData({ ...sidebarData, category: category });
     }
-    if (e.target.id === 'genre') {
+    if (e.target.id === "genre") {
       const genre = e.target.value;
       setSidebarData({ ...sidebarData, genre: genre });
     }
@@ -97,10 +99,10 @@ export default function Search() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set('searchTerm', sidebarData.searchTerm);
-    urlParams.set('sort', sidebarData.sort);
-    urlParams.set('category', sidebarData.category);
-    urlParams.set('genre', sidebarData.genre);
+    urlParams.set("searchTerm", sidebarData.searchTerm);
+    urlParams.set("sort", sidebarData.sort);
+    urlParams.set("category", sidebarData.category);
+    urlParams.set("genre", sidebarData.genre);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
@@ -109,13 +111,13 @@ export default function Search() {
     const numberOfPosts = posts.length;
     const startIndex = numberOfPosts;
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set('startIndex', startIndex);
+    urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
 
     const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
     if (!res.ok) {
-      console.error('Error fetching more posts:', res.status, res.statusText);
+      console.error("Error fetching more posts:", res.status, res.statusText);
       return;
     }
 
@@ -137,7 +139,7 @@ export default function Search() {
     "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
   const pageDescription =
     "Explore a variety of movies, series, and reviews on MovieMaven. Your go-to source for all things entertainment.";
-  const pageKeywords =  "movies, series, anime, kdrama, reviews, entertainment";
+  const pageKeywords = "movies, series, anime, kdrama, reviews, entertainment";
   const canonicalUrl = "https://www.moviemaven.xyz/search";
   const ogImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
   const generateMediaSchemaArray = (posts) => {
@@ -147,7 +149,7 @@ export default function Search() {
         "@type": "Movie",
         name: post.title,
         description: post.content,
-        image: post.image, 
+        image: post.image,
         aggregateRating: {
           "@type": "AggregateRating",
           ratingValue: "4.5",
@@ -164,16 +166,16 @@ export default function Search() {
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content={pageKeywords} />
         <meta property="og:type" content="website" />
-<meta property="og:url" content={canonicalUrl} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" content={ogImageUrl} />
         <script type="application/ld+json">
-  {JSON.stringify([
-    ...generateMediaSchemaArray(Schemamovies),
-    ...generateMediaSchemaArray(Schemaseries),
-  ])}
-</script>
+          {JSON.stringify([
+            ...generateMediaSchemaArray(Schemamovies),
+            ...generateMediaSchemaArray(Schemaseries),
+          ])}
+        </script>
       </Helmet>
       <div className="flex flex-col md:flex-row">
         <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
@@ -265,11 +267,13 @@ export default function Search() {
               posts &&
               posts.map((post) => <PostCard key={post._id} post={post} />)}
             {showMore && (
-              <button
+              <Button type="button" gradientDuoTone="purpleToBlue" size="sm"
+              className=" text-lg w-full"
                 onClick={handleShowMore}
-                className="text-teal-500 text-lg hover:underline p-7 w-full">
+              >
+                
                 Show More
-              </button>
+              </Button>
             )}
           </div>
         </div>

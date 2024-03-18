@@ -84,15 +84,19 @@ export default function PostPage() {
   useEffect(() => {
     try {
       const fetchRecommendedPosts = async () => {
-        // Fetch recommended posts from different categories
-        const res = await fetch(`/api/post/getposts?limit=5`);
+        if (!post || !post.category) {
+          // If post data is incomplete or category is missing, do nothing
+          return;
+        }
+  
+        const res = await fetch(`/api/post/getposts?category=${post.category}&limit=5`);
         const data = await res.json();
         if (res.ok) {
-          // Exclude the current post from recommended posts
+          // Filter out the current post and posts from the same genre
           const filteredRecommendedPosts = data.posts.filter(
             (recommendedPost) =>
               recommendedPost._id !== (post && post._id) &&
-              recommendedPost.category !== (post && post.category)
+              recommendedPost.genre !== (post && post.genre)
           );
           setRecommendedPosts(filteredRecommendedPosts);
         }
@@ -102,6 +106,7 @@ export default function PostPage() {
       console.log(error.message);
     }
   }, [post]);
+  
 
   if (loading)
     return (
@@ -169,7 +174,7 @@ export default function PostPage() {
 
         {/* Related Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">Related {post && post.category}</h1>
+          <h1 className="text-xl mt-5">Related {post && post.genre}</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
             {relatedPosts &&
               relatedPosts.map((post) => (

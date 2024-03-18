@@ -129,9 +129,9 @@ export default function Home() {
           View all posts
         </Link>
       </div>
-      <div className="p-3 bg-amber-100 dark:bg-slate-700">
+      {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
         <CallToAction />
-      </div>
+      </div> */}
 
       <div className="p-3 flex flex-col gap-8 ">
         {/* Movies Section */}
