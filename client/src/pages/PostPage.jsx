@@ -53,7 +53,7 @@ export default function PostPage() {
           return;
         }
 
-        let apiUrl = "/api/post/getposts?limit=3";
+        let apiUrl = "/api/post/getposts?limit=4";
 
         if (post.category) {
           apiUrl += `&category=${post.category}`;
@@ -88,8 +88,10 @@ export default function PostPage() {
           // If post data is incomplete or category is missing, do nothing
           return;
         }
-  
-        const res = await fetch(`/api/post/getposts?category=${post.category}&limit=5`);
+
+        const res = await fetch(
+          `/api/post/getposts?category=${post.category}&limit=5`
+        );
         const data = await res.json();
         if (res.ok) {
           // Filter out the current post and posts from the same genre
@@ -106,7 +108,6 @@ export default function PostPage() {
       console.log(error.message);
     }
   }, [post]);
-  
 
   if (loading)
     return (
@@ -174,7 +175,9 @@ export default function PostPage() {
 
         {/* Related Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">Related {post && post.genre}</h1>
+          <h1 className="text-xl mt-5">
+            Recommended {post && post.genre} to watch after {post && post.title}
+          </h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
             {relatedPosts &&
               relatedPosts.map((post) => (
