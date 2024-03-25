@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import { Helmet } from "react-helmet";
 import { Button } from "flowbite-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import SwiperCore from "swiper";
+import "swiper/css/bundle";
 
 export default function Home() {
+  SwiperCore.use([Navigation]);
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
   const [kdramas, setKdramas] = useState([]);
@@ -13,24 +18,26 @@ export default function Home() {
   const [reviews, setReviews] = useState([]);
   const [Schemamovies, setSchemaMovies] = useState([]);
   const [Schemaseries, setSchemaSeries] = useState([]);
-  
+
   useEffect(() => {
     // Fetch movies and series
     const fetchPostsByCategory = async (category, setPosts) => {
       try {
-        const res = await fetch(`/api/post/getposts?category=${category}&limit=3`);
+        const res = await fetch(
+          `/api/post/getposts?category=${category}&limit=3`
+        );
         const data = await res.json();
         setPosts(data.posts);
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     // Fetch movies and series when the component mounts
     fetchPostsByCategory("Schemamovies", setSchemaMovies);
     fetchPostsByCategory("Schemaseries", setSchemaSeries);
   }, []);
-  
+
   useEffect(() => {
     const fetchPostsByCategory = async (category) => {
       try {
@@ -75,7 +82,7 @@ export default function Home() {
     "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
   const pageDescription =
     "Explore a variety of movies, series, and reviews on MovieMaven. Your go-to source for all things entertainment.";
-  const pageKeywords = "movies, series, anime, kdrama, reviews, entertainment"
+  const pageKeywords = "movies, series, anime, kdrama, reviews, entertainment";
   const canonicalUrl = "https://www.moviemaven.xyz/";
   const ogImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
   const generateMediaSchemaArray = (posts) => {
@@ -85,7 +92,7 @@ export default function Home() {
         "@type": "Movie",
         name: post.title,
         description: post.content,
-        image: post.image, 
+        image: post.image,
         aggregateRating: {
           "@type": "AggregateRating",
           ratingValue: "4.5",
@@ -101,17 +108,17 @@ export default function Home() {
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content={pageKeywords} />
         <meta property="og:type" content="website" />
-<meta property="og:url" content={canonicalUrl} />
+        <meta property="og:url" content={canonicalUrl} />
 
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" content={ogImageUrl} />
         <script type="application/ld+json">
-  {JSON.stringify([
-    ...generateMediaSchemaArray(Schemamovies),
-    ...generateMediaSchemaArray(Schemaseries),
-  ])}
-</script>
+          {JSON.stringify([
+            ...generateMediaSchemaArray(Schemamovies),
+            ...generateMediaSchemaArray(Schemaseries),
+          ])}
+        </script>
       </Helmet>
 
       <div className="flex flex-col gap-6 p-16 px-3 max-w-6xl mx-auto ">
@@ -119,9 +126,9 @@ export default function Home() {
           Welcome to Movie Maven
         </h1>
         <p className="text-gray-500 text-xs sm:text-sm">
-          Here you'll find a variety of movies, series, animes and reviews on topics such
-          as movies, stay updated with reviews, and binge-watch series and animes. All in one
-          place. Enjoy! 🎬📺
+          Here you'll find a variety of movies, series, animes and reviews on
+          topics such as movies, stay updated with reviews, and binge-watch
+          series and animes. All in one place. Enjoy! 🎬📺
         </p>
         <Link
           to="/search"
@@ -129,6 +136,19 @@ export default function Home() {
           View all posts
         </Link>
       </div>
+      {/* News Section */}
+      <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
+      <Swiper navigation>
+        {reviews && reviews.length > 0 && (
+          <div className="flex flex-col gap-6">
+            {reviews.map((post) => (
+              <SwiperSlide className="flex flex-wrap justify-center gap-4">
+                <PostCard key={post._id} post={post} />
+              </SwiperSlide>
+            ))}
+          </div>
+        )}
+      </Swiper>
       {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
         <CallToAction />
       </div> */}
@@ -211,25 +231,6 @@ export default function Home() {
                 to={"/search?category=anime"}
                 className="text-lg text-white hover:underline text-center">
                 show more Anime
-              </Link>
-            </Button>
-          </div>
-        )} */}
-
-        {/* News Section
-        {reviews && reviews.length > 0 && (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-semibold text-center"> Recent Reviews</h2>
-            <div className="flex flex-wrap justify-center gap-8">
-              {reviews.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
-            </div>
-            <Button type="button" gradientDuoTone="purpleToBlue" size="sm">
-              <Link
-                to={"/search?category=reviews"}
-                className="text-lg text-white hover:underline text-center">
-                show more Reviews
               </Link>
             </Button>
           </div>
