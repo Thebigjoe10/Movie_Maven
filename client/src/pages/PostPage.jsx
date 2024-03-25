@@ -114,6 +114,8 @@ fetchRecommendedPosts();
   return (
     <React.Fragment>
       <Helmet>
+        {post && (
+          <>
         <meta property="og:image" content={post && post.image} />
         <meta
           property="og:url"
@@ -125,6 +127,8 @@ fetchRecommendedPosts();
           property="og:description"
           content={post && (post.content.length / 1000).toFixed(0)}
         />
+            </>
+        )}
       </Helmet>
       <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
         <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
