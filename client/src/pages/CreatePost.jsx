@@ -180,23 +180,10 @@ export default function CreatePost() {
 
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      <Helmet>
-        <title>Create a Post</title>
-      </Helmet>
+      
       <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <Helmet>
-          <meta
-            property="og:title"
-            content={formData.title || "Create a Post"}
-          />
-          <meta
-            property="og:description"
-            content={formData.content || "Write something..."}
-          />
-          <meta property="og:image" content={formData.image || ""} />
-          {/* Add more meta tags as needed */}
-        </Helmet>
+        
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
