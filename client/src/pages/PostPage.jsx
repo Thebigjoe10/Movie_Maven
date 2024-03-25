@@ -1,10 +1,9 @@
-import { Button, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import CallToAction from "../components/CallToAction";
-import CommentSection from "../components/CommentSection";
-import PostCard from "../components/PostCard";
 import { Helmet } from "react-helmet";
+import { Button, Spinner } from "flowbite-react";
+import PostCard from "../components/PostCard";
+import CommentSection from "../components/CommentSection";
 
 export default function PostPage() {
   const { postSlug } = useParams();
@@ -18,7 +17,6 @@ export default function PostPage() {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        // Use the correct API route
         const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
 
@@ -29,13 +27,12 @@ export default function PostPage() {
         }
 
         if (res.ok) {
-          // Assuming you want to set the first post in the array
           setPost(data.posts[0]);
           setLoading(false);
           setError(false);
         }
       } catch (error) {
-        console.error(error); // Log the error for debugging
+        console.error(error);
         setError(true);
         setLoading(false);
       }
@@ -45,10 +42,9 @@ export default function PostPage() {
   }, [postSlug]);
 
   useEffect(() => {
-    try {
-      const fetchRelatedPosts = async () => {
+    const fetchRelatedPosts = async () => {
+      try {
         if (!post || (!post.category && !post.genre)) {
-          // If post data is incomplete, do nothing
           return;
         }
 
@@ -63,8 +59,8 @@ export default function PostPage() {
         }
 
         const res = await fetch(apiUrl);
-
         const data = await res.json();
+
         if (res.ok) {
           // Exclude the current post from related posts
           const filteredRelatedPosts = data.posts.filter(
@@ -72,40 +68,40 @@ export default function PostPage() {
           );
           setRelatedPosts(filteredRelatedPosts);
         }
-      };
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
 
-      fetchRelatedPosts();
-    } catch (error) {
-      console.log(error.message);
-    }
+    fetchRelatedPosts();
   }, [post]);
 
   useEffect(() => {
-    try {
-      const fetchRecommendedPosts = async () => {
-        if (!post || !post.category) {
-          // If post data is incomplete or category is missing, do nothing
+    const fetchRecommendedPosts = async () => {
+      try {
+        if (!post || !post.genre) {
           return;
         }
 
         const res = await fetch(
-          `/api/post/getposts?category=${post.category}&limit=5`
+          `/api/post/getposts?genre=${post.genre}&limit=5`
         );
         const data = await res.json();
+
         if (res.ok) {
-          // Filter out the current post and posts from the same genre
-          const filteredRecommendedPosts = data.posts.filter(
-            (recommendedPost) =>
-              recommendedPost._id !== (post && post._id) &&
-              recommendedPost.genre !== (post && post.genre)
-          );
+          // Exclude the current post and shuffle the posts
+          const filteredRecommendedPosts = data.posts
+            .filter((recommendedPost) => recommendedPost._id !== post._id)
+            .sort(() => Math.random() - 0.5);
+
           setRecommendedPosts(filteredRecommendedPosts);
         }
-      };
-      fetchRecommendedPosts();
-    } catch (error) {
-      console.log(error.message);
-    }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchRecommendedPosts();
   }, [post]);
 
   if (loading)
@@ -143,14 +139,16 @@ export default function PostPage() {
         </h1>
         <Link
           to={`/search?category=${post && post.category}`}
-          className="self-center mt-5">
+          className="self-center mt-5"
+        >
           <Button color="gray" pill size="xs">
             {post && post.category}
           </Button>
         </Link>
         <Link
           to={`/search?genre=${post && post.genre}`}
-          className="self-center mt-5">
+          className="self-center mt-5"
+        >
           {post && post.genre && (
             <Button color="gray" pill size="xs">
               {post.genre}
@@ -170,7 +168,8 @@ export default function PostPage() {
         </div>
         <div
           className="p-3 max-w-2xl mx-auto w-full post-content"
-          dangerouslySetInnerHTML={{ __html: post && post.content }}></div>
+          dangerouslySetInnerHTML={{ __html: post && post.content }}
+        ></div>
 
         {/* Related Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
@@ -198,11 +197,6 @@ export default function PostPage() {
 
         {/* Comment Section */}
         <CommentSection postId={post._id} />
-
-        {/* CallToAction */}
-        {/* <div className='max-w-4xl mx-auto w-full'>
-        <CallToAction />
-      </div> */}
       </main>
     </React.Fragment>
   );
