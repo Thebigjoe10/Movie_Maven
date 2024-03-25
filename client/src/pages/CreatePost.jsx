@@ -13,6 +13,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate, useParams } from "react-router-dom";
 import "quill-mention";
+import { Helmet } from "react-helmet";
 
 export default function CreatePost() {
   const { postId } = useParams();
@@ -25,7 +26,7 @@ export default function CreatePost() {
   const navigate = useNavigate();
 
   const genres = [
-    {value:"", label: ""},
+    { value: "", label: "" },
     { value: "action", label: "Action" },
     { value: "comedy", label: "Comedy" },
     { value: "drama", label: "Drama" },
@@ -179,8 +180,23 @@ export default function CreatePost() {
 
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
+      <Helmet>
+        <title>Create a Post</title>
+      </Helmet>
       <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <Helmet>
+          <meta
+            property="og:title"
+            content={formData.title || "Create a Post"}
+          />
+          <meta
+            property="og:description"
+            content={formData.content || "Write something..."}
+          />
+          <meta property="og:image" content={formData.image || ""} />
+          {/* Add more meta tags as needed */}
+        </Helmet>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
