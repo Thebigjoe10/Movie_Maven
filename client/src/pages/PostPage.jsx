@@ -68,32 +68,33 @@ export default function PostPage() {
     fetchRelatedPosts();
   }, [post]);
 
+  
   useEffect(() => {
-    const fetchRecommendedPosts = async () => {
-      try {
-        if (!post || !post.genre) {
-          return;
-        }
+  const fetchRecommendedPosts = async () => {
+  try {
+    if (!post || !post.category || !post.genre) {
+      return;
+    }
 
-        const res = await fetch(
-          `/api/post/getposts?genre=${post.genre}&limit=5`
-        );
-        const data = await res.json();
+    const res = await fetch(
+      `/api/post/getposts?category=${post.category}&limit=5`
+    );
+    const data = await res.json();
 
-        if (res.ok) {
-          // Exclude the current post and shuffle the posts
-          const filteredRecommendedPosts = data.posts
-            .filter((recommendedPost) => recommendedPost._id !== post._id)
-            .sort(() => Math.random() - 0.5);
+    if (res.ok) {
+      // Exclude the current post and shuffle the posts with different genre
+      const filteredRecommendedPosts = data.posts
+        .filter((recommendedPost) => recommendedPost._id !== post._id && recommendedPost.genre !== post.genre)
+        .sort(() => Math.random() - 0.5);
 
-          setRecommendedPosts(filteredRecommendedPosts);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+      setRecommendedPosts(filteredRecommendedPosts);
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-    fetchRecommendedPosts();
+fetchRecommendedPosts();
   }, [post]);
 
   if (loading)
