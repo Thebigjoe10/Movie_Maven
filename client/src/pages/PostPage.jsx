@@ -48,15 +48,7 @@ export default function PostPage() {
           return;
         }
 
-        let apiUrl = "/api/post/getposts?limit=4";
-
-        if (post.category) {
-          apiUrl += `&category=${post.category}`;
-        }
-
-        if (post.genre) {
-          apiUrl += `&genre=${post.genre}`;
-        }
+        let apiUrl = `/api/post/getposts?limit=4&category=${post.category}&genre=${post.genre}`;
 
         const res = await fetch(apiUrl);
         const data = await res.json();
@@ -173,25 +165,21 @@ export default function PostPage() {
 
         {/* Related Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">
-            Recommended {post && post.genre} to watch after {post && post.title}
-          </h1>
+          <h1 className="text-xl mt-5">Related Posts</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
-            {relatedPosts &&
-              relatedPosts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
+            {relatedPosts.map((relatedPost) => (
+              <PostCard key={relatedPost._id} post={relatedPost} />
+            ))}
           </div>
         </div>
 
         {/* Recommended Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">YOU MIGHT ALSO LIKE</h1>
+          <h1 className="text-xl mt-5">Recommended Posts</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
-            {recommendedPosts &&
-              recommendedPosts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
+            {recommendedPosts.map((recommendedPost) => (
+              <PostCard key={recommendedPost._id} post={recommendedPost} />
+            ))}
           </div>
         </div>
 
@@ -201,3 +189,4 @@ export default function PostPage() {
     </React.Fragment>
   );
 }
+
