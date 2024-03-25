@@ -5,12 +5,14 @@ import PostCard from "../components/PostCard";
 import { Helmet } from "react-helmet";
 import { Button } from "flowbite-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css/bundle";
+import SwiperCard from "../components/SwiperCard";
 
 export default function Home() {
   SwiperCore.use([Navigation]);
+  SwiperCore.use([Autoplay])
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
   const [kdramas, setKdramas] = useState([]);
@@ -138,12 +140,12 @@ export default function Home() {
       </div>
       {/* News Section */}
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
-      <Swiper navigation>
+      <Swiper navigation autoplay={{ delay: 3000 }}>
         {reviews && reviews.length > 0 && (
           <div className="flex flex-col gap-6">
             {reviews.map((post) => (
               <SwiperSlide className="flex flex-wrap justify-center gap-4">
-                <PostCard key={post._id} post={post} />
+                <SwiperCard key={post._id} post={post} />
               </SwiperSlide>
             ))}
           </div>
