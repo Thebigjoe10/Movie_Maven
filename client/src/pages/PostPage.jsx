@@ -5,6 +5,14 @@ import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
 
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 export default function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
@@ -58,7 +66,9 @@ export default function PostPage() {
           const filteredRelatedPosts = data.posts.filter(
             (relatedPost) => relatedPost._id !== post._id
           );
-          setRelatedPosts(filteredRelatedPosts);
+          // Shuffle the related posts
+          const shuffledRelatedPosts = shuffleArray(filteredRelatedPosts);
+          setRelatedPosts(shuffledRelatedPosts);
         }
       } catch (error) {
         console.log(error.message);
@@ -68,33 +78,36 @@ export default function PostPage() {
     fetchRelatedPosts();
   }, [post]);
 
-  
   useEffect(() => {
-  const fetchRecommendedPosts = async () => {
-  try {
-    if (!post || !post.category || !post.genre) {
-      return;
-    }
+    const fetchRecommendedPosts = async () => {
+      try {
+        if (!post || !post.category || !post.genre) {
+          return;
+        }
 
-    const res = await fetch(
-      `/api/post/getposts?category=${post.category}&limit=5`
-    );
-    const data = await res.json();
+        const res = await fetch(
+          `/api/post/getposts?category=${post.category}&limit=5`
+        );
+        const data = await res.json();
 
-    if (res.ok) {
-      // Exclude the current post and shuffle the posts with different genre
-      const filteredRecommendedPosts = data.posts
-        .filter((recommendedPost) => recommendedPost._id !== post._id && recommendedPost.genre !== post.genre)
-        .sort(() => Math.random() - 0.5);
+        if (res.ok) {
+          // Exclude the current post and shuffle the posts with different genre
+          const filteredRecommendedPosts = data.posts
+            .filter(
+              (recommendedPost) =>
+                recommendedPost._id !== post._id &&
+                recommendedPost.genre !== post.genre
+            )
+            .sort(() => Math.random() - 0.5);
 
-      setRecommendedPosts(filteredRecommendedPosts);
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-};
+          setRecommendedPosts(filteredRecommendedPosts);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
 
-fetchRecommendedPosts();
+    fetchRecommendedPosts();
   }, [post]);
 
   if (loading)
@@ -116,18 +129,18 @@ fetchRecommendedPosts();
       <Helmet>
         {post && (
           <>
-        <meta property="og:image" content={post && post.image} />
-        <meta
-          property="og:url"
-          content={`https://moviemaven.xyz/post/${postSlug}`}
-        />
-        <title>{post && post.title}</title>
-        <meta property="og:title" content={post && post.title} />
-        <meta
-          property="og:description"
-          content={post && (post.content.length / 1000).toFixed(0)}
-        />
-            </>
+            <meta property="og:image" content={post && post.image} />
+            <meta
+              property="og:url"
+              content={`https://moviemaven.xyz/post/${postSlug}`}
+            />
+            <title>{post && post.title}</title>
+            <meta property="og:title" content={post && post.title} />
+            <meta
+              property="og:description"
+              content={post && (post.content.length / 1000).toFixed(0)}
+            />
+          </>
         )}
       </Helmet>
       <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
@@ -194,4 +207,3 @@ fetchRecommendedPosts();
     </React.Fragment>
   );
 }
-
