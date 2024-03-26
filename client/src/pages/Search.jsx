@@ -4,14 +4,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { Helmet } from "react-helmet";
 
-export default function Search() {
-  const [sidebarData, setSidebarData] = useState({
-    searchTerm: "",
-    sort: "desc",
-    category: "",
-    genre: "",
-  });
+// Custom hook for form handling
+function useForm(initialState) {
+  const [formData, setFormData] = useState(initialState);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  return { formData, handleChange };
+}
+
+export default function Search() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -19,121 +23,63 @@ export default function Search() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [Schemamovies, setSchemaMovies] = useState([]);
-  const [Schemaseries, setSchemaSeries] = useState([]);
+  const { formData, handleChange } = useForm({
+    searchTerm: "",
+    sort: "desc",
+    category: "",
+    genre: "",
+  });
 
   useEffect(() => {
-    // Fetch movies and series
-    const fetchPostsByCategory = async (category, setPosts) => {
-      try {
-        const res = await fetch(
-          `/api/post/getposts?category=${category}&limit=3`
-        );
-        const data = await res.json();
-        setPosts(data.posts);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // Fetch movies and series when the component mounts
-    fetchPostsByCategory("Schemamovies", setSchemaMovies);
-    fetchPostsByCategory("Schemaseries", setSchemaSeries);
-  }, []);
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    const sortFromUrl = urlParams.get("sort");
-    const categoryFromUrl = urlParams.get("category");
-    const genreFromUrl = urlParams.get("genre");
-
-    if (searchTermFromUrl || sortFromUrl || categoryFromUrl || genreFromUrl) {
-      setSidebarData({
-        ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
-        genre: genreFromUrl,
-      });
-    }
-
     const fetchPosts = async () => {
       setLoading(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/getposts?${searchQuery}`);
-
-      if (!res.ok) {
+      try {
+        const searchQuery = new URLSearchParams(location.search).toString();
+        const res = await fetch(`/api/post/getposts?${searchQuery}`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+        const data = await res.json();
+        setPosts(data.posts);
         setLoading(false);
-        return;
+        setShowMore(data.posts.length === 12);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setLoading(false);
+        // Handle error gracefully, e.g., display error message to the user
       }
-
-      const data = await res.json();
-      setPosts(data.posts);
-      setLoading(false);
-
-      setShowMore(data.posts.length === 12);
     };
 
     fetchPosts();
   }, [location.search]);
 
-  const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
-      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
-    }
-    if (e.target.id === "sort") {
-      const order = e.target.value || "desc";
-      setSidebarData({ ...sidebarData, sort: order });
-    }
-    if (e.target.id === "category") {
-      const category = e.target.value;
-      setSidebarData({ ...sidebarData, category: category });
-    }
-    if (e.target.id === "genre") {
-      const genre = e.target.value;
-      setSidebarData({ ...sidebarData, genre: genre });
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("searchTerm", sidebarData.searchTerm);
-    urlParams.set("sort", sidebarData.sort);
-    urlParams.set("category", sidebarData.category);
-    urlParams.set("genre", sidebarData.genre);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
+    const urlParams = new URLSearchParams();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value) urlParams.set(key, value);
+    });
+    navigate(`/search?${urlParams.toString()}`);
   };
 
   const handleShowMore = async () => {
-    const numberOfPosts = posts.length;
-    const startIndex = numberOfPosts;
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("startIndex", startIndex);
-    const searchQuery = urlParams.toString();
-
-    const res = await fetch(`/api/post/getposts?${searchQuery}`);
-
-    if (!res.ok) {
-      console.error("Error fetching more posts:", res.status, res.statusText);
-      return;
+    try {
+      const numberOfPosts = posts.length;
+      const startIndex = numberOfPosts;
+      const urlParams = new URLSearchParams(location.search);
+      urlParams.set("startIndex", startIndex);
+      const res = await fetch(`/api/post/getposts?${urlParams.toString()}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch more posts");
+      }
+      const data = await res.json();
+      setPosts([...posts, ...data.posts]);
+      setShowMore(data.posts.length === 12);
+    } catch (error) {
+      console.error("Error fetching more posts:", error);
+      // Handle error gracefully, e.g., display error message to the user
     }
-
-    const data = await res.json();
-    setPosts([...posts, ...data.posts]);
-    setShowMore(data.posts.length === 12);
   };
-
-  useEffect(() => {
-    const defaultImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
-    const ogImageUrl =
-      posts.length > 0 ? posts[0].image || defaultImageUrl : defaultImageUrl;
-    document
-      .querySelector('meta[property="og:image"]')
-      .setAttribute("content", ogImageUrl);
-  }, [posts]);
 
   const pageTitle =
     "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
@@ -142,22 +88,6 @@ export default function Search() {
   const pageKeywords = "movies, series, anime, kdrama, reviews, entertainment";
   const canonicalUrl = "https://www.moviemaven.xyz/search";
   const ogImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
-  const generateMediaSchemaArray = (posts) => {
-    return posts.map((post) => {
-      return {
-        "@context": "http://schema.org",
-        "@type": "Movie",
-        name: post.title,
-        description: post.content,
-        image: post.image,
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: "4.5",
-          reviewCount: "100",
-        },
-      };
-    });
-  };
 
   return (
     <React.Fragment>
@@ -170,12 +100,6 @@ export default function Search() {
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" content={ogImageUrl} />
-        <script type="application/ld+json">
-          {JSON.stringify([
-            ...generateMediaSchemaArray(Schemamovies),
-            ...generateMediaSchemaArray(Schemaseries),
-          ])}
-        </script>
       </Helmet>
       <div className="flex flex-col md:flex-row">
         <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
@@ -188,7 +112,7 @@ export default function Search() {
                 placeholder="Search..."
                 id="searchTerm"
                 type="text"
-                value={sidebarData.searchTerm}
+                value={formData.searchTerm}
                 onChange={handleChange}
               />
             </div>
@@ -196,7 +120,7 @@ export default function Search() {
               <label className="font-semibold">Sort:</label>
               <Select
                 onChange={handleChange}
-                value={sidebarData.sort}
+                value={formData.sort}
                 id="sort">
                 <option value="desc">Latest</option>
                 <option value="asc">Oldest</option>
@@ -206,7 +130,7 @@ export default function Search() {
               <label className="font-semibold">Category:</label>
               <Select
                 onChange={handleChange}
-                value={sidebarData.category}
+                value={formData.category}
                 id="category">
                 <option value=""></option>
                 <option value="movies">Movies</option>
@@ -220,7 +144,7 @@ export default function Search() {
               <label className="font-semibold">Genre:</label>
               <Select
                 onChange={handleChange}
-                value={sidebarData.genre}
+                value={formData.genre}
                 id="genre">
                 <option value=""></option>
                 <option value="action">Action</option>
@@ -267,11 +191,13 @@ export default function Search() {
               posts &&
               posts.map((post) => <PostCard key={post._id} post={post} />)}
             {showMore && (
-              <Button type="button" gradientDuoTone="purpleToBlue" size="sm"
-              className=" text-lg w-full"
+              <Button
+                type="button"
+                gradientDuoTone="purpleToBlue"
+                size="sm"
+                className="text-lg w-full"
                 onClick={handleShowMore}
               >
-                
                 Show More
               </Button>
             )}
