@@ -100,7 +100,7 @@ export default function PostPage() {
             )
             .sort(() => Math.random() - 0.5);
 
-          setRecommendedPosts(filteredRecommendedPosts);
+          setRecommendedPosts(filteredRecommendedPosts.slice(0, 5)); // Limit to 5 posts
         }
       } catch (error) {
         console.log(error.message);
