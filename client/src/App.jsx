@@ -1,3 +1,4 @@
+import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -20,6 +21,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsConditons from './pages/TermsConditons';
 export default function App() {
   return (
+    <HelmetProvider>
     <BrowserRouter>
       <ScrollToTop />
       <Header />
@@ -48,5 +50,6 @@ export default function App() {
       </Routes>
       <Footer />
     </BrowserRouter>
+    </HelmetProvider>
   );
 }

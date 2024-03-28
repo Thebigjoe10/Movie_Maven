@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Button } from "flowbite-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -18,9 +18,6 @@ export default function Home() {
   const [kdramas, setKdramas] = useState([]);
   const [animes, setAnimes] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [Schemamovies, setSchemaMovies] = useState([]);
-  const [Schemaseries, setSchemaSeries] = useState([]);
-
   useEffect(() => {
     // Fetch movies and series
     const fetchPostsByCategory = async (category, setPosts) => {
@@ -36,8 +33,6 @@ export default function Home() {
     };
 
     // Fetch movies and series when the component mounts
-    fetchPostsByCategory("Schemamovies", setSchemaMovies);
-    fetchPostsByCategory("Schemaseries", setSchemaSeries);
   }, []);
 
   useEffect(() => {
@@ -80,49 +75,8 @@ export default function Home() {
     fetchPostsByCategory("reviews");
   }, []);
 
-  const pageTitle =
-    "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
-  const pageDescription =
-    "Explore a variety of movies, series, and reviews on MovieMaven. Your go-to source for all things entertainment.";
-  const pageKeywords = "movies, series, anime, kdrama, reviews, entertainment";
-  const canonicalUrl = "https://www.moviemaven.xyz/";
-  const ogImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
-  const generateMediaSchemaArray = (posts) => {
-    return posts.map((post) => {
-      return {
-        "@context": "http://schema.org",
-        "@type": "Movie",
-        name: post.title,
-        description: post.content,
-        image: post.image,
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: "4.5",
-          reviewCount: "100",
-        },
-      };
-    });
-  };
   return (
     <div>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <meta name="keywords" content={pageKeywords} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalUrl} />
-
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:image" content={ogImageUrl} />
-        <script type="application/ld+json">
-          {JSON.stringify([
-            ...generateMediaSchemaArray(Schemamovies),
-            ...generateMediaSchemaArray(Schemaseries),
-          ])}
-        </script>
-      </Helmet>
-
       <div className="flex flex-col gap-6 p-16 px-3 max-w-6xl mx-auto ">
         <h1 className="text-3xl font-bold lg:text-6xl">
           Welcome to Movie Maven

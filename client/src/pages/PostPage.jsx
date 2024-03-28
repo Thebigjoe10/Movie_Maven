@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
+const similarityThreshold = 0.5;
+
+const computeSimilarity = (str1, str2) => {
+  const words1 = str1.toLowerCase().split(/\s+/);
+  const words2 = str2.toLowerCase().split(/\s+/);
+  const commonWords = words1.filter(word => words2.includes(word));
+  return commonWords.length / Math.min(words1.length, words2.length);
 };
 
 export default function PostPage() {
@@ -52,31 +53,25 @@ export default function PostPage() {
   useEffect(() => {
     const fetchRelatedPosts = async () => {
       try {
-        if (!post || (!post.category && !post.genre)) {
+        if (!post || (!post.title && !post.content && !post.category && !post.genre)) {
           return;
         }
 
-        let apiUrl = "/api/post/getposts?limit=4";
-
-        if (post.category) {
-          apiUrl += `&category=${post.category}`;
-        }
-
-        if (post.genre) {
-          apiUrl += `&genre=${post.genre}`;
-        }
-
-        const res = await fetch(apiUrl);
+        const res = await fetch("/api/post/getposts");
         const data = await res.json();
 
-
         if (res.ok) {
-          // Exclude the current post from related posts
-          const filteredRelatedPosts = data.posts.filter(
-            (relatedPost) => relatedPost._id !== post._id
-          );
-          // Shuffle the related posts
+          const filteredRelatedPosts = data.posts
+            // Exclude the current post
+            .filter(relatedPost => relatedPost._id !== post._id)
+            // Filter related posts by both category and genre
+            .filter(relatedPost => relatedPost.category === post.category && relatedPost.genre === post.genre)
+            // Sort related posts from old to new
+            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+          // Shuffle the array to mix the old and new posts
           const shuffledRelatedPosts = shuffleArray(filteredRelatedPosts);
+
           setRelatedPosts(shuffledRelatedPosts);
         }
       } catch (error) {
@@ -100,16 +95,11 @@ export default function PostPage() {
         const data = await res.json();
 
         if (res.ok) {
-          // Exclude the current post and shuffle the posts with different genre
           const filteredRecommendedPosts = data.posts
-            .filter(
-              (recommendedPost) =>
-                recommendedPost._id !== post._id &&
-                recommendedPost.genre !== post.genre
-            )
+            .filter(recommendedPost => recommendedPost._id !== post._id)
             .sort(() => Math.random() - 0.5);
 
-          setRecommendedPosts(filteredRecommendedPosts.slice(0, 5)); // Limit to 5 posts
+          setRecommendedPosts(filteredRecommendedPosts.slice(0, 5));
         }
       } catch (error) {
         console.log(error.message);
@@ -138,81 +128,88 @@ export default function PostPage() {
       <Helmet>
         {post && (
           <>
-            <meta property="og:image" content={post && post.image} />
+            <meta property="og:image" content={post.image} />
             <meta
               property="og:url"
               content={`https://moviemaven.xyz/post/${postSlug}`}
             />
-            <title>{post && post.title}</title>
-            <meta property="og:title" content={post && post.title} />
+            <title>{post.title}</title>
+            <meta property="og:title" content={post.title} />
             <meta
               property="og:description"
-              content={post && (post.content.length / 1000).toFixed(0)}
+              content={post.content && (post.content.length / 1000).toFixed(0)}
             />
           </>
         )}
       </Helmet>
       <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
         <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
-          {post && post.title}
+          {post.title}
         </h1>
         <Link
-          to={`/search?category=${post && post.category}`}
+          to={`/search?category=${post.category}`}
           className="self-center mt-5"
         >
           <Button color="gray" pill size="xs">
-            {post && post.category}
+            {post.category}
           </Button>
         </Link>
         <Link
-          to={`/search?genre=${post && post.genre}`}
+          to={`/search?genre=${post.genre}`}
           className="self-center mt-5"
         >
-          {post && post.genre && (
+          {post.genre && (
             <Button color="gray" pill size="xs">
               {post.genre}
             </Button>
           )}
         </Link>
         <img
-          src={post && post.image}
-          alt={post && post.title}
+          src={post.image}
+          alt={post.title}
           className="mt-10 p-3 h-full w-full object-cover"
         />
         <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
-          <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
+          <span>{new Date(post.createdAt).toLocaleDateString()}</span>
           <span className="italic">
-            {post && (post.content.length / 1000).toFixed(0)} mins read
+            {post.content && (post.content.length / 1000).toFixed(0)} mins read
           </span>
         </div>
         <div
           className="p-3 max-w-2xl mx-auto w-full post-content"
-          dangerouslySetInnerHTML={{ __html: post && post.content }}
+          dangerouslySetInnerHTML={{ __html: post.content }}
         ></div>
 
-        {/* Related Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">Related Posts</h1>
+          <h1 className="text-xl mt-5">Related {post.genre}s</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
-            {relatedPosts.map((relatedPost) => (
+            {relatedPosts.map(relatedPost => (
               <PostCard key={relatedPost._id} post={relatedPost} />
             ))}
           </div>
         </div>
 
-        {/* Recommended Posts Section */}
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">Recommended Posts</h1>
+          <h1 className="text-xl mt-5">YOU MIGHT ALSO LIKE </h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
-            {recommendedPosts.map((recommendedPost) => (
+            {recommendedPosts.map(recommendedPost => (
               <PostCard key={recommendedPost._id} post={recommendedPost} />
             ))}
           </div>
         </div>
 
-        {/* Comment Section */}
         <CommentSection postId={post._id} />
       </main>
     </React.Fragment>
   );
 }
+
+// Function to shuffle an array
+const shuffleArray = array => {
+  const shuffledArray = [...array];
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};

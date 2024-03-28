@@ -2,7 +2,7 @@ import { Button, Select, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 // Custom hook for form handling
 function useForm(initialState) {
@@ -85,12 +85,11 @@ export default function Search() {
   return (
     <React.Fragment>
       <Helmet>
-        <title>{posts.title}</title>
-        <meta name="description" content={posts.content} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={posts.title} />
         <meta property="og:description" content={posts.content} />
         <meta property="og:image" content={posts.image} />
+        <meta property="og:url" content={`https://moviemaven.xyz/post/${postSlug}`} />
       </Helmet>
       <div className="flex flex-col md:flex-row">
         <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
