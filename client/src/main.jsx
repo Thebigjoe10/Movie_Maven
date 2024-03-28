@@ -31,13 +31,12 @@ const Main = () => {
     fetchPostsByCategory("Schemaseries", setSchemaSeries);
   }, []);
 
-  const pageTitle =
-    "MovieMaven - Your Ultimate Source for Movies, Series, Anime, Kdrama and Reviews";
+  
   const pageDescription =
     "Explore a variety of movies, series, and reviews on MovieMaven. Your go-to source for all things entertainment.";
   const pageKeywords = "movies, series, anime, kdrama, reviews, entertainment";
   const canonicalUrl = "https://www.moviemaven.xyz/";
-  const ogImageUrl = "https://www.moviemaven.xyz/moviemaven.webp";
+
   const generateMediaSchemaArray = (posts) => {
     return posts.map((post) => {
       return {
@@ -79,14 +78,14 @@ const Main = () => {
   return (
     <React.Fragment>
       <Helmet>
-        <title>{pageTitle}</title>
+        <title>{post.title}</title>
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content={pageKeywords} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.title} />
+        <meta property="og:image" content={post.image} />
         {/* Placeholder for JSON-LD script */}
         <script
           id="json-ld-script"

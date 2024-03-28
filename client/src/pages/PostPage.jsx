@@ -56,10 +56,19 @@ export default function PostPage() {
           return;
         }
 
-        let apiUrl = `/api/post/getposts?limit=4&category=${post.category}&genre=${post.genre}`;
+        let apiUrl = "/api/post/getposts?limit=4";
+
+        if (post.category) {
+          apiUrl += `&category=${post.category}`;
+        }
+
+        if (post.genre) {
+          apiUrl += `&genre=${post.genre}`;
+        }
 
         const res = await fetch(apiUrl);
         const data = await res.json();
+
 
         if (res.ok) {
           // Exclude the current post from related posts
