@@ -131,7 +131,7 @@ export default function PostPage() {
             <meta property="og:image" content={post.image} />
             <meta
               property="og:url"
-              content={`https://moviemaven.xyz/post/${postSlug}`}
+              content={`https://moviemaven.xyz/post/${data.slug}`}
             />
             <title>{post.title}</title>
             <meta property="og:title" content={post.title} />
