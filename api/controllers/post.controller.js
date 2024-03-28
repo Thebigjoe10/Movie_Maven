@@ -45,6 +45,7 @@ export const getposts = async (req, res, next) => {
         ],
       }),
     })
+      .select('title content image')
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
