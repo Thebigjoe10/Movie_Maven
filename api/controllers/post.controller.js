@@ -5,7 +5,7 @@ export const create = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "You are not allowed to create a post"));
   }
-  if (!req.body.title || !req.body.content) {
+  if (!req.body.title || !req.body.content || !req.body.image) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
   const slug = req.body.title
@@ -41,11 +41,9 @@ export const getposts = async (req, res, next) => {
         $or: [
           { title: { $regex: req.query.searchTerm, $options: 'i' } },
           { content: { $regex: req.query.searchTerm, $options: 'i' } },
-          { image: { $regex: req.query.searchTerm, $options: 'i' } },
         ],
       }),
     })
-      .select('title content image') // Select the fields you want to retrieve
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
@@ -108,4 +106,4 @@ export const updatepost = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}; 
