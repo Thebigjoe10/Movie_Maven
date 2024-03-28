@@ -85,12 +85,12 @@ export default function Search() {
   return (
     <React.Fragment>
       <Helmet>
-        <title>{post.title}</title>
-        <meta name="description" content={post.content} />
+        <title>{posts.title}</title>
+        <meta name="description" content={posts.content} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.content} />
-        <meta property="og:image" content={post.image} />
+        <meta property="og:title" content={posts.title} />
+        <meta property="og:description" content={posts.content} />
+        <meta property="og:image" content={posts.image} />
       </Helmet>
       <div className="flex flex-col md:flex-row">
         <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
