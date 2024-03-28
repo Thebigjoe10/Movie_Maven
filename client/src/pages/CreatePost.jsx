@@ -13,7 +13,6 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate, useParams } from "react-router-dom";
 import "quill-mention";
-import { Helmet } from "react-helmet";
 
 export default function CreatePost() {
   const { postId } = useParams();
