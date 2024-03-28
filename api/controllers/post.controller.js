@@ -41,11 +41,11 @@ export const getposts = async (req, res, next) => {
         $or: [
           { title: { $regex: req.query.searchTerm, $options: 'i' } },
           { content: { $regex: req.query.searchTerm, $options: 'i' } },
-          { image: { $exists: true } }
-          ]
+          { image: { $exists: true } },
+        ],
       }),
     })
-      .select('title content image')
+      
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
