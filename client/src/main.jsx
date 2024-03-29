@@ -7,6 +7,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import ThemeProvider from "./components/ThemeProvider.jsx";
 import App from "./App.jsx";
 
+import { hydrateRoot, createRoot } from "react-dom/client";
+
 const Main = () => {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
@@ -14,14 +16,20 @@ const Main = () => {
     });
   }
   return (
-      <PersistGate persistor={persistor}>
-        <Provider store={store}>
-          <ThemeProvider>
-          <App/>
-          </ThemeProvider>
-        </Provider>
-      </PersistGate>
+    <PersistGate persistor={persistor}>
+      <Provider store={store}>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </Provider>
+    </PersistGate>
   );
 };
 
-ReactDOM.createRoot(document.getElementById("root")).render(<Main />);
+const rootElement = document.getElementById("root");
+
+if (rootElement.hasChildNodes()) {
+  hydrateRoot(rootElement, <Main />);
+} else {
+  createRoot(rootElement).render(<Main />);
+}
