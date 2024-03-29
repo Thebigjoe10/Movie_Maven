@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 import million from 'million/compiler';
 
 export default defineConfig({
@@ -15,7 +15,7 @@ export default defineConfig({
     outDir: 'build', // Specify the output directory for build artifacts
   },
   plugins: [
-    million.vite({ auto: true }), // Include the million.js plugin
-    react()
+    million({ auto: true }), // Include the million.js plugin directly
+    react(),
   ],
-})
+});
