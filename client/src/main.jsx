@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM, { hydrate, render } from "react-dom";
 import "./index.css";
 import { store, persistor } from "./redux/store.js";
 import { Provider } from "react-redux";
@@ -26,5 +26,8 @@ const Main = () => {
 
 const rootElement = document.getElementById("root");
 
-const root = ReactDOM.createRoot(rootElement);
-root.render(<Main />);
+if (rootElement.hasChildNodes()) {
+  hydrate(<Main />, rootElement);
+} else {
+  render(<Main />, rootElement);
+}
