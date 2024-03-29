@@ -29,7 +29,6 @@
     "tailwind-scrollbar": "^3.0.5"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react-swc": "^3.5.0",
