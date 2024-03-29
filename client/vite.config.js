@@ -11,7 +11,5 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    outDir: 'build', // Specify the output directory for build artifacts
-  },
+  
 });
