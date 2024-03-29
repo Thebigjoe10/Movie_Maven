@@ -14,7 +14,6 @@
     "@reduxjs/toolkit": "^2.0.1",
     "firebase": "^10.7.1",
     "flowbite-react": "^0.7.2",
-    "million": "^2.6.4",
     "moment": "^2.30.1",
     "quill-mention": "^4.1.0",
     "react": "^18.2.0",
