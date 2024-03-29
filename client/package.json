@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+   "postbuild": "react-snap"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
@@ -23,7 +24,6 @@
     "react-quill": "^2.0.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.21.1",
-    "react-snap": "^1.23.0",
     "redux-persist": "^6.0.0",
     "swiper": "^11.0.7",
     "tailwind-scrollbar": "^3.0.5"
@@ -38,6 +38,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.33",
+    "react-snap": "^1.23.0",
     "tailwindcss": "^3.4.1",
     "vite": "^5.0.8"
   }
