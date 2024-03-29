@@ -7,8 +7,6 @@ import { PersistGate } from "redux-persist/integration/react";
 import ThemeProvider from "./components/ThemeProvider.jsx";
 import App from "./App.jsx";
 
-import { hydrateRoot, createRoot } from "react-dom/client";
-
 const Main = () => {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
@@ -28,8 +26,5 @@ const Main = () => {
 
 const rootElement = document.getElementById("root");
 
-if (rootElement.hasChildNodes()) {
-  hydrateRoot(rootElement, <Main />);
-} else {
-  createRoot(rootElement).render(<Main />);
-}
+const root = ReactDOM.createRoot(rootElement);
+root.render(<Main />);
