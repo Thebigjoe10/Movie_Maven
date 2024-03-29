@@ -126,22 +126,22 @@ export default function PostPage() {
   return (
     <React.Fragment>
       <Helmet>
-        {post && (
-          <>
-            <meta property="og:image" content={post.image} />
-            <meta
-              property="og:url"
-              content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`}
-            />
-            <title>{post.title}</title>
-            <meta property="og:title" content={post.title} />
-            <meta
-              property="og:description"
-              content={post.content && (post.content.length / 1000).toFixed(0)}
-            />
-          </>
-        )}
-      </Helmet>
+      <Helmet>
+  {post && (
+    <>
+      <meta property="og:type" content="article" />
+      <meta property="og:title" content={post.title} />
+      <meta property="og:description" content={post.content} />
+      <meta property="og:image" content={post.image} />
+      <meta
+        property="og:url"
+        content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`}
+      />
+      <title>{post.title}</title>
+    </>
+  )}
+</Helmet>
+
       <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
         <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
           {post.title}
