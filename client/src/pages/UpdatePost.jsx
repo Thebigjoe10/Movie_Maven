@@ -53,25 +53,25 @@ export default function UpdatePost() {
     { value: "wwe", label: "WWE" },
   ];
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`/api/post/getposts?postId=${postId}`);
-        const data = await res.json();
+  const fetchPost = async () => {
+    try {
+      const res = await fetch(`/api/post/getposts?postId=${postId}`);
+      const data = await res.json();
 
-        if (!res.ok) {
-          console.log(data.message);
-          setPublishError(data.message);
-        } else {
-          setPublishError(null);
-          setFormData(data.posts[0]);
-        }
-      } catch (error) {
-        console.error(error.message);
+      if (!res.ok) {
+        console.log(data.message);
+        setPublishError(data.message);
+      } else {
+        setPublishError(null);
+        setFormData(data.posts[0]);
       }
-    };
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-    fetchPost();
-  }, [postId]);
+  fetchPost();
+}, [postId]);
 
   const handleUploadImage = async () => {
     try {
