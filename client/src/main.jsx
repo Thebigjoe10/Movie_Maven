@@ -8,6 +8,7 @@ import ThemeProvider from "./components/ThemeProvider.jsx";
 import App from "./App.jsx";
 
 import { hydrateRoot, createRoot } from "react-dom/client";
+import million from 'million/compiler';
 
 const Main = () => {
   if ("serviceWorker" in navigator) {
@@ -33,3 +34,5 @@ if (rootElement.hasChildNodes()) {
 } else {
   createRoot(rootElement).render(<Main />);
 }
+
+export default million;
