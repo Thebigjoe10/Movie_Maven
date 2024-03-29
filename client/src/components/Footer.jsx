@@ -1,3 +1,4 @@
+import React from 'react'; 
 import { Footer } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { BsFacebook, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
