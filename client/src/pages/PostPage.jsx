@@ -53,34 +53,37 @@ export default function PostPage() {
   useEffect(() => {
     const fetchRelatedPosts = async () => {
       try {
-        if (!post || (!post.title && !post.content && !post.category && !post.genre)) {
+        if (!post || (!post.title  && !post.category && !post.genre)) {
           return;
         }
-
+  
         const res = await fetch("/api/post/getposts");
         const data = await res.json();
-
+  
         if (res.ok) {
           const filteredRelatedPosts = data.posts
             // Exclude the current post
             .filter(relatedPost => relatedPost._id !== post._id)
             // Filter related posts by both category and genre
             .filter(relatedPost => relatedPost.category === post.category && relatedPost.genre === post.genre)
+            // Filter related posts by similarity
+            .filter(relatedPost => computeSimilarity(relatedPost.title, post.title) >= similarityThreshold)
             // Sort related posts from old to new
             .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
+  
           // Shuffle the array to mix the old and new posts
           const shuffledRelatedPosts = shuffleArray(filteredRelatedPosts);
-
+  
           setRelatedPosts(shuffledRelatedPosts);
         }
       } catch (error) {
         console.log(error.message);
       }
     };
-
+  
     fetchRelatedPosts();
   }, [post]);
+  
 
   useEffect(() => {
     const fetchRecommendedPosts = async () => {
@@ -129,15 +132,24 @@ export default function PostPage() {
       <Helmet>
   {post && (
     <>
-      <meta property="og:type" content="article" />
-      <meta property="og:title" content={post.title} />
-      <meta property="og:description" content={post.content} />
-      <meta property="og:image" content={post.image} />
-      <meta
-        property="og:url"
-        content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`}
-      />
-      <title>{post.title}</title>
+    <meta charSet="utf-8" />
+        <title>{post.title}</title>
+        <meta name="description" content={post.content} />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.content} />
+        <meta property="og:image" content={post.image} />
+        <meta property="og:url" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
+        <meta property="og:site_name" content="MovieMaven" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MovieMaven" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.content} />
+        <meta name="twitter:image" content={post.image} />
+        <meta name="twitter:url" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
     </>
   )}
 </Helmet>
