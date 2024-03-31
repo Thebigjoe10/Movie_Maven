@@ -30,7 +30,8 @@ mongoose
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
 });
-app.use(prerender.set('prerenderToken', 'R3bn0UYo49fq41xCWvtj'));
+app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
+
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
