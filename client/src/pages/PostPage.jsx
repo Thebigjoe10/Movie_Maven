@@ -129,27 +129,27 @@ export default function PostPage() {
   return (
     <React.Fragment>
      
-      <Helmet>
+     <Helmet>
   {post && (
     <>
-    <meta charSet="utf-8" />
-        <title>{post.title}</title>
-        <meta name="description" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta property="og:description" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta property="og:image" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta property="og:url" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta property="og:site_name" content="MovieMaven" />
-        <meta property="og:locale" content="en_US" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@MovieMaven" />
-        <meta name="twitter:title" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta name="twitter:description" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta name="twitter:image" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
-        <meta name="twitter:url" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
+      <meta charSet="utf-8" />
+      <title>{post.title}</title>
+      <meta name="description" content={post.content} />
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={post.title} />
+      <meta property="og:description" content={post.content} />
+      <meta property="og:image" content={post.image} />
+      <meta property="og:url" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
+      <meta property="og:site_name" content="MovieMaven" />
+      <meta property="og:locale" content="en_US" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@MovieMaven" />
+      <meta name="twitter:title" content={post.title} />
+      <meta name="twitter:description" content={post.content} />
+      <meta name="twitter:image" content={post.image} />
+      <meta name="twitter:url" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
     </>
   )}
 </Helmet>
