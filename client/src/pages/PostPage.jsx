@@ -138,7 +138,7 @@ export default function PostPage() {
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={post.`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
+        <meta property="og:title" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
         <meta property="og:description" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
         <meta property="og:image" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
         <meta property="og:url" content={`https://moviemaven.xyz/post/getposts?slug=${postSlug}`} />
