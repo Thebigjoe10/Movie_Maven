@@ -5,15 +5,6 @@ import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
 
-const similarityThreshold = 0.5;
-
-const computeSimilarity = (str1, str2) => {
-  const words1 = str1.toLowerCase().split(/\s+/);
-  const words2 = str2.toLowerCase().split(/\s+/);
-  const commonWords = words1.filter(word => words2.includes(word));
-  return commonWords.length / Math.min(words1.length, words2.length);
-};
-
 export default function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
@@ -53,7 +44,7 @@ export default function PostPage() {
   useEffect(() => {
     const fetchRelatedPosts = async () => {
       try {
-        if (!post || (!post.title && !post.content)) {
+        if (!post || (!post.category && !post.genre)) {
           return;
         }
 
@@ -64,9 +55,10 @@ export default function PostPage() {
           const filteredRelatedPosts = data.posts
             // Exclude the current post
             .filter(relatedPost => relatedPost._id !== post._id)
-            // Filter related posts by similarity
-            .filter(relatedPost => computeSimilarity(relatedPost.title, post.title) >= similarityThreshold ||
-              computeSimilarity(relatedPost.content, post.content) >= similarityThreshold)
+            // Filter related posts by category and genre
+            .filter(relatedPost => relatedPost.category === post.category && relatedPost.genre === post.genre)
+            // Filter related posts by title and content
+            .filter(relatedPost => relatedPost.title.includes(post.title) || relatedPost.content.includes(post.content))
             // Sort related posts from old to new
             .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
@@ -83,7 +75,7 @@ export default function PostPage() {
   useEffect(() => {
     const fetchRecommendedPosts = async () => {
       try {
-        if (!post || !post.category || !post.genre) {
+        if (!post || !post.category) {
           return;
         }
 
@@ -93,11 +85,7 @@ export default function PostPage() {
         const data = await res.json();
 
         if (res.ok) {
-          const filteredRecommendedPosts = data.posts
-            .filter(recommendedPost => recommendedPost._id !== post._id)
-            .sort(() => Math.random() - 0.5);
-
-          setRecommendedPosts(filteredRecommendedPosts.slice(0, 5));
+          setRecommendedPosts(data.posts);
         }
       } catch (error) {
         console.log(error.message);
@@ -187,7 +175,7 @@ export default function PostPage() {
         ></div>
 
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">Related Posts</h1>
+          <h1 className="text-xl mt-5">Related {post.genre}</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
             {relatedPosts.map(relatedPost => (
               <PostCard key={relatedPost._id} post={relatedPost} />
