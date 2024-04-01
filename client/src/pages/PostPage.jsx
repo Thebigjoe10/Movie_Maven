@@ -5,6 +5,14 @@ import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
 
+const similarityThreshold = 0.5;
+
+const computeSimilarity = (str1, str2) => {
+  const words1 = str1.toLowerCase().split(/\s+/);
+  const words2 = str2.toLowerCase().split(/\s+/);
+  const commonWords = words1.filter(word => words2.includes(word));
+  return commonWords.length / Math.min(words1.length, words2.length);
+};
 
 export default function PostPage() {
   const { postSlug } = useParams();
@@ -43,26 +51,34 @@ export default function PostPage() {
   }, [postSlug]);
 
   useEffect(() => {
-  const fetchRelatedPosts = async () => {
-    try {
-      if (!post || !post.title || !post.genre) {
-        return;
+    const fetchRelatedPosts = async () => {
+      try {
+        if (!post || (!post.title && !post.content)) {
+          return;
+        }
+
+        const res = await fetch("/api/post/getposts");
+        const data = await res.json();
+
+        if (res.ok) {
+          const filteredRelatedPosts = data.posts
+            // Exclude the current post
+            .filter(relatedPost => relatedPost._id !== post._id)
+            // Filter related posts by similarity
+            .filter(relatedPost => computeSimilarity(relatedPost.title, post.title) >= similarityThreshold ||
+              computeSimilarity(relatedPost.content, post.content) >= similarityThreshold)
+            // Sort related posts from old to new
+            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+          setRelatedPosts(filteredRelatedPosts);
+        }
+      } catch (error) {
+        console.log(error.message);
       }
+    };
 
-      const res = await fetch(`/api/post/getposts?genre=${post.genre}&title=${post.title}&limit=5`);
-      const data = await res.json();
-
-      if (res.ok) {
-        setRelatedPosts(data.posts.filter(relatedPost => relatedPost._id !== post._id));
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  fetchRelatedPosts();
-}, [post]);
-
+    fetchRelatedPosts();
+  }, [post]);
 
   useEffect(() => {
     const fetchRecommendedPosts = async () => {
@@ -71,7 +87,9 @@ export default function PostPage() {
           return;
         }
 
-        const res = await fetch(`/api/post/getposts?category=${post.category}&genre=${post.genre}&limit=5`);
+        const res = await fetch(
+          `/api/post/getposts?category=${post.category}&limit=5`
+        );
         const data = await res.json();
 
         if (res.ok) {
@@ -82,7 +100,7 @@ export default function PostPage() {
           setRecommendedPosts(filteredRecommendedPosts.slice(0, 5));
         }
       } catch (error) {
-        console.error(error.message);
+        console.log(error.message);
       }
     };
 
@@ -112,12 +130,12 @@ export default function PostPage() {
             <title>{post.title}</title>
             <meta name="description" content={post.content} />
             <meta name="robots" content="index, follow" />
-            <link rel="canonical" href={`https://www.moviemaven.xyz/post/${postSlug}`} />
+            <link rel="canonical" href={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`} />
             <meta property="og:type" content="website" />
             <meta property="og:title" content={post.title} />
             <meta property="og:description" content={post.content} />
             <meta property="og:image" content={post.image} />
-            <meta property="og:url" content={`https://www.moviemaven.xyz/post/${postSlug}`} />
+            <meta property="og:url" content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`} />
             <meta property="og:site_name" content="MovieMaven" />
             <meta property="og:locale" content="en_US" />
             <meta name="twitter:card" content="summary_large_image" />
@@ -125,7 +143,7 @@ export default function PostPage() {
             <meta name="twitter:title" content={post.title} />
             <meta name="twitter:description" content={post.content} />
             <meta name="twitter:image" content={post.image} />
-            <meta name="twitter:url" content={`https://www.moviemaven.xyz/post/${postSlug}`} />
+            <meta name="twitter:url" content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`} />
           </>
         )}
       </Helmet>
@@ -134,27 +152,42 @@ export default function PostPage() {
         <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
           {post.title}
         </h1>
-        <Link to={`/search?category=${post.category}`} className="self-center mt-5">
+        <Link
+          to={`/search?category=${post.category}`}
+          className="self-center mt-5"
+        >
           <Button color="gray" pill size="xs">
             {post.category}
           </Button>
         </Link>
-        <Link to={`/search?genre=${post.genre}`} className="self-center mt-5">
+        <Link
+          to={`/search?genre=${post.genre}`}
+          className="self-center mt-5"
+        >
           {post.genre && (
             <Button color="gray" pill size="xs">
               {post.genre}
             </Button>
           )}
         </Link>
-        <img src={post.image} alt={post.title} className="mt-10 p-3 h-full w-full object-cover" />
+        <img
+          src={post.image}
+          alt={post.title}
+          className="mt-10 p-3 h-full w-full object-cover"
+        />
         <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
           <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-          <span className="italic">{post.content && (post.content.length / 1000).toFixed(0)} mins read</span>
+          <span className="italic">
+            {post.content && (post.content.length / 1000).toFixed(0)} mins read
+          </span>
         </div>
-        <div className="p-3 max-w-2xl mx-auto w-full post-content" dangerouslySetInnerHTML={{ __html: post.content }}></div>
+        <div
+          className="p-3 max-w-2xl mx-auto w-full post-content"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        ></div>
 
         <div className="flex flex-col justify-center items-center mb-5">
-          <h1 className="text-xl mt-5">Related {post.genre}</h1>
+          <h1 className="text-xl mt-5">Related Posts</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
             {relatedPosts.map(relatedPost => (
               <PostCard key={relatedPost._id} post={relatedPost} />
