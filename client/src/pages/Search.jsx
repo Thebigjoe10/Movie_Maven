@@ -52,7 +52,7 @@ export default function Search() {
     fetchPosts();
   }, [location.search]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
     Object.entries(formData).forEach(([key, value]) => {
