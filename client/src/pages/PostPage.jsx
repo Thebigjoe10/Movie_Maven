@@ -79,7 +79,7 @@ export default function PostPage() {
       }
 
       const res = await fetch(
-        `/api/post/getposts?category=${post.category}&limit=6`
+        `/api/post/getposts?category=${post.category}&limit=5`
       ); // Fetch one extra post
       const data = await res.json();
 
