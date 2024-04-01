@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import { Button, Select, TextInput } from "flowbite-react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 
@@ -52,7 +52,7 @@ export default function Search() {
     fetchPosts();
   }, [location.search]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
     Object.entries(formData).forEach(([key, value]) => {
@@ -80,8 +80,10 @@ export default function Search() {
     }
   };
 
+ 
   return (
     <React.Fragment>
+      
       <div className="flex flex-col md:flex-row">
         <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
           <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
@@ -187,4 +189,4 @@ export default function Search() {
       </div>
     </React.Fragment>
   );
-}
+} 
