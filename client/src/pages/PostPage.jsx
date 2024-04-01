@@ -84,9 +84,6 @@ export default function PostPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Filter out the first post from the recommended posts
-        const filteredRecommendedPosts = data.posts.filter(recommendedPost => recommendedPost._id !== post._id);
-
         // Set recommended posts excluding the first one
         setRecommendedPosts(filteredRecommendedPosts.slice(0, 5));
       }
