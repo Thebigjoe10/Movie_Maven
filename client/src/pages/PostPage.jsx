@@ -5,14 +5,6 @@ import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
 
-const similarityThreshold = 0.5;
-
-const computeSimilarity = (str1, str2) => {
-  const words1 = str1.toLowerCase().split(/\s+/);
-  const words2 = str2.toLowerCase().split(/\s+/);
-  const commonWords = words1.filter(word => words2.includes(word));
-  return commonWords.length / Math.min(words1.length, words2.length);
-};
 
 export default function PostPage() {
   const { postSlug } = useParams();
@@ -51,31 +43,26 @@ export default function PostPage() {
   }, [postSlug]);
 
   useEffect(() => {
-    const fetchRelatedPosts = async () => {
-      try {
-        if (!post || !post.title || !post.category || !post.genre) {
-          return;
-        }
-
-        const res = await fetch("/api/post/getposts");
-        const data = await res.json();
-
-        if (res.ok) {
-          const filteredRelatedPosts = data.posts
-            .filter(relatedPost => relatedPost._id !== post._id)
-            .filter(relatedPost => relatedPost.category === post.category && relatedPost.genre === post.genre)
-            .filter(relatedPost => computeSimilarity(relatedPost.title, post.title) >= similarityThreshold)
-            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-          setRelatedPosts(filteredRelatedPosts);
-        }
-      } catch (error) {
-        console.error(error.message);
+  const fetchRelatedPosts = async () => {
+    try {
+      if (!post || !post.title || !post.genre) {
+        return;
       }
-    };
 
-    fetchRelatedPosts();
-  }, [post]);
+      const res = await fetch(`/api/post/getposts?genre=${post.genre}&title=${post.title}&limit=5`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setRelatedPosts(data.posts.filter(relatedPost => relatedPost._id !== post._id));
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  fetchRelatedPosts();
+}, [post]);
+
 
   useEffect(() => {
     const fetchRecommendedPosts = async () => {
