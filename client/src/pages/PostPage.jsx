@@ -57,8 +57,7 @@ export default function PostPage() {
             .filter(relatedPost => relatedPost._id !== post._id)
             // Filter related posts by category and genre
             .filter(relatedPost => relatedPost.category === post.category && relatedPost.genre === post.genre)
-            // Filter related posts by title and content
-            .filter(relatedPost => relatedPost.title.includes(post.title) || relatedPost.content.includes(post.content))
+  
             // Sort related posts from old to new
             .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
