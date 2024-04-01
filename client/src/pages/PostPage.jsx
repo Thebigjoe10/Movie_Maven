@@ -85,7 +85,7 @@ export default function PostPage() {
 
       if (res.ok) {
         // Set recommended posts excluding the first one
-        setRecommendedPosts(filteredRecommendedPosts.slice(0, 5));
+        setRecommendedPosts(filteredRecommendedPosts);
       }
     } catch (error) {
       console.log(error.message);
