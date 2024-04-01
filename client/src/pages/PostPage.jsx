@@ -72,31 +72,32 @@ export default function PostPage() {
   }, [post]);
 
   useEffect(() => {
-    const fetchRecommendedPosts = async () => {
-      try {
-        if (!post || !post.category) {
-          return;
-        }
-
-        const res = await fetch(
-          `/api/post/getposts?category=${post.category}&limit=5`
-        );
-        const data = await res.json();
-
-        if (res.ok) {
-          const filteredRecommendedPosts = data.posts
-          // Exclude the current post
-            .filter(recommendedPosts => recommendedPosts._id !== post._id)
-          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-          setRecommendedPosts(data.posts);
-        }
-      } catch (error) {
-        console.log(error.message);
+  const fetchRecommendedPosts = async () => {
+    try {
+      if (!post || !post.category) {
+        return;
       }
-    };
 
-    fetchRecommendedPosts();
-  }, [post]);
+      const res = await fetch(
+        `/api/post/getposts?category=${post.category}&limit=6`
+      ); // Fetch one extra post
+      const data = await res.json();
+
+      if (res.ok) {
+        // Filter out the first post from the recommended posts
+        const filteredRecommendedPosts = data.posts.filter(recommendedPost => recommendedPost._id !== post._id);
+
+        // Set recommended posts excluding the first one
+        setRecommendedPosts(filteredRecommendedPosts.slice(0, 5));
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  fetchRecommendedPosts();
+}, [post]);
+
 
   if (loading)
     return (
