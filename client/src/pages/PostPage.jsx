@@ -84,6 +84,10 @@ export default function PostPage() {
         const data = await res.json();
 
         if (res.ok) {
+          const filteredRecommendedPosts = data.posts
+          // Exclude the current post
+            .filter(recommendedPosts => recommendedPosts._id !== post._id)
+          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
           setRecommendedPosts(data.posts);
         }
       } catch (error) {
