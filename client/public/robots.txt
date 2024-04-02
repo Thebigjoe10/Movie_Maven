@@ -1,6 +1,3 @@
-User-agent: SiteAuditBot
-Allow: /
-
 User-agent: facebookexternalhit
 Disallow:
 
@@ -13,3 +10,5 @@ Disallow:
 User-agent: *
 Disallow: /
 
+User-agent: SiteAuditBot
+Allow: /
