@@ -113,12 +113,12 @@ const PostPage = () => {
             <meta name="author" content="MovieMaven" />
             <meta name="description" content={post.content} />
             <meta name="robots" content="index, follow" />
-            <link rel="canonical" href={`https://www.moviemaven.xyz/post/${postSlug}`} />
+            <link rel="canonical" href={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`} />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={post.title} />
             <meta property="og:description" content={post.content} />
             <meta property="og:image" content={post.image} />
-            <meta property="og:url" content={`https://www.moviemaven.xyz/post/${postSlug}`} />
+            <meta property="og:url" content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`} />
             <meta property="og:site_name" content="MovieMaven" />
             <meta property="og:locale" content="en_US" />
             <meta name="twitter:card" content="summary_large_image" />
@@ -126,7 +126,7 @@ const PostPage = () => {
             <meta name="twitter:title" content={post.title} />
             <meta name="twitter:description" content={post.content} />
             <meta name="twitter:image" content={post.image} />
-            <meta name="twitter:url" content={`https://www.moviemaven.xyz/post/${postSlug}`} />
+            <meta name="twitter:url" content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`} />
           </>
         )}
       </Helmet>
