@@ -109,6 +109,8 @@ const PostPage = () => {
           <>
             <meta charSet="utf-8" />
             <title>{post.title}</title>
+            <meta name="keywords" content="movies, series, anime, kdrama, reviews, moviemaven movies, entertainment, nkiri, moviemaven xyz, moviemaven,nkiri.com, movie box pro download, netnaija movie download, waploaded" />
+            <meta name="author" content="MovieMaven" />
             <meta name="description" content={post.content} />
             <meta name="robots" content="index, follow" />
             <link rel="canonical" href={`https://www.moviemaven.xyz/post/${postSlug}`} />
