@@ -19,28 +19,12 @@ export default function Home() {
   const [kdramas, setKdramas] = useState([]);
   const [animes, setAnimes] = useState([]);
   const [reviews, setReviews] = useState([]);
-  useEffect(() => {
-    // Fetch movies and series
-    const fetchPostsByCategory = async (category, setPosts) => {
-      try {
-        const res = await fetch(
-          `/api/post/gethomepageposts?category=${category}&limit=3`
-        );
-        const data = await res.json();
-        setPosts(data.posts);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // Fetch movies and series when the component mounts
-  }, []);
-
+  
   useEffect(() => {
     const fetchPostsByCategory = async (category) => {
       try {
         const res = await fetch(
-          `/api/post/getposts?category=${category}&limit=12`
+          `/api/post/gethomepageposts?category=${category}&limit=12`
         );
         const data = await res.json();
 
