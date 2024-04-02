@@ -1,3 +1,7 @@
+User-agent: SiteAuditBot
+
+Allow: /
+
 User-agent: facebookexternalhit
 Disallow:
 
