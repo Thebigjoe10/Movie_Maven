@@ -26,7 +26,7 @@ export const create = async (req, res, next) => {
   }
 };
 
-  export const gethomepageposts = async (req, res, next) => {
+export const gethomepageposts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 12;
@@ -41,7 +41,6 @@ export const create = async (req, res, next) => {
         $or: [
           { title: { $regex: req.query.searchTerm, $options: 'i' } },
           { content: { $regex: req.query.searchTerm, $options: 'i' } },
-          
         ],
       }),
     })
@@ -70,7 +69,6 @@ export const create = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
 };
 
 export const getposts = async (req, res, next) => {
@@ -119,7 +117,6 @@ export const getposts = async (req, res, next) => {
   }
 };
 
-
 export const deletepost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to delete this post"));
@@ -155,4 +152,4 @@ export const updatepost = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}; 
+};
