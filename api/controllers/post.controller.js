@@ -26,7 +26,7 @@ export const create = async (req, res, next) => {
   }
 };
 
-  export const getHomePagePosts = async (req, res, next) => {
+  export const gethomepageposts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 12;
