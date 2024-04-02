@@ -8,7 +8,7 @@ User-agent: Twitterbot
 Disallow:
 
 User-agent: *
-Disallow: /
+Disallow: 
 
 User-agent: SiteAuditBot
 Allow: /
