@@ -11,3 +11,5 @@ Disallow:
 
 User-agent: SiteAuditBot
 Allow: /
+
+Sitemap: https://www.moviemaven.xyz/sitemap.xml
