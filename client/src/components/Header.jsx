@@ -8,7 +8,6 @@ import { toggleTheme } from '../redux/theme/themeSlice';
 import { signoutSuccess } from '../redux/user/userSlice';
 
 export default function Header() {
-  const path = useLocation().pathname;
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,12 +30,12 @@ export default function Header() {
       });
       const data = await res.json();
       if (!res.ok) {
-        console.log(data.message);
+        console.error(data.message);
       } else {
         dispatch(signoutSuccess());
       }
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
 
@@ -50,10 +49,7 @@ export default function Header() {
 
   return (
     <Navbar className='border-b-2'>
-      <Link
-        to='/'
-        className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'
-      >
+      <Link to='/' className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
         <span className='px-2 py-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-lg text-white'>
           Movie
         </span>
@@ -63,7 +59,7 @@ export default function Header() {
         <TextInput
           type='text'
           placeholder='Search...'
-          rightIcon={AiOutlineSearch }
+          rightIcon={<AiOutlineSearch />}
           className='hidden lg:inline'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -85,9 +81,7 @@ export default function Header() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={
-              <Avatar alt='user' img={currentUser.profilePicture} rounded />
-            }
+            label={<Avatar alt='user' img={currentUser.profilePicture} rounded />}
           >
             <Dropdown.Header>
               <span className='block text-sm'>@{currentUser.username}</span>
@@ -111,13 +105,13 @@ export default function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link active={path === '/'} as={'div'}>
+        <Navbar.Link active={location.pathname === '/'} as='div'>
           <Link to='/'>Home</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === '/about'} as={'div'}>
+        <Navbar.Link active={location.pathname === '/about'} as='div'>
           <Link to='/about'>About</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === '/howtodownload'} as={'div'}>
+        <Navbar.Link active={location.pathname === '/howtodownload'} as='div'>
           <Link to='/howtodownload'>HowToDownload</Link>
         </Navbar.Link>
       </Navbar.Collapse>
