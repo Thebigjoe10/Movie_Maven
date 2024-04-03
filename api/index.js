@@ -7,7 +7,6 @@ import postRoutes from './routes/post.route.js';
 import commentRoutes from './routes/comment.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import prerender from 'prerender-node';
 
 dotenv.config();
 
@@ -30,7 +29,7 @@ mongoose
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
 });
-app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
+
 
 
 app.use('/api/user', userRoutes);
