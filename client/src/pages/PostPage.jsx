@@ -109,7 +109,27 @@ const PostPage = () => {
           <>
             <meta charSet="utf-8" />
             <title>{post.title}</title>
-            <meta name="keywords" content="movies, series, anime, kdrama, reviews, moviemaven movies, entertainment, nkiri, moviemaven xyz, moviemaven,nkiri.com, movie box pro download, netnaija movie download, waploaded" />
+              <meta name="keywords" content="movies, series, anime, kdrama, reviews, moviemaven movies, entertainment, nkiri, moviemaven xyz, moviemaven,nkiri.com, movie box pro download, netnaija movie download, waploaded, Movies,
+tamil movies,
+bollywood movies,
+iron man,
+x men movies,
+bhojpuri movies,
+movies & reviews,
+Movies on Line,
+Movie TV,
+New Movies,
+Films on Line,
+All Movies,
+Movies Movies,
+Cloud Movies,
+Digital Movies,
+Movies Now,
+moviemaven - ultimate source,
+deadpool,
+spider man movies,
+telugu movies on line,
+full movie on line" />
             <meta name="author" content="MovieMaven" />
             <meta name="description" content={post.content} />
             <meta name="robots" content="index, follow" />
