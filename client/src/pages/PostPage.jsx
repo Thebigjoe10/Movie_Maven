@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
@@ -12,6 +12,9 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [recommendedPosts, setRecommendedPosts] = useState([]);
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [metaImage, setMetaImage] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -40,6 +43,14 @@ const PostPage = () => {
 
     fetchPost();
   }, [postSlug]);
+
+  useEffect(() => {
+    if (post) {
+      setMetaTitle(post.title);
+      setMetaDescription(post.content);
+      setMetaImage(post.image);
+    }
+  }, [post]);
 
   useEffect(() => {
     const fetchRelatedPosts = async () => {
@@ -114,47 +125,27 @@ const PostPage = () => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <Helmet>
         {post && (
           <>
             <meta charSet="utf-8" />
-            <title>{post.title}</title>
+            <title>{metaTitle}</title>
             <meta
               name="keywords"
-              content="movies, series, anime, kdrama, reviews, moviemaven movies, entertainment, nkiri, moviemaven xyz, moviemaven,nkiri.com, movie box pro download, netnaija movie download, waploaded, Movies,
-tamil movies,
-bollywood movies,
-iron man,
-x men movies,
-bhojpuri movies,
-movies & reviews,
-Movies on Line,
-Movie TV,
-New Movies,
-Films on Line,
-All Movies,
-Movies Movies,
-Cloud Movies,
-Digital Movies,
-Movies Now,
-moviemaven - ultimate source,
-deadpool,
-spider man movies,
-telugu movies on line,
-full movie on line"
+              content="movies, series, anime, kdrama, reviews, moviemaven movies, entertainment, nkiri, moviemaven xyz, moviemaven,nkiri.com, movie box pro download, netnaija movie download, waploaded, Movies, tamil movies, bollywood movies, iron man, x men movies, bhojpuri movies, movies & reviews, Movies on Line, Movie TV, New Movies, Films on Line, All Movies, Movies Movies, Cloud Movies, Digital Movies, Movies Now, moviemaven - ultimate source, deadpool, spider man movies, telugu movies on line, full movie on line"
             />
             <meta name="author" content="MovieMaven" />
-            <meta name="description" content={post.content} />
+            <meta name="description" content={metaDescription} />
             <meta name="robots" content="index, follow" />
             <link
               rel="canonical"
               href={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`}
             />
             <meta property="og:type" content="article" />
-            <meta property="og:title" content={post.title} />
-            <meta property="og:description" content={post.content} />
-            <meta property="og:image" content={post.image} />
+            <meta property="og:title" content={metaTitle} />
+            <meta property="og:description" content={metaDescription} />
+            <meta property="og:image" content={metaImage} />
             <meta
               property="og:url"
               content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`}
@@ -163,9 +154,9 @@ full movie on line"
             <meta property="og:locale" content="en_US" />
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:site" content="@MovieMaven_xyz" />
-            <meta name="twitter:title" content={post.title} />
-            <meta name="twitter:description" content={post.content} />
-            <meta name="twitter:image" content={post.image} />
+            <meta name="twitter:title" content={metaTitle} />
+            <meta name="twitter:description" content={metaDescription} />
+            <meta name="twitter:image" content={metaImage} />
             <meta
               name="twitter:url"
               content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`}
@@ -178,9 +169,7 @@ full movie on line"
         <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
           {post.title}
         </h1>
-        <Link
-          to={`/search?category=${post.category}`}
-          className="self-center mt-5">
+        <Link to={`/search?category=${post.category}`} className="self-center mt-5">
           <Button color="gray" pill size="xs">
             {post.category}
           </Button>
@@ -205,7 +194,8 @@ full movie on line"
         </div>
         <div
           className="p-3 max-w-2xl mx-auto w-full post-content"
-          dangerouslySetInnerHTML={{ __html: post.content }}></div>
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
         <div className="flex flex-col justify-center items-center mb-5">
           <h1 className="text-xl mt-5">Related {post.genre}</h1>
           <div className="flex flex-wrap gap-5 mt-5 justify-center">
@@ -224,7 +214,7 @@ full movie on line"
         </div>
         <CommentSection postId={post._id} />
       </main>
-    </React.Fragment>
+    </>
   );
 };
 
