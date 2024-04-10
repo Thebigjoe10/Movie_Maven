@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet-async"
 import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
