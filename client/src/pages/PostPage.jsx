@@ -65,7 +65,7 @@ const PostPage = () => {
           return;
         }
 
-        const res = await fetch(`/api/post/getposts?category=${post.category}&genre=${post.genre}`);
+        const res = await fetch(`/api/post/getposts?category=${post.category}&genre=${post.genre}&limit=4`);
         const data = await res.json();
 
         if (res.ok) {
@@ -91,7 +91,7 @@ const PostPage = () => {
           return;
         }
 
-        const res = await fetch(`/api/post/getposts?category=${post.category}&limit=5`);
+        const res = await fetch(`/api/post/getposts?category=${post.category}&limit=6`);
         const data = await res.json();
 
         if (res.ok) {
