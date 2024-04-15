@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async"
+import { Helmet } from "react-helmet-async";
 import { Button, Spinner } from "flowbite-react";
 import PostCard from "../components/PostCard";
 import CommentSection from "../components/CommentSection";
 
 const PostPage = () => {
+  // Extracting post slug from URL parameters
   const { postSlug } = useParams();
+
+  // State variables for post, related posts, recommended posts, loading, and error
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
@@ -16,11 +19,12 @@ const PostPage = () => {
   const [metaDescription, setMetaDescription] = useState('');
   const [metaImage, setMetaImage] = useState('');
 
+  // Effect hook to fetch post data based on post slug
   useEffect(() => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
+        const res = await fetch(`/api/post/gethomepageposts?slug=${postSlug}`);
         const data = await res.json();
 
         if (!res.ok || data.posts.length === 0) {
@@ -44,6 +48,7 @@ const PostPage = () => {
     fetchPost();
   }, [postSlug]);
 
+  // Effect hook to update meta tags when post changes
   useEffect(() => {
     if (post) {
       setMetaTitle(post.title);
@@ -52,6 +57,7 @@ const PostPage = () => {
     }
   }, [post]);
 
+  // Effect hook to fetch related posts based on category and genre of the current post
   useEffect(() => {
     const fetchRelatedPosts = async () => {
       try {
@@ -59,17 +65,12 @@ const PostPage = () => {
           return;
         }
 
-        const res = await fetch("/api/post/getposts");
+        const res = await fetch(`/api/post/getposts?category=${post.category}&genre=${post.genre}`);
         const data = await res.json();
 
         if (res.ok) {
           const filteredRelatedPosts = data.posts
             .filter((relatedPost) => relatedPost._id !== post._id)
-            .filter(
-              (relatedPost) =>
-                relatedPost.category === post.category &&
-                relatedPost.genre === post.genre
-            )
             .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
           setRelatedPosts(filteredRelatedPosts);
@@ -82,6 +83,7 @@ const PostPage = () => {
     fetchRelatedPosts();
   }, [post]);
 
+  // Effect hook to fetch recommended posts based on category of the current post
   useEffect(() => {
     const fetchRecommendedPosts = async () => {
       try {
@@ -89,9 +91,7 @@ const PostPage = () => {
           return;
         }
 
-        const res = await fetch(
-          `/api/post/getposts?category=${post.category}&limit=5`
-        );
+        const res = await fetch(`/api/post/getposts?category=${post.category}&limit=5`);
         const data = await res.json();
 
         if (res.ok) {
@@ -107,6 +107,7 @@ const PostPage = () => {
     fetchRecommendedPosts();
   }, [post]);
 
+  // JSX to render loading spinner while data is being fetched
   if (loading) {
     return (
       <Spinner
@@ -116,6 +117,7 @@ const PostPage = () => {
     );
   }
 
+  // JSX to render error message if there's an error fetching data
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -124,6 +126,7 @@ const PostPage = () => {
     );
   }
 
+  // JSX to render post details, related posts, recommended posts, and comment section
   return (
     <>
       <Helmet>
