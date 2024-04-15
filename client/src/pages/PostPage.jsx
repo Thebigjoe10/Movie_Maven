@@ -143,7 +143,7 @@ const PostPage = () => {
             <meta name="robots" content="index, follow" />
             <link
               rel="canonical"
-              href={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`}
+              href={`https://www.moviemaven.xyz/post/gethomepageposts?slug=${postSlug}`}
             />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={metaTitle} />
@@ -151,7 +151,7 @@ const PostPage = () => {
             <meta property="og:image" content={metaImage} />
             <meta
               property="og:url"
-              content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`}
+              content={`https://www.moviemaven.xyz/post/gethomepageposts?slug=${postSlug}`}
             />
             <meta property="og:site_name" content="MovieMaven" />
             <meta property="og:locale" content="en_US" />
@@ -162,7 +162,7 @@ const PostPage = () => {
             <meta name="twitter:image" content={metaImage} />
             <meta
               name="twitter:url"
-              content={`https://www.moviemaven.xyz/post/getposts?slug=${postSlug}`}
+              content={`https://www.moviemaven.xyz/post/gethomepageposts?slug=${postSlug}`}
             />
           </>
         )}
