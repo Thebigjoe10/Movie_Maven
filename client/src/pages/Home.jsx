@@ -1,18 +1,13 @@
-import React from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { Link } from "react-router-dom";
-import CallToAction from "../components/CallToAction";
-import { useEffect, useState } from "react";
-import PostCard from "../components/PostCard";
-import { Button } from "flowbite-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
-import SwiperCore from "swiper";
+import { Navigation, Autoplay } from "swiper";
 import "swiper/css/bundle";
 import SwiperCard from "../components/SwiperCard";
+import PostCard from "../components/PostCard";
+import { Button } from "flowbite-react";
 
 export default function Home() {
-  SwiperCore.use([Navigation]);
-  SwiperCore.use([Autoplay])
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
   const [kdramas, setKdramas] = useState([]);
@@ -76,22 +71,19 @@ export default function Home() {
           View all posts
         </Link>
       </div>
-      {/* News Section */}
+
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
       <Swiper navigation autoplay={{ delay: 3000 }}>
         {reviews && reviews.length > 0 && (
           <div className="flex flex-col gap-6">
             {reviews.map((post) => (
-              <SwiperSlide className="flex flex-wrap justify-center gap-4">
-                <SwiperCard key={post._id} post={post} />
+              <SwiperSlide className="flex flex-wrap justify-center gap-4" key={post._id}>
+                <SwiperCard post={post} />
               </SwiperSlide>
             ))}
           </div>
         )}
       </Swiper>
-      {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
-        <CallToAction />
-      </div> */}
 
       <div className="p-3 flex flex-col gap-8 ">
         {/* Movies Section */}
@@ -170,7 +162,7 @@ export default function Home() {
               <Link
                 to={"/search?category=anime"}
                 className="text-lg text-white hover:underline text-center">
-                show more Anime
+                show more animes
               </Link>
             </Button>
           </div>
