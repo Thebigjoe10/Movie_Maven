@@ -95,8 +95,7 @@ const PostPage = () => {
         const data = await res.json();
 
         if (res.ok) {
-          // Exclude the first post from recommendedPosts
-          const filteredRecommendedPosts = data.posts.slice(1);
+          const filteredRecommendedPosts = data.posts
           setRecommendedPosts(filteredRecommendedPosts);
         }
       } catch (error) {
