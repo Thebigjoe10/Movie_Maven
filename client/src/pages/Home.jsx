@@ -73,7 +73,7 @@ export default function Home() {
       </div>
 
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
-      <Swiper navigation autoplay={{ delay: 3000 }}>
+      <Swiper navigation autoplay={{ delay: 2000 }}>
         {reviews && reviews.length > 0 && (
           <div className="flex flex-col gap-6">
             {reviews.map((post) => (
