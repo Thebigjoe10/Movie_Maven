@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'; 
 import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper";
-import "swiper/swiper.min.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import SwiperCard from "../components/SwiperCard";
 import PostCard from "../components/PostCard";
 import { Button } from "flowbite-react";
@@ -73,17 +73,13 @@ export default function Home() {
       </div>
 
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
-      <Swiper navigation autoplay={{ delay: 2000 }}>
-        {reviews && reviews.length > 0 && (
-          <div className="flex flex-col gap-6">
-            {reviews.map((post) => (
-              <SwiperSlide className="flex flex-wrap justify-center gap-4" key={post._id}>
-                <SwiperCard post={post} />
-              </SwiperSlide>
-            ))}
+      <Slider autoplay={true} autoplaySpeed={2000} arrows={true}>
+        {reviews && reviews.length > 0 && reviews.map((post) => (
+          <div className="flex flex-col gap-6" key={post._id}>
+            <SwiperCard post={post} />
           </div>
-        )}
-      </Swiper>
+        ))}
+      </Slider>
 
       <div className="p-3 flex flex-col gap-8 ">
         {/* Movies Section */}
