@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper";
-import "swiper/swiper-bundle.min.css";
+import "swiper/swiper.min.css";
 import SwiperCard from "../components/SwiperCard";
 import PostCard from "../components/PostCard";
 import { Button } from "flowbite-react";
