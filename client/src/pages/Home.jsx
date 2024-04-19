@@ -55,7 +55,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ overflow: "hidden" }}>
+    <div>
       <div className="flex flex-col gap-6 p-16 px-3 max-w-6xl mx-auto ">
         <h1 className="text-3xl font-bold lg:text-6xl">
           Welcome to Movie Maven
@@ -73,7 +73,7 @@ export default function Home() {
       </div>
 
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
-      <Slider autoplay={true} autoplaySpeed={2000} arrows={true} style={{ width: "90%", margin: "0 auto" }}>
+      <Slider autoplay={true} autoplaySpeed={3000}>
         {reviews && reviews.length > 0 && reviews.map((post) => (
           <div className="flex flex-col gap-6" key={post._id}>
             <SwiperCard post={post} />
