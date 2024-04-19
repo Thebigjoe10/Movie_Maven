@@ -73,7 +73,7 @@ export default function Home() {
       </div>
 
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
-      <Slider autoplay={true} autoplaySpeed={3000}>
+      <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "95%", margin: "0 auto" }}>
         {reviews && reviews.length > 0 && reviews.map((post) => (
           <div className="flex flex-col gap-6" key={post._id}>
             <SwiperCard post={post} />
