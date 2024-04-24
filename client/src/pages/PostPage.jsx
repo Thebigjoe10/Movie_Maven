@@ -24,7 +24,7 @@ const PostPage = () => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/post/gethomepageposts?slug=${postSlug}`);
+        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
 
         if (!res.ok || data.posts.length === 0) {
