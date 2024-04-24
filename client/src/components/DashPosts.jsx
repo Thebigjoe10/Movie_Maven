@@ -73,11 +73,14 @@ export default function DashPosts() {
   };
 
   const handleSearch = async () => {
+    // Fetch posts based on search term
+    const url = `/api/post/gethomepageposts?userId=${currentUser._id}&searchTerm=${searchTerm}`;
     try {
-      const res = await fetch(`/api/post/search?title=${searchTerm}`);
+      const res = await fetch(url);
       const data = await res.json();
       if (res.ok) {
         setUserPosts(data.posts);
+        setShowMore(data.posts.length >= 9);
       }
     } catch (error) {
       console.log(error.message);
