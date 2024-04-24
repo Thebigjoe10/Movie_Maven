@@ -28,6 +28,7 @@ export default function UpdatePost() {
 
   const genres = [
     { value: "", label: "" },
+    { value: "18+", label: "18+" },
     { value: "action", label: "Action" },
     { value: "comedy", label: "Comedy" },
     { value: "drama", label: "Drama" },

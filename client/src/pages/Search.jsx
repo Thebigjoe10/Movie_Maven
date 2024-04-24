@@ -118,6 +118,7 @@ const Search = () => {
             <label className="font-semibold">Genre:</label>
             <Select onChange={handleChange} value={formData.genre} id="genre">
               <option value=""></option>
+              <option value="18+">18+</option>
               <option value="action">Action</option>
               <option value="comedy">Comedy</option>
               <option value="drama">Drama</option>
