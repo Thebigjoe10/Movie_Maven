@@ -58,30 +58,31 @@ const PostPage = () => {
   }, [post]);
 
   // Effect hook to fetch related posts based on category and genre of the current post
-  useEffect(() => {
-    const fetchRelatedPosts = async () => {
-      try {
-        if (!post || (!post.category && !post.genre)) {
-          return;
-        }
-
-        const res = await fetch(`/api/post/getposts?category=${post.category}&genre=${post.genre}&limit=4`);
-        const data = await res.json();
-
-        if (res.ok) {
-          const filteredRelatedPosts = data.posts
-            .filter((relatedPost) => relatedPost._id !== post._id)
-            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-          setRelatedPosts(filteredRelatedPosts);
-        }
-      } catch (error) {
-        console.log(error.message);
+useEffect(() => {
+  const fetchRelatedPosts = async () => {
+    try {
+      if (!post || (!post.category && !post.genre)) {
+        return;
       }
-    };
 
-    fetchRelatedPosts();
-  }, [post]);
+      const res = await fetch(`/api/post/getposts?category=${post.category}&genre=${post.genre}&limit=4`);
+      const data = await res.json();
+
+      if (res.ok) {
+        const filteredRelatedPosts = data.posts
+          .filter((relatedPost) => relatedPost._id !== post._id)
+          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+        setRelatedPosts(filteredRelatedPosts);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  fetchRelatedPosts();
+}, [post]);
+
 
   // Effect hook to fetch recommended posts based on category of the current post
   useEffect(() => {
