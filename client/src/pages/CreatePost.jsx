@@ -101,7 +101,7 @@ export default function CreatePost() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(formData), // Make sure formData includes the selected genre
     });
 
     const data = await res.json();
@@ -120,6 +120,7 @@ export default function CreatePost() {
     console.error(error);
   }
 };
+
 
   const handleAddFileLink = () => {
     const fileLink = prompt("Enter the file URL:");
@@ -207,15 +208,16 @@ export default function CreatePost() {
             <option value="reviews">Reviews</option>
           </Select>
           <Select
-            onChange={(e) =>
-              setFormData({ ...formData, genre: e.target.value })
-            }>
-            {genres.map((genre) => (
-              <option key={genre.value} value={genre.value}>
-                {genre.label}
-              </option>
-            ))}
-          </Select>
+  onChange={(e) =>
+    setFormData({ ...formData, genre: e.target.value })
+  }>
+  {genres.map((genre) => (
+    <option key={genre.value} value={genre.value}>
+      {genre.label}
+    </option>
+  ))}
+</Select>
+
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
           <FileInput
