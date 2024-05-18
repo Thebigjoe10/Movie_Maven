@@ -2,12 +2,7 @@ import React, { useRef, useState } from "react";
 import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -21,6 +16,9 @@ export default function CreatePost() {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
   const quillRef = useRef(null);
   const navigate = useNavigate();
 
@@ -52,6 +50,29 @@ export default function CreatePost() {
     { value: "wwe", label: "WWE" },
   ];
 
+  const handleSearch = async () => {
+    try {
+      const res = await fetch(`/api/post/search?query=${searchTerm}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.json();
+      setSearchResults(data.results);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+
+  const handleSelectItem = (item) => {
+    setSelectedItem(item);
+    setFormData({ ...formData, featuredItem: item });
+  };
+
+  const handleUnselectItem = () => {
+    setSelectedItem(null);
+    setFormData({ ...formData, featuredItem: null });
+  };
+
   const handleUploadImage = async () => {
     try {
       if (!file) {
@@ -69,8 +90,7 @@ export default function CreatePost() {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUploadProgress(progress.toFixed(0));
         },
         (error) => {
@@ -93,38 +113,35 @@ export default function CreatePost() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // formData includes featuredItem
+      });
 
-  try {
-    const res = await fetch("/api/post/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData), // Make sure formData includes the selected genre
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
 
-    if (!res.ok) {
-      setPublishError(data.message);
-      return;
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError("Something went wrong");
+      console.error(error);
     }
-
-    if (res.ok) {
-      setPublishError(null);
-      navigate(`/post/${data.slug}`);
-    }
-  } catch (error) {
-    setPublishError("Something went wrong");
-    console.error(error);
-  }
-};
-
+  };
 
   const handleAddFileLink = () => {
     const fileLink = prompt("Enter the file URL:");
-
     if (fileLink) {
       const updatedContent = `${
         formData.content || ""
@@ -132,13 +149,12 @@ export default function CreatePost() {
       setFormData({ ...formData, content: updatedContent });
     }
   };
+
   const handleEmbedVideo = () => {
     const videoLink = prompt("Enter the video URL:");
-
     if (videoLink) {
       try {
         const embedUrl = getEmbedUrl(videoLink);
-
         if (embedUrl) {
           const updatedContent = `${
             formData.content || ""
@@ -172,8 +188,6 @@ export default function CreatePost() {
     if (keywords !== null) {
       const quill = quillRef.current.editor;
       const range = quill.getSelection();
-
-      // Customize the inserted content with button-like appearance
       const buttonHTML = `<span style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</span>`;
       quill.clipboard.dangerouslyPasteHTML(range ? range.index : 0, buttonHTML);
     }
@@ -181,10 +195,8 @@ export default function CreatePost() {
 
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      
       <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -192,14 +204,11 @@ export default function CreatePost() {
             required
             id="title"
             className="flex-1"
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           />
           <Select
-            onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
-            }>
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          >
             <option value=""></option>
             <option value="movies">Movies</option>
             <option value="series">Series</option>
@@ -207,17 +216,41 @@ export default function CreatePost() {
             <option value="anime">Anime</option>
             <option value="reviews">Reviews</option>
           </Select>
-          <Select
-  onChange={(e) =>
-    setFormData({ ...formData, genre: e.target.value })
-  }>
-  {genres.map((genre) => (
-    <option key={genre.value} value={genre.value}>
-      {genre.label}
-    </option>
-  ))}
-</Select>
-
+          <Select onChange={(e) => setFormData({ ...formData, genre: e.target.value })}>
+            {genres.map((genre) => (
+              <option key={genre.value} value={genre.value}>
+                {genre.label}
+              </option>
+            ))}
+          </Select>
+        </div>
+        <div className="flex flex-col gap-4">
+          <TextInput
+            type="text"
+            placeholder="Search for a movie, series, etc."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Button type="button" onClick={handleSearch}>
+            Search
+          </Button>
+          {searchResults.length > 0 && (
+            <div className="search-results">
+              {searchResults.map((item) => (
+                <div key={item.id} onClick={() => handleSelectItem(item)}>
+                  {item.title || item.name}
+                </div>
+              ))}
+            </div>
+          )}
+          {selectedItem && (
+            <div>
+              Selected Item: {selectedItem.title || selectedItem.name}
+              <Button type="button" onClick={handleUnselectItem}>
+                Clear Selection
+              </Button>
+            </div>
+          )}
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
           <FileInput
@@ -231,7 +264,8 @@ export default function CreatePost() {
             size="sm"
             outline
             onClick={handleUploadImage}
-            disabled={imageUploadProgress}>
+            disabled={imageUploadProgress}
+          >
             {imageUploadProgress ? (
               <div className="w-16 h-16">
                 <CircularProgressbar
@@ -246,11 +280,7 @@ export default function CreatePost() {
         </div>
         {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
         {formData.image && (
-          <img
-            src={formData.image}
-            alt="upload"
-            className="w-full h-full object-cover"
-          />
+          <img src={formData.image} alt="upload" className="w-full h-full object-cover" />
         )}
         <ReactQuill
           ref={quillRef}
@@ -258,30 +288,15 @@ export default function CreatePost() {
           placeholder="Write something..."
           className="h-72 mb-12"
           required
-          onChange={(updatedContent) => {
-            setFormData({ ...formData, content: updatedContent });
-          }}
+          onChange={(updatedContent) => setFormData({ ...formData, content: updatedContent })}
         />
-        <Button
-          type="button"
-          gradientDuoTone="purpleToBlue"
-          size="sm"
-          onClick={handleAddKeywords}>
+        <Button type="button" gradientDuoTone="purpleToBlue" size="sm" onClick={handleAddKeywords}>
           Add SEO Keywords
         </Button>
-
-        <Button
-          type="button"
-          gradientDuoTone="purpleToBlue"
-          size="sm"
-          onClick={handleEmbedVideo}>
+        <Button type="button" gradientDuoTone="purpleToBlue" size="sm" onClick={handleEmbedVideo}>
           Embed Video
         </Button>
-        <Button
-          type="button"
-          gradientDuoTone="purpleToBlue"
-          size="sm"
-          onClick={handleAddFileLink}>
+        <Button type="button" gradientDuoTone="purpleToBlue" size="sm" onClick={handleAddFileLink}>
           Add File Link
         </Button>
         <Button type="submit" gradientDuoTone="purpleToBlue">

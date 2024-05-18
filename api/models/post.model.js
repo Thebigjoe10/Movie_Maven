@@ -36,6 +36,10 @@ const postSchema = new mongoose.Schema(
     keywords: {
       type: [String],
     },
+    featuredMovies: {
+      type: [String], 
+      default: [],
+    },
   },
   { timestamps: true }
 );

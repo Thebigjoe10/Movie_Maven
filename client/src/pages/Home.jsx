@@ -13,6 +13,7 @@ export default function Home() {
   const [kdramas, setKdramas] = useState([]);
   const [animes, setAnimes] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [featuredPosts, setFeaturedPosts] = useState([]);
   
   useEffect(() => {
     const fetchPostsByCategory = async (category) => {
@@ -54,6 +55,23 @@ export default function Home() {
     fetchPostsByCategory("reviews");
   }, []);
 
+
+  useEffect(() => {
+    const fetchFeaturedPosts = async () => {
+      try {
+        const res = await fetch('/api/post/getfeaturedposts?limit=10');
+        const data = await res.json();
+        setFeaturedPosts(data.posts);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFeaturedPosts();
+  }, []);
+
+
+
   return (
     <div style={{ overflow: "hidden" }}>
       <div className="flex flex-col gap-6 p-16 px-3 max-w-6xl mx-auto ">
@@ -80,7 +98,14 @@ export default function Home() {
           </div>
         ))}
       </Slider>
-
+      <h2 className="text-2xl font-semibold text-center py-4">Featured</h2>
+      <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "80%", margin: "0 auto" }}>
+        {featuredPosts.map((post) => (
+          <div className="flex flex-col gap-6" key={post._id}>
+            <SwiperCard post={post} />
+          </div>
+        ))}
+      </Slider>
       <div className="p-3 flex flex-col gap-8 ">
         {/* Movies Section */}
         {movies && movies.length > 0 && (

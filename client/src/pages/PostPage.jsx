@@ -15,9 +15,9 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [recommendedPosts, setRecommendedPosts] = useState([]);
-  const [metaTitle, setMetaTitle] = useState('');
-  const [metaDescription, setMetaDescription] = useState('');
-  const [metaImage, setMetaImage] = useState('');
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+  const [metaImage, setMetaImage] = useState("");
 
   // Effect hook to fetch post data based on post slug
   useEffect(() => {
@@ -58,31 +58,32 @@ const PostPage = () => {
   }, [post]);
 
   // Effect hook to fetch related posts based on category and genre of the current post
-useEffect(() => {
-  const fetchRelatedPosts = async () => {
-    try {
-      if (!post || (!post.category && !post.genre)) {
-        return;
+  useEffect(() => {
+    const fetchRelatedPosts = async () => {
+      try {
+        if (!post || (!post.category && !post.genre)) {
+          return;
+        }
+
+        const res = await fetch(
+          `/api/post/getposts?category=${post.category}&genre=${post.genre}&limit=4`
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          const filteredRelatedPosts = data.posts
+            .filter((relatedPost) => relatedPost._id !== post._id)
+            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+          setRelatedPosts(filteredRelatedPosts);
+        }
+      } catch (error) {
+        console.log(error.message);
       }
+    };
 
-      const res = await fetch(`/api/post/getposts?category=${post.category}&genre=${post.genre}&limit=4`);
-      const data = await res.json();
-
-      if (res.ok) {
-        const filteredRelatedPosts = data.posts
-          .filter((relatedPost) => relatedPost._id !== post._id)
-          .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-        setRelatedPosts(filteredRelatedPosts);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  fetchRelatedPosts();
-}, [post]);
-
+    fetchRelatedPosts();
+  }, [post]);
 
   // Effect hook to fetch recommended posts based on category of the current post
   useEffect(() => {
@@ -92,11 +93,13 @@ useEffect(() => {
           return;
         }
 
-        const res = await fetch(`/api/post/getposts?category=${post.category}&limit=6`);
+        const res = await fetch(
+          `/api/post/getposts?category=${post.category}&limit=6`
+        );
         const data = await res.json();
 
         if (res.ok) {
-          const filteredRecommendedPosts = data.posts
+          const filteredRecommendedPosts = data.posts;
           setRecommendedPosts(filteredRecommendedPosts);
         }
       } catch (error) {
@@ -172,7 +175,9 @@ useEffect(() => {
         <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
           {post.title}
         </h1>
-        <Link to={`/search?category=${post.category}`} className="self-center mt-5">
+        <Link
+          to={`/search?category=${post.category}`}
+          className="self-center mt-5">
           <Button color="gray" pill size="xs">
             {post.category}
           </Button>
