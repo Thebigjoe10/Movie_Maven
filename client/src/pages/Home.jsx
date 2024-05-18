@@ -98,14 +98,7 @@ export default function Home() {
           </div>
         ))}
       </Slider>
-      /* <h2 className="text-2xl font-semibold text-center py-4">Featured</h2> */
-      <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "80%", margin: "0 auto" }}>
-        {featuredPosts.map((post) => (
-          <div className="flex flex-col gap-6" key={post._id}>
-            <SwiperCard post={post} />
-          </div>
-        ))}
-      </Slider>
+
       <div className="p-3 flex flex-col gap-8 ">
         {/* Movies Section */}
         {movies && movies.length > 0 && (
