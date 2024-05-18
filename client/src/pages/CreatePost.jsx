@@ -120,7 +120,7 @@ export default function CreatePost() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData), // formData includes featuredItem
+        body: JSON.stringify({...formData, featuredItem: selectedItem }), // formData includes featuredItem
       });
 
       const data = await res.json();
