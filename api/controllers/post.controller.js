@@ -94,7 +94,7 @@ export const gethomepageposts = async (req, res, next) => {
       createdAt: { $gte: oneMonthAgo },
     });
 
-    const featuredPosts = await Post.find({ featuredItem: { $exists: true, $ne: null } })
+    const featuredposts = await Post.find({ featuredItem: { $exists: true, $ne: null } })
       .sort({ createdAt: -1 })
       .limit(10);
 
@@ -170,7 +170,7 @@ export const deletepost = async (req, res, next) => {
 };
 
 // Fetch featured posts
-export const getFeaturedPosts = async (req, res) => {
+export const getfeaturedposts = async (req, res) => {
   try {
     const posts = await Post.find({ featuredItem: { $exists: true, $ne: null } })
       .sort({ createdAt: -1 })
