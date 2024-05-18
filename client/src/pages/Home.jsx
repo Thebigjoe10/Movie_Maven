@@ -98,7 +98,7 @@ export default function Home() {
           </div>
         ))}
       </Slider>
-      <h2 className="text-2xl font-semibold text-center py-4">Featured</h2>
+      /* <h2 className="text-2xl font-semibold text-center py-4">Featured</h2> */
       <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "80%", margin: "0 auto" }}>
         {featuredPosts.map((post) => (
           <div className="flex flex-col gap-6" key={post._id}>
