@@ -1,7 +1,6 @@
 import Post from "../models/post.model.js";
 import { errorHandler } from "../utils/error.js";
 
-// Create a post
 export const create = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "You are not allowed to create a post"));
@@ -30,40 +29,11 @@ export const create = async (req, res, next) => {
   }
 };
 
-// Update a post
-export const updatepost = async (req, res, next) => {
-  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
-    return next(errorHandler(403, "You are not allowed to update this post"));
-  }
-  try {
-    const updatedPost = await Post.findByIdAndUpdate(
-      req.params.postId,
-      {
-        $set: {
-          title: req.body.title,
-          content: req.body.content,
-          category: req.body.category,
-          image: req.body.image,
-          keywords: req.body.keywords,
-          genre: req.body.genre,
-          featuredItem: req.body.featuredItem, // Ensure this is being updated
-        },
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedPost);
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Fetch homepage posts
 export const gethomepageposts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 12;
     const sortDirection = req.query.order === 'asc' ? 1 : -1;
-
     const posts = await Post.find({
       ...(req.query.userId && { userId: req.query.userId }),
       ...(req.query.category && { category: req.query.category }),
@@ -94,22 +64,16 @@ export const gethomepageposts = async (req, res, next) => {
       createdAt: { $gte: oneMonthAgo },
     });
 
-    const featuredposts = await Post.find({ featuredItem: { $exists: true, $ne: null } })
-      .sort({ createdAt: -1 })
-      .limit(10);
-
     res.status(200).json({
       posts,
       totalPosts,
       lastMonthPosts,
-      featuredPosts,
     });
   } catch (error) {
     next(error);
   }
 };
 
-// Fetch posts with random sampling
 export const getposts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
@@ -156,7 +120,6 @@ export const getposts = async (req, res, next) => {
   }
 };
 
-// Delete a post
 export const deletepost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to delete this post"));
@@ -169,19 +132,43 @@ export const deletepost = async (req, res, next) => {
   }
 };
 
-// Fetch featured posts
+export const updatepost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    return next(errorHandler(403, "You are not allowed to update this post"));
+  }
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
+          keywords: req.body.keywords,
+          genre: req.body.genre,
+          featuredItem: req.body.featuredItem, // Make sure to update the post with the featured item
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getfeaturedposts = async (req, res) => {
   try {
     const posts = await Post.find({ featuredItem: { $exists: true, $ne: null } })
       .sort({ createdAt: -1 })
       .limit(parseInt(req.query.limit) || 10);
-    res.status(200).json({ posts });
+    res.json({ posts });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Search for posts
 export const searchPosts = async (req, res) => {
   const { query } = req.query;
   try {
@@ -192,8 +179,8 @@ export const searchPosts = async (req, res) => {
         { category: { $regex: query, $options: 'i' } },
       ],
     });
-    res.status(200).json({ results: searchResults });
+    res.json({ results: searchResults });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}; 
