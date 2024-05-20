@@ -294,6 +294,7 @@ export default function CreatePost() {
 <ReactQuill
   ref={quillRef}
   theme="snow"
+  className="h-72 mb-12"
   placeholder="Write something..."
   required
   onChange={(updatedContent) =>
