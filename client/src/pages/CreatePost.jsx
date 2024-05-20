@@ -291,38 +291,25 @@ export default function CreatePost() {
           </Alert>
         )}
     
-          <ReactQuill
-           placeholder="Write something..."
-          className="h-72 mb-12"
-            value={formData.content}
-            onChange={(value) => setFormData({ ...formData, content: value })}
-            ref={quillRef}
-            modules={{
-              toolbar: {
-                container: [
-                  [{ header: [1, 2, 3, false] }],
-                  ["bold", "italic", "underline", "blockquote"],
-                  [{ list: "ordered" }, { list: "bullet" }],
-                  ["link", "image"],
-                  [{ align: [] }],
-                  ["clean"],
-                  ["code-block"],
-                  [{ mention: ["@"] }],
-                ],
-              },
-              mention: {
-                allowedChars: /^[A-Za-z\s]*$/,
-                mentionDenotationChars: ["@", "#"],
-                source: async (searchTerm, renderItem) => {
-                  const response = await fetch(
-                    `/api/post/search?query=${searchTerm}`
-                  );
-                  const data = await response.json();
-                  renderItem(data.results);
-                },
-              },
-            }}
-          />
+<ReactQuill
+  ref={quillRef}
+  theme="snow"
+  placeholder="Write something..."
+  required
+  onChange={(updatedContent) =>
+    setFormData({ ...formData, content: updatedContent })
+  }
+  mention={{
+    allowedChars: /^[A-Za-z\s]*$/,
+    mentionDenotationChars: ["@", "#"],
+    source: async (searchTerm, renderItem) => {
+      const response = await fetch(`/api/post/search?query=${searchTerm}`);
+      const data = await response.json();
+      renderItem(data.results);
+    },
+  }}
+/>
+
         
         <div className="flex gap-4">
           <Button type="button" gradientDuoTone="purpleToBlue" onClick={handleAddKeywords}>
