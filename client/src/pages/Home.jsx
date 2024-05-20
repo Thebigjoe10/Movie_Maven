@@ -14,13 +14,11 @@ export default function Home() {
   const [animes, setAnimes] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [featuredPosts, setFeaturedPosts] = useState([]);
-  
+
   useEffect(() => {
     const fetchPostsByCategory = async (category) => {
       try {
-        const res = await fetch(
-          `/api/post/gethomepageposts?category=${category}&limit=12`
-        );
+        const res = await fetch(`/api/post/gethomepageposts?category=${category}&limit=12`);
         const data = await res.json();
 
         switch (category) {
@@ -55,7 +53,6 @@ export default function Home() {
     fetchPostsByCategory("reviews");
   }, []);
 
-
   useEffect(() => {
     const fetchFeaturedPosts = async () => {
       try {
@@ -69,8 +66,6 @@ export default function Home() {
 
     fetchFeaturedPosts();
   }, []);
-
-
 
   return (
     <div style={{ overflow: "hidden" }}>
@@ -93,6 +88,15 @@ export default function Home() {
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
       <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "80%", margin: "0 auto" }}>
         {reviews && reviews.length > 0 && reviews.map((post) => (
+          <div className="flex flex-col gap-6" key={post._id}>
+            <SwiperCard post={post} />
+          </div>
+        ))}
+      </Slider>
+
+      <h2 className="text-2xl font-semibold text-center py-4">Featured Posts</h2>
+      <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "80%", margin: "0 auto" }}>
+        {featuredPosts && featuredPosts.length > 0 && featuredPosts.map((post) => (
           <div className="flex flex-col gap-6" key={post._id}>
             <SwiperCard post={post} />
           </div>
@@ -163,10 +167,12 @@ export default function Home() {
           </div>
         )}
 
-        {/* Anime Section
+        {/* Anime Section */}
         {animes && animes.length > 0 && (
           <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-semibold text-center">New Anime Uploads</h2>
+            <h2 className="text-2xl font-semibold text-center">
+              New Anime Uploads
+            </h2>
             <div className="flex flex-wrap justify-center gap-8">
               {animes.map((post) => (
                 <PostCard key={post._id} post={post} />
@@ -180,7 +186,7 @@ export default function Home() {
               </Link>
             </Button>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,12 @@ import React, { useRef, useState } from "react";
 import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -90,7 +95,8 @@ export default function CreatePost() {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUploadProgress(progress.toFixed(0));
         },
         (error) => {
@@ -120,7 +126,11 @@ export default function CreatePost() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({...formData, featuredItem: selectedItem }), // formData includes featuredItem
+        body: JSON.stringify({
+          ...formData,
+          featuredItem: selectedItem,
+          isFeatured: formData.isFeatured || false,
+        }), // formData includes featuredItem and isFeatured
       });
 
       const data = await res.json();
@@ -204,11 +214,14 @@ export default function CreatePost() {
             required
             id="title"
             className="flex-1"
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
           <Select
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-          >
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }>
             <option value=""></option>
             <option value="movies">Movies</option>
             <option value="series">Series</option>
@@ -216,7 +229,10 @@ export default function CreatePost() {
             <option value="anime">Anime</option>
             <option value="reviews">Reviews</option>
           </Select>
-          <Select onChange={(e) => setFormData({ ...formData, genre: e.target.value })}>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, genre: e.target.value })
+            }>
             {genres.map((genre) => (
               <option key={genre.value} value={genre.value}>
                 {genre.label}
@@ -258,55 +274,82 @@ export default function CreatePost() {
             accept="image/*"
             onChange={(e) => setFile(e.target.files[0])}
           />
-          <Button
-            type="button"
-            gradientDuoTone="purpleToBlue"
-            size="sm"
-            outline
-            onClick={handleUploadImage}
-            disabled={imageUploadProgress}
-          >
-            {imageUploadProgress ? (
-              <div className="w-16 h-16">
-                <CircularProgressbar
-                  value={imageUploadProgress}
-                  text={`${imageUploadProgress || 0}%`}
-                />
-              </div>
-            ) : (
-              "Upload Image"
-            )}
-          </Button>
+          {imageUploadProgress ? (
+            <div className="w-12 h-12">
+              <CircularProgressbar
+                value={imageUploadProgress}
+                text={`${imageUploadProgress}%`}
+              />
+            </div>
+          ) : (
+            <Button onClick={handleUploadImage}>Upload</Button>
+          )}
         </div>
-        {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
-        {formData.image && (
-          <img src={formData.image} alt="upload" className="w-full h-full object-cover" />
-        )}
-        <ReactQuill
-          ref={quillRef}
-          theme="snow"
-          placeholder="Write something..."
-          className="h-72 mb-12"
-          required
-          onChange={(updatedContent) => setFormData({ ...formData, content: updatedContent })}
-        />
-        <Button type="button" gradientDuoTone="purpleToBlue" size="sm" onClick={handleAddKeywords}>
-          Add SEO Keywords
-        </Button>
-        <Button type="button" gradientDuoTone="purpleToBlue" size="sm" onClick={handleEmbedVideo}>
-          Embed Video
-        </Button>
-        <Button type="button" gradientDuoTone="purpleToBlue" size="sm" onClick={handleAddFileLink}>
-          Add File Link
-        </Button>
-        <Button type="submit" gradientDuoTone="purpleToBlue">
-          Publish
-        </Button>
-        {publishError && (
-          <Alert className="mt-5" color="failure">
-            {publishError}
+        {imageUploadError && (
+          <Alert color="failure">
+            <span>{imageUploadError}</span>
           </Alert>
         )}
+    
+          <ReactQuill
+           placeholder="Write something..."
+          className="h-72 mb-12"
+            value={formData.content}
+            onChange={(value) => setFormData({ ...formData, content: value })}
+            ref={quillRef}
+            modules={{
+              toolbar: {
+                container: [
+                  [{ header: [1, 2, 3, false] }],
+                  ["bold", "italic", "underline", "blockquote"],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["link", "image"],
+                  [{ align: [] }],
+                  ["clean"],
+                  ["code-block"],
+                  [{ mention: ["@"] }],
+                ],
+              },
+              mention: {
+                allowedChars: /^[A-Za-z\s]*$/,
+                mentionDenotationChars: ["@", "#"],
+                source: async (searchTerm, renderItem) => {
+                  const response = await fetch(
+                    `/api/post/search?query=${searchTerm}`
+                  );
+                  const data = await response.json();
+                  renderItem(data.results);
+                },
+              },
+            }}
+          />
+        
+        <div className="flex gap-4">
+          <Button type="button" gradientDuoTone="purpleToBlue" onClick={handleAddKeywords}>
+            Add Keywords
+          </Button>
+          <Button type="button" gradientDuoTone="purpleToBlue" onClick={handleAddFileLink}>
+            Add File Link
+          </Button>
+          <Button type="button" gradientDuoTone="purpleToBlue" onClick={handleEmbedVideo}>
+            Embed Video
+          </Button>
+        </div>
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            onChange={(e) =>
+              setFormData({ ...formData, isFeatured: e.target.checked })
+            }
+          />
+          <span className="ml-2">Feature this post</span>
+        </label>
+        {publishError && (
+          <Alert color="failure">
+            <span>{publishError}</span>
+          </Alert>
+        )}
+        <Button type="submit" gradientDuoTone="purpleToBlue">Publish Post</Button>
       </form>
     </div>
   );

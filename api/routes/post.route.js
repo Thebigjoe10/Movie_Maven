@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/create', verifyToken, create);
 router.get('/getposts', getposts);
 router.get('/gethomepageposts', gethomepageposts);
-router.get('/getfeaturedposts', getfeaturedposts);
+router.get('/getfeaturedposts', getfeaturedposts);  // New route for featured posts
 router.get('/search', searchPosts);
 router.delete('/deletepost/:postId/:userId', verifyToken, deletepost);
 router.put('/updatepost/:postId/:userId', verifyToken, updatepost);

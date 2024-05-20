@@ -19,6 +19,7 @@ export const create = async (req, res, next) => {
     ...req.body,
     slug,
     userId: req.user.id,
+    featured: req.body.featured || false,  // Add featured field
   });
 
   try {
@@ -147,7 +148,7 @@ export const updatepost = async (req, res, next) => {
           image: req.body.image,
           keywords: req.body.keywords,
           genre: req.body.genre,
-          featuredItem: req.body.featuredItem, // Make sure to update the post with the featured item
+          featured: req.body.featured || false, // Ensure to update the featured field
         },
       },
       { new: true }
@@ -160,7 +161,7 @@ export const updatepost = async (req, res, next) => {
 
 export const getfeaturedposts = async (req, res) => {
   try {
-    const posts = await Post.find({ featuredItem: { $exists: true, $ne: null } })
+    const posts = await Post.find({ featured: true })  // Fetch only featured posts
       .sort({ createdAt: -1 })
       .limit(parseInt(req.query.limit) || 10);
     res.json({ posts });
@@ -183,4 +184,4 @@ export const searchPosts = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}; 
+};
