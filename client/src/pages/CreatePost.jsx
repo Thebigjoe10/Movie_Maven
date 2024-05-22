@@ -21,9 +21,6 @@ export default function CreatePost() {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
   const quillRef = useRef(null);
   const navigate = useNavigate();
 
@@ -54,29 +51,6 @@ export default function CreatePost() {
     { value: "bollywood-movie", label: "Bollywood-movie" },
     { value: "wwe", label: "WWE" },
   ];
-
-  const handleSearch = async () => {
-    try {
-      const res = await fetch(`/api/post/search?query=${searchTerm}`);
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      const data = await res.json();
-      setSearchResults(data.results);
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    }
-  };
-
-  const handleSelectItem = (item) => {
-    setSelectedItem(item);
-    setFormData({ ...formData, featuredItem: item });
-  };
-
-  const handleUnselectItem = () => {
-    setSelectedItem(null);
-    setFormData({ ...formData, featuredItem: null });
-  };
 
   const handleUploadImage = async () => {
     try {
@@ -119,39 +93,38 @@ export default function CreatePost() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          featuredItem: selectedItem,
-          isFeatured: formData.isFeatured || false,
-        }), // formData includes featuredItem and isFeatured
-      });
+  e.preventDefault();
 
-      const data = await res.json();
+  try {
+    const res = await fetch("/api/post/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData), // Make sure formData includes the selected genre
+    });
 
-      if (!res.ok) {
-        setPublishError(data.message);
-        return;
-      }
+    const data = await res.json();
 
-      if (res.ok) {
-        setPublishError(null);
-        navigate(`/post/${data.slug}`);
-      }
-    } catch (error) {
-      setPublishError("Something went wrong");
-      console.error(error);
+    if (!res.ok) {
+      setPublishError(data.message);
+      return;
     }
-  };
+
+    if (res.ok) {
+      setPublishError(null);
+      navigate(`/post/${data.slug}`);
+    }
+  } catch (error) {
+    setPublishError("Something went wrong");
+    console.error(error);
+  }
+};
+
 
   const handleAddFileLink = () => {
     const fileLink = prompt("Enter the file URL:");
+
     if (fileLink) {
       const updatedContent = `${
         formData.content || ""
@@ -159,12 +132,13 @@ export default function CreatePost() {
       setFormData({ ...formData, content: updatedContent });
     }
   };
-
   const handleEmbedVideo = () => {
     const videoLink = prompt("Enter the video URL:");
+
     if (videoLink) {
       try {
         const embedUrl = getEmbedUrl(videoLink);
+
         if (embedUrl) {
           const updatedContent = `${
             formData.content || ""
@@ -198,6 +172,8 @@ export default function CreatePost() {
     if (keywords !== null) {
       const quill = quillRef.current.editor;
       const range = quill.getSelection();
+
+      // Customize the inserted content with button-like appearance
       const buttonHTML = `<span style="background-color: #00bcd4; color: #ffffff; padding: 8px 16px; text-decoration: none; display: inline-block; border-radius: 4px;">${keywords}</span>`;
       quill.clipboard.dangerouslyPasteHTML(range ? range.index : 0, buttonHTML);
     }
@@ -205,8 +181,10 @@ export default function CreatePost() {
 
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
+      
       <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -230,43 +208,16 @@ export default function CreatePost() {
             <option value="reviews">Reviews</option>
           </Select>
           <Select
-            onChange={(e) =>
-              setFormData({ ...formData, genre: e.target.value })
-            }>
-            {genres.map((genre) => (
-              <option key={genre.value} value={genre.value}>
-                {genre.label}
-              </option>
-            ))}
-          </Select>
-        </div>
-        <div className="flex flex-col gap-4">
-          <TextInput
-            type="text"
-            placeholder="Search for a movie, series, etc."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Button type="button" onClick={handleSearch}>
-            Search
-          </Button>
-          {searchResults.length > 0 && (
-            <div className="search-results">
-              {searchResults.map((item) => (
-                <div key={item.id} onClick={() => handleSelectItem(item)}>
-                  {item.title || item.name}
-                </div>
-              ))}
-            </div>
-          )}
-          {selectedItem && (
-            <div>
-              Selected Item: {selectedItem.title || selectedItem.name}
-              <Button type="button" onClick={handleUnselectItem}>
-                Clear Selection
-              </Button>
-            </div>
-          )}
+  onChange={(e) =>
+    setFormData({ ...formData, genre: e.target.value })
+  }>
+  {genres.map((genre) => (
+    <option key={genre.value} value={genre.value}>
+      {genre.label}
+    </option>
+  ))}
+</Select>
+
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
           <FileInput
@@ -274,71 +225,75 @@ export default function CreatePost() {
             accept="image/*"
             onChange={(e) => setFile(e.target.files[0])}
           />
-          {imageUploadProgress ? (
-            <div className="w-12 h-12">
-              <CircularProgressbar
-                value={imageUploadProgress}
-                text={`${imageUploadProgress}%`}
-              />
-            </div>
-          ) : (
-            <Button onClick={handleUploadImage}>Upload</Button>
-          )}
-        </div>
-        {imageUploadError && (
-          <Alert color="failure">
-            <span>{imageUploadError}</span>
-          </Alert>
-        )}
-    
-<ReactQuill
-  ref={quillRef}
-  theme="snow"
-  className="h-72 mb-12"
-  placeholder="Write something..."
-  required
-  onChange={(updatedContent) =>
-    setFormData({ ...formData, content: updatedContent })
-  }
-  mention={{
-    allowedChars: /^[A-Za-z\s]*$/,
-    mentionDenotationChars: ["@", "#"],
-    source: async (searchTerm, renderItem) => {
-      const response = await fetch(`/api/post/search?query=${searchTerm}`);
-      const data = await response.json();
-      renderItem(data.results);
-    },
-  }}
-/>
-
-        
-        <div className="flex gap-4">
-          <Button type="button" gradientDuoTone="purpleToBlue" onClick={handleAddKeywords}>
-            Add Keywords
-          </Button>
-          <Button type="button" gradientDuoTone="purpleToBlue" onClick={handleAddFileLink}>
-            Add File Link
-          </Button>
-          <Button type="button" gradientDuoTone="purpleToBlue" onClick={handleEmbedVideo}>
-            Embed Video
+          <Button
+            type="button"
+            gradientDuoTone="purpleToBlue"
+            size="sm"
+            outline
+            onClick={handleUploadImage}
+            disabled={imageUploadProgress}>
+            {imageUploadProgress ? (
+              <div className="w-16 h-16">
+                <CircularProgressbar
+                  value={imageUploadProgress}
+                  text={`${imageUploadProgress || 0}%`}
+                />
+              </div>
+            ) : (
+              "Upload Image"
+            )}
           </Button>
         </div>
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            onChange={(e) =>
-              setFormData({ ...formData, isFeatured: e.target.checked })
-            }
+        {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
+        {formData.image && (
+          <img
+            src={formData.image}
+            alt="upload"
+            className="w-full h-full object-cover"
           />
-          <span className="ml-2">Feature this post</span>
-        </label>
+        )}
+        <ReactQuill
+          ref={quillRef}
+          theme="snow"
+          placeholder="Write something..."
+          className="h-72 mb-12"
+          required
+          onChange={(updatedContent) => {
+            setFormData({ ...formData, content: updatedContent });
+          }}
+        />
+        <Button
+          type="button"
+          gradientDuoTone="purpleToBlue"
+          size="sm"
+          onClick={handleAddKeywords}>
+          Add SEO Keywords
+        </Button>
+
+        <Button
+          type="button"
+          gradientDuoTone="purpleToBlue"
+          size="sm"
+          onClick={handleEmbedVideo}>
+          Embed Video
+        </Button>
+        <Button
+          type="button"
+          gradientDuoTone="purpleToBlue"
+          size="sm"
+          onClick={handleAddFileLink}>
+          Add File Link
+        </Button>
+        <Button type="submit" gradientDuoTone="purpleToBlue">
+          Publish
+        </Button>
         {publishError && (
-          <Alert color="failure">
-            <span>{publishError}</span>
+          <Alert className="mt-5" color="failure">
+            {publishError}
           </Alert>
         )}
-        <Button type="submit" gradientDuoTone="purpleToBlue">Publish Post</Button>
       </form>
     </div>
   );
 }
+      
