@@ -8,20 +8,16 @@ export const create = async (req, res, next) => {
   if (!req.body.title || !req.body.content || !req.body.image) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
-
   const slug = req.body.title
     .split(" ")
     .join("-")
     .toLowerCase()
     .replace(/[^a-zA-Z0-9-]/g, "");
-
   const newPost = new Post({
     ...req.body,
     slug,
     userId: req.user.id,
-    featured: req.body.featured || false,  // Add featured field
   });
-
   try {
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
@@ -95,7 +91,7 @@ export const getposts = async (req, res, next) => {
           }),
         },
       },
-      { $sample: { size: limit } }
+      { $sample: { size: limit } } // Specify the number of documents you want to retrieve
     ]);
 
     const totalPosts = await Post.countDocuments();
@@ -148,7 +144,6 @@ export const updatepost = async (req, res, next) => {
           image: req.body.image,
           keywords: req.body.keywords,
           genre: req.body.genre,
-          featured: req.body.featured || false, // Ensure to update the featured field
         },
       },
       { new: true }
@@ -156,32 +151,5 @@ export const updatepost = async (req, res, next) => {
     res.status(200).json(updatedPost);
   } catch (error) {
     next(error);
-  }
-};
-
-export const getfeaturedposts = async (req, res) => {
-  try {
-    const posts = await Post.find({ featured: true })  // Fetch only featured posts
-      .sort({ createdAt: -1 })
-      .limit(parseInt(req.query.limit) || 10);
-    res.json({ posts });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-export const searchPosts = async (req, res) => {
-  const { query } = req.query;
-  try {
-    const searchResults = await Post.find({
-      $or: [
-        { title: { $regex: query, $options: 'i' } },
-        { content: { $regex: query, $options: 'i' } },
-        { category: { $regex: query, $options: 'i' } },
-      ],
-    });
-    res.json({ results: searchResults });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
 };
