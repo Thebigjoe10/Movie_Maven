@@ -53,26 +53,27 @@ export default function UpdatePost() {
     { value: "bollywood-movie", label: "Bollywood-movie" },
     { value: "wwe", label: "WWE" },
   ];
+
   useEffect(() => {
-  const fetchPost = async () => {
-    try {
-      const res = await fetch(`/api/post/gethomepageposts?postId=${postId}`);
-      const data = await res.json();
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/post/gethomepageposts?postId=${postId}`);
+        const data = await res.json();
 
-      if (!res.ok) {
-        console.log(data.message);
-        setPublishError(data.message);
-      } else {
-        setPublishError(null);
-        setFormData(data.posts[0]);
+        if (!res.ok) {
+          console.log(data.message);
+          setPublishError(data.message);
+        } else {
+          setPublishError(null);
+          setFormData(data.posts[0]);
+        }
+      } catch (error) {
+        console.error(error.message);
       }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+    };
 
-  fetchPost();
-}, [postId]);
+    fetchPost();
+  }, [postId]);
 
   const handleUploadImage = async () => {
     try {
@@ -136,7 +137,7 @@ export default function UpdatePost() {
             image: formData.image,
             keywords: formData.keywords,
             genre: formData.genre,
-            featured: req.body.featured,  
+            featured: formData.featured,
           }),
         }
       );
@@ -246,7 +247,7 @@ export default function UpdatePost() {
                 featured: e.target.value,
               }))
             }
-            value={formData.category || ""}>
+            value={formData.featured || ""}>
             <option value="featured">Featured</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
