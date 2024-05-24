@@ -136,6 +136,7 @@ export default function UpdatePost() {
             image: formData.image,
             keywords: formData.keywords,
             genre: formData.genre,
+            featured: req.body.featured,  
           }),
         }
       );
@@ -238,6 +239,18 @@ export default function UpdatePost() {
             }
             value={formData.title || ""}
           />
+           <Select
+            onChange={(e) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                featured: e.target.value,
+              }))
+            }
+            value={formData.category || ""}>
+            <option value="featured">Featured</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </Select>
           <Select
             onChange={(e) =>
               setFormData((prevData) => ({

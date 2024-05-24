@@ -37,6 +37,9 @@ export default function Home() {
           case "reviews":
             setReviews(data.posts);
             break;
+          case "featured":
+            setFeaturedPosts(data.posts);
+            break;
           default:
             break;
         }
@@ -51,20 +54,7 @@ export default function Home() {
     fetchPostsByCategory("kdrama");
     fetchPostsByCategory("anime");
     fetchPostsByCategory("reviews");
-  }, []);
-
-  useEffect(() => {
-    const fetchFeaturedPosts = async () => {
-      try {
-        const res = await fetch('/api/post/getfeaturedposts?limit=10');
-        const data = await res.json();
-        setFeaturedPosts(data.posts);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchFeaturedPosts();
+    fetchPostsByCategory("featured");
   }, []);
 
   return (
@@ -119,7 +109,7 @@ export default function Home() {
               <Link
                 to={"/search?category=movies"}
                 className="text-lg text-white hover:underline text-center">
-                show more movies
+                Show more movies
               </Link>
             </Button>
           </div>
@@ -140,7 +130,7 @@ export default function Home() {
               <Link
                 to={"/search?category=series"}
                 className="text-lg text-white hover:underline text-center">
-                show more series
+                Show more series
               </Link>
             </Button>
           </div>
@@ -161,14 +151,14 @@ export default function Home() {
               <Link
                 to={"/search?category=kdrama"}
                 className="text-lg text-white hover:underline text-center">
-                show more Kdramas
+                Show more Kdramas
               </Link>
             </Button>
           </div>
         )}
 
         {/* Anime Section */}
-        {animes && animes.length > 0 && (
+        {/* {animes && animes.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">
               New Anime Uploads
@@ -182,11 +172,11 @@ export default function Home() {
               <Link
                 to={"/search?category=anime"}
                 className="text-lg text-white hover:underline text-center">
-                show more animes
+                Show more animes
               </Link>
             </Button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

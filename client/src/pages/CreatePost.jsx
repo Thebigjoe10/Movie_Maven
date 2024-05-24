@@ -196,6 +196,14 @@ export default function CreatePost() {
               setFormData({ ...formData, title: e.target.value })
             }
           />
+           <Select
+            onChange={(e) =>
+              setFormData({ ...formData, featured: e.target.value })
+            }>
+            <option value="featured">Featured</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </Select>
           <Select
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })

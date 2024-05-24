@@ -1,6 +1,7 @@
 import Post from "../models/post.model.js";
 import { errorHandler } from "../utils/error.js";
 
+// Create a new post
 export const create = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "You are not allowed to create a post"));
@@ -26,6 +27,7 @@ export const create = async (req, res, next) => {
   }
 };
 
+// Get posts for homepage with pagination and filtering
 export const gethomepageposts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
@@ -71,6 +73,7 @@ export const gethomepageposts = async (req, res, next) => {
   }
 };
 
+// Get posts with aggregation
 export const getposts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
@@ -117,6 +120,7 @@ export const getposts = async (req, res, next) => {
   }
 };
 
+// Delete a post
 export const deletepost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to delete this post"));
@@ -129,6 +133,7 @@ export const deletepost = async (req, res, next) => {
   }
 };
 
+// Update a post
 export const updatepost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to update this post"));
@@ -144,6 +149,7 @@ export const updatepost = async (req, res, next) => {
           image: req.body.image,
           keywords: req.body.keywords,
           genre: req.body.genre,
+          featured: req.body.featured,  // Include the featured field
         },
       },
       { new: true }

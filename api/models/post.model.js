@@ -36,10 +36,7 @@ const postSchema = new mongoose.Schema(
     keywords: {
       type: [String],
     },
-    featured: {
-      type: String, 
-      default: "",
-    },
+    featured: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
