@@ -23,22 +23,19 @@ export default function Home() {
 
         switch (category) {
           case "movies":
-            setMovies(data.posts);
+            setMovies(data.posts || []);
             break;
           case "series":
-            setSeries(data.posts);
+            setSeries(data.posts || []);
             break;
           case "kdrama":
-            setKdramas(data.posts);
+            setKdramas(data.posts || []);
             break;
           case "anime":
-            setAnimes(data.posts);
+            setAnimes(data.posts || []);
             break;
           case "reviews":
-            setReviews(data.posts);
-            break;
-          case "featured":
-            setFeaturedPosts(data.posts);
+            setReviews(data.posts || []);
             break;
           default:
             break;
@@ -54,7 +51,20 @@ export default function Home() {
     fetchPostsByCategory("kdrama");
     fetchPostsByCategory("anime");
     fetchPostsByCategory("reviews");
-    fetchPostsByCategory("featured");
+  }, []);
+
+  useEffect(() => {
+    const fetchFeaturedPosts = async () => {
+      try {
+        const res = await fetch(`/api/post/gethomepageposts?featured=yes&limit=12`);
+        const data = await res.json();
+        setFeaturedPosts(data.posts || []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFeaturedPosts();
   }, []);
 
   return (
@@ -77,21 +87,22 @@ export default function Home() {
 
       <h2 className="text-2xl font-semibold text-center py-4">What To Watch?</h2> 
       <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "80%", margin: "0 auto" }}>
-        {reviews && reviews.length > 0 && reviews.map((post) => (
+        {reviews.length > 0 ? reviews.map((post) => (
           <div className="flex flex-col gap-6" key={post._id}>
             <SwiperCard post={post} />
           </div>
-        ))}
+        )) : <p className="text-center">No reviews available</p>}
       </Slider>
 
       <h2 className="text-2xl font-semibold text-center py-4">Featured Posts</h2>
       <Slider autoplay={true} autoplaySpeed={3000} style={{ width: "80%", margin: "0 auto" }}>
-        {featuredPosts && featuredPosts.length > 0 && featuredPosts.map((post) => (
+        {featuredPosts.length > 0 ? featuredPosts.map((post) => (
           <div className="flex flex-col gap-6" key={post._id}>
             <SwiperCard post={post} />
           </div>
-        ))}
+        )) : <p className="text-center">No featured posts available</p>}
       </Slider>
+
 
       <div className="p-3 flex flex-col gap-8 ">
         {/* Movies Section */}
