@@ -37,6 +37,7 @@ export const gethomepageposts = async (req, res, next) => {
       ...(req.query.userId && { userId: req.query.userId }),
       ...(req.query.category && { category: req.query.category }),
       ...(req.query.genre && { genre: req.query.genre }),
+      ...(req.query.featured && { featured: req.query.featured }),
       ...(req.query.slug && { slug: req.query.slug }),
       ...(req.query.postId && { _id: req.query.postId }),
       ...(req.query.searchTerm && {
@@ -84,6 +85,7 @@ export const getposts = async (req, res, next) => {
           ...(req.query.userId && { userId: req.query.userId }),
           ...(req.query.category && { category: req.query.category }),
           ...(req.query.genre && { genre: req.query.genre }),
+          ...(req.query.featured && { featured: req.query.featured }),
           ...(req.query.slug && { slug: req.query.slug }),
           ...(req.query.postId && { _id: req.query.postId }),
           ...(req.query.searchTerm && {
