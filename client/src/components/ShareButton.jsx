@@ -13,7 +13,6 @@ const ShareButton = () => {
   const shareUrl = 'https://moviemaven.xyz';
   const title = 'Discover Amazing Movies on MovieMaven!';
   const description = 'Join MovieMaven to explore, review, and share your favorite movies with a vibrant community of movie enthusiasts!';
-  const imageUrl = 'https://moviemaven.xyz/moviemaven.webp'; 
 
   return (
     <div className="fixed bottom-0 left-0 bg-transparent shadow-lg rounded-tr-lg z-50">
