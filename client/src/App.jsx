@@ -20,12 +20,14 @@ import Disclaimer from './pages/Disclaimer';
 import SupportUs from './pages/SupportUs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsConditons from './pages/TermsConditons';
+import ShareButton from './components/ShareButton'
 export default function App() {
   return (
     <HelmetProvider>
     <BrowserRouter>
       <ScrollToTop />
       <Header />
+      <ShareButton />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/search' element={<Search />} />
